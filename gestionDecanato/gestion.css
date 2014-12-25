@@ -1,0 +1,102 @@
+/* At-Rules */
+@charset "iso-8859-1";
+
+img {
+   behavior: none;
+}
+
+body { 
+	background-color: #8CBAD6; 
+	color: black; 
+	font-family: Trebuchet MS,sans-serif;
+	font-size: 90% }
+
+input.texto, input.boton { 
+	border: 1px solid black;
+	font-family: Arial, Verdana;
+	font-size: 11px;
+}
+
+a { color: #8F1F08 }
+
+h3 small { font-variant: small-caps; letter-spacing: 1px }
+
+/* TEXTO */
+
+.titulo {
+	font-size: 13px;
+	font-family: Arial, Helvetica, sans-serif;
+	/*float: none;*/
+	text-align: center;
+	margin: 0 auto 0 auto;
+	font-weight: bold;
+	letter-spacing: 1px;
+}
+
+.cita {
+	width: 95%;
+	background-color:#E0EEE0;
+	padding: 5px;
+	margin-left: auto;
+	margin-right: auto; 
+	border: 1px solid black;
+}
+
+/* TABLAS */
+
+.pequena { font-size: 75%; }
+
+.titulo_fila { 
+	font: 13px Verdana; 
+	background-color: #73A273; 
+	color: black; 
+	font-weight: Bold; 
+	text-align: center; 
+	letter-spacing: 1px }
+
+.centro { text-align: center; }
+.abajo { vertical-align: middle; }
+
+#mensaje {
+	padding: 20px 10px; 
+	background-color: skyblue; 
+	width:55%; 
+	text-align: left;
+}
+
+#fecha {
+	font-size: .75em;
+	font-family: Arial;
+	float: right;
+	text-align: right;
+}
+
+/* input.texto {border: 1px solid Black; font: 9px Tahoma} */
+textarea { font: 13px Tahoma }
+div.margen {margin-left: 10px}
+div.sub {font: 12px Tahoma; color: #000066;}
+
+tr.datos {font: 11px Tahoma; color: black; text-align:center}
+tr.titulo {font: 11px Tahoma; background-color: #73A273; color: black; font-weight: Bold; text-align: center; letter-spacing: 2px}
+tr.titulo_izq {font: 11px Tahoma; background-color: #73A273; color: black; text-align:left}
+tr.titulo_informes {font: 14px Tahoma; background-color: #73A273; color: #000066; text-align: center; font-weight: Bold}
+tr.datos_izq {font: 10px Tahoma; color: black; text-align:left;}
+
+td.datos {font: 11px Tahoma; color: black;}
+td.titulo {font: 11px Tahoma; background-color: #73A273; color: black; font-weight: Bold; letter-spacing: 2px}
+td.datos_centro {font: 10px Tahoma; color: black; text-align: center}
+
+/* input.texto {border: 1px solid Black; font: 13px Tahoma}
+input.boton {border: 1px solid black; font: 12px Tahoma} */
+select { font: 12px Verdana }
+.fecha { font: 9px Verdana, Arial; font-weight: Bold; letter-spacing: 1px; position:fixed;  }
+.imprime { text-align: center; font: 12px Tahoma; letter-spacing: 1px;
+border: 1px solid black; background-color: #73a273; width: 150px; height: 20px }
+
+a.nolinea { text-decoration: none; color: rgb(255,255,255) }
+
+.ayuda { 
+	background-color: #E0EEE0; padding: 5px;
+	margin-left: auto; margin-right: auto; width: 50em;
+	border: 1px solid black; font-variant: small-caps;
+}

@@ -1,0 +1,70 @@
+
+
+/**************************************************************
+
+	Validate
+	v 2.1
+
+**************************************************************/
+
+#myForm {
+	border: 1px solid #8ca8b9;
+	padding: 5px;
+}
+
+#myForm p {
+	margin-bottom: 5px;
+}
+
+#myForm label {
+	float: left;
+	width: 200px;
+}
+
+#myForm p label {
+	float: left;
+	width: 200px;
+	font-weight: bold;
+}
+
+#myForm input, #myForm textarea, #myForm select {
+	border: 1px solid #8ca8b9;
+}
+
+#myForm .green {
+/* 	border: 1px solid #8CA8B9; */
+	border: 1px solid #ff0000;
+}
+
+#myForm label.green {
+	border: none;
+	color: #8CA8B9;
+}
+
+#myForm .customGreen {
+	border: none;
+	color: #8CA8B9;
+}
+
+#myForm #submit {
+	margin-left: 100px;
+}
+
+#validationMessage {
+	padding: 5px;
+	/*background-color: #eee;*/
+	border: 1px solid red;
+	margin-bottom: 10px;
+	color: #8CA8B9;
+	font-weight: bold;
+	display: none;
+}
+
+#myForm .errorMessage {
+	color: #8CA8B9;
+	margin-left: 10px;
+	font-size: 0.8em;
+}
+
+
+/*************************************************************/

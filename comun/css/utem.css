@@ -1,0 +1,576 @@
+@charset "utf-8";
+
+/* ##########################################################################
+#	Template original: Tropicala - Diseñado por: LetsEat					#
+#	Url: http://www.letseat.at												#
+#	Link: http://www.opendesigns.org/preview/?template=1800					#
+#														 					#
+#       Este template ha sido modificado para su uso en: 					#
+#			http://informatica.utem.cl										#
+#																			#
+#		El re-diseño ha quedado a cargo de:									#
+#			Polett Escanilla Ibáñez											#
+#			Contacto: polett@guachunguere.cl								#
+#			Website: http://www.guachunguere.cl 							#
+#																			#
+#		La optimización ha quedado a cargo de:								#
+#			Sebastián Salazar Molina										#
+#			Contacto: sebastian@guachunguere.cl					 			#
+#			Website: http://www.guachunguere.cl 							#
+#																			#
+#			Sebastian Machuca Arias											#
+#			Contacto: smachuca@informatica.utem.cl							#
+#			Website:														#
+#																			#
+#			Cristian Rodriguez Opazo										#
+#			Contacto:														#
+#			Website:														#
+#																			#
+#			Cristian Rodriguez Cornejo										#
+#			Contacto:														#
+#			Website:														#
+#																			#
+############################################################################# */
+
+/* ---------------------------------------------------------------------------- */
+/* RESETEANDO ESTILOS EN NAVEGADORES DIFERENTES ------------------------------- */
+/* ---------------------------------------------------------------------------- */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+body {
+    line-height: 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    clear: both;
+    font-weight: normal;
+}
+
+li, ol {
+    list-style: none;
+}
+
+blockquote {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after {
+    content: '';
+    content: none;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+a img {
+    border: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+/* GENERALES ------------------------------------------------------------------ */
+/* ---------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------------- */
+/* ESTRUCTURA ----------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+
+body {
+    background: url(../img/bg-body.gif) repeat-x left top;
+    background-color: #fff;
+}
+
+h1 {
+    color: #003366;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 24px;
+    padding: 30px 0 10px;
+    width: 420px;
+}
+
+h2 {
+    color: #003366;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 22px;
+    padding: 30px 0 10px;
+    width: 420px;
+}
+
+h3, h4, h5 {
+    font-size: 1.3em;
+    color: #003366;
+    font-weight: normal;
+    line-height: 22px;
+    padding: 30px 0 10px;
+    clear: both;
+}
+
+label {
+    font-weight: bold;
+    color: #003366;
+    width: 200px;
+    float: left;
+}
+
+blockquote {
+    margin:0 15px;
+    padding:1px 15px;
+    border-left:5px solid #41A8B5;
+    background: #F0F0F0;
+}
+
+#page_header {
+    color: #003366;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 22px;
+    padding: 30px 0 10px;
+    width: 420px;
+}
+
+#wrap {
+    width: 960px;
+    margin: 0 auto;
+}
+
+#contenedor {
+    float: left;
+    width: 960px;
+}
+
+#cabecera {
+    float: left;
+    height: 140px;
+    width: 960px;
+}
+
+#cabecera #i_corporativa {
+    width: 720px;
+    height: 139px;
+    display: inline;
+    float: left;
+}
+
+#cabecera #i_corporativa .log01 {
+    width: 340px;
+    height: 139px;
+    float: left;
+}
+
+#cabecera #i_corporativa .log02 {
+    width: 380px;
+    height: 139px;
+    float: left;
+}
+
+#principal {
+    float: left;
+    width: 960px;
+    height: 250px;
+}
+
+#contenido_medio {
+    float: left;
+    width: 960px;
+    margin: 20px 0 19px 0;
+}
+
+#contenido_medio li {
+    margin:5px 0;
+    padding-left:15px;
+    background:url(../img/square.png) 0 center no-repeat;
+}
+
+#main {
+    float: left;
+    width: 720px;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* MENUS ---------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+
+/* Menu superior -------------------------------------------------------------- */
+
+#menu_superior {
+    width: 960px;
+    height: 25px;
+    background-color: #036;
+    float: left;
+}
+
+#menu_superior ul {
+    width: 720px;
+    height: 25px;
+    float: left;
+    display: inline;
+}
+
+#menu_superior ul li {
+    text-align: center;
+    height: 25px;
+    display: inline;
+    float: left;
+    font-size: 11px;
+    font-style: normal;
+    line-height: 11px;
+    font-weight: normal;
+    font-variant: normal;
+}
+
+#menu_superior ul li a {
+    height: 11px;
+    padding: 7px 10px;
+    float: left;
+    color: #6FF;
+}
+
+#menu_superior li a:hover {
+    padding: 7px 10px;
+    color: #FFF;
+}
+
+/* Menu Perfil Usuarios ------------------------------------------------------- */
+
+#perfil_usuario {
+    width: 230px;
+    height: 140px;
+    float: right;
+}
+
+#perfil_usuario ul {
+    width: 220px;
+    padding-top: 22px;
+    float: left;
+}
+
+#perfil_usuario ul li {
+    height: 10px;
+    background: url(../img/bullet-usuario.gif) no-repeat left center;
+    padding: 3px 0 3px 10px;
+    font-size: 10px;
+    font-style: normal;
+    line-height: 10px;
+    font-weight: normal;
+    font-variant: normal;
+}
+
+#perfil_usuario ul li a {
+    height: 10px;
+}
+
+#perfil_usuario ul li a:hover {
+    padding-left: 2px;
+}
+
+/* Menu Mapa Sitio home ------------------------------------------------------- */
+
+#main .area_sitio {
+    float: left;
+    width: 160px;
+    display: inline;
+    padding: 0 20px 20px 0;
+}
+
+#main .area_sitio h2 {
+    font-size: 12px;
+    color: #666;
+    float: left;
+    width: 160px;
+    padding: 0 0 4px 0;
+    border-bottom: 2px solid #9C0;
+}
+
+#main .area_sitio ul {
+    padding-top: 5px;
+    width: 160px;
+    float: left;
+}
+
+#main .area_sitio ul li {
+    padding: 4px 0;
+    width: 160px;
+    background: url(../img/puntos-menumapa.gif) repeat-x left bottom;
+    font-size: 11px;
+    font-style: normal;
+    line-height: 14px;
+    font-weight: normal;
+    font-variant: normal;
+}
+
+#main .area_sitio ul li a {
+    height: 11px;
+}
+
+/* Menu Inferior -------------------------------------------------------------- */
+
+#contenedor #menu_inferior {
+    float: left;
+    height: 20px;
+    width: 960px;
+    border-top: 1px solid #9C0;
+    border-bottom: 1px solid #9C0;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+#contenedor #menu_inferior ul {
+    width: 960px;
+    height: 20px;
+    float: left;
+    display: inline;
+    background-image: url(../img/bg_diagonal.gif);
+    background-repeat: repeat;
+    background-position: left bottom;
+}
+
+#contenedor #menu_inferior ul li {
+    text-align: center;
+    height: 20px;
+    display: inline;
+    float: left;
+    font-size: 10px;
+    font-style: normal;
+    line-height: 10px;
+    font-weight: normal;
+    font-variant: normal;
+}
+
+#contenedor #menu_inferior ul li a {
+    height: 10px;
+    padding: 5px 10px 3px 10px;
+    float: left;
+    color: #444;
+}
+
+#contenedor #menu_inferior li a:hover {
+    color: #036;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Tipografía ----------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+p {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    clear: both;
+    text-align: justify;
+    font-size: 12pt;
+    color: #393939;
+}
+
+ul {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#contenido ul li, #contenido_single ul li, #contenido_single_agenda ul li {
+    font: normal 14px/22px Georgia, "Times New Roman", Times, serif;
+    color: #393939;
+}
+
+#contenido ol li, #contenido_single ol li, #contenido_single_agenda ol li {
+    font: normal 14px/22px Georgia, "Times New Roman", Times, serif;
+    color: #393939;
+}
+
+a {
+    color: #036;
+}
+
+a:hover {
+    color: #09F;
+}
+
+#contenedor #pie_pagina, #lista_carreras form select, .noticia_h .contenido_noticia p, .noticia_i .contenido_noticia p {
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+/* ---------------------------------------------------------------------------- */
+/* Colores -------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------- */
+
+#principal #busqueda_rapida #lista_carreras h2 {
+    font-size: 12px;
+    line-height: 12px;
+    color: #333;
+    float: left;
+    width: 220px;
+    padding: 10px 0 2px 0;
+    font-weight: bold;
+}
+
+#secondary {
+    padding: 10px;
+    float: left;
+    width: 220px;
+    border-bottom: 1px solid #FFF;
+}
+
+#secondary li {
+    font-size: 11pt;
+}
+
+#secondary p {
+    font-size: 11pt;
+    clear: both;
+}
+
+#secondary label {
+    font-weight: bold;
+    color: #003366;
+    width: 190px;
+    float: left;
+}
+
+#menu_superior #buscador {
+    width: 220px;
+    height: 25px;
+    padding: 0 10px;
+    float: left;
+    display: inline;
+}
+
+#menu_superior #buscador #searchform {
+    padding: 0;
+    margin: 3px 0;
+    width: 220px;
+    height: 19px;
+    float: right;
+}
+
+#menu_superior #buscador #searchform #s {
+    width: 195px;
+    height: 17px;
+    padding: 0 2px;
+    border: 1px solid #9C0;
+    vertical-align: middle;
+    float: left;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    line-height: 17px;
+    color: #036;
+    background-color: #FFF;
+}
+
+#menu_superior #buscador #searchform #s:focus {
+    background-color: #FFC;
+}
+
+#menu_superior #buscador #searchform #searchsubmit {
+    width: 19px;
+    height: 19px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    float: right;
+    background-color: #9C0;
+    font: bold 12px/12px Arial, Helvetica, sans-serif;
+    color: #FFF;
+    vertical-align: middle;
+}
+
+#menu_areas {
+    float: left;
+    height: 40px;
+    width: 960px;
+}
+
+#menu_areas ul {
+    float: left;
+    height: 40px;
+    width: 960px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    color: #333333;
+}
+
+#menu_areas ul li {
+    float: left;
+    height: 14px;
+    padding: 13px 0;
+}
+
+#menu_areas ul li.separador {
+    padding: 13px 15px;
+    color:#999;
+}
+
+#menu_areas ul li a {
+    height: 14px;
+}
+
+.geo {
+    display: none;
+}
+
+#contenido_medio #noticias_prin_home {
+    background-color: #F2EBE7;
+    display: block;
+    float: left;
+    width: 960px;
+    margin-bottom: 10px;
+}
+
+#contenido_medio #noticias_prin_home .noticia_h h1 {
+    font-size: 12px;
+    line-height: 16px;
+    text-transform: uppercase;
+    padding: 0 0 5px 0;
+    float: left;
+    width: 220px;
+    font-weight: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333333;
+    letter-spacing: 1px;
+}
+
+#contenido_medio #noticias_prin_home .noticia_h {
+    padding: 9px;
+    float: left;
+    width: 220px;
+    height: 190px;
+    border-left-width: 2px;
+    border-left-style: solid;
+    border-left-color: #FFFFFF;
+}
+
+#uestatales {
+    float: left;
+    width: 728px;
+    height: 90px;
+    text-align: center;
+    padding: 0 116px;
+}
