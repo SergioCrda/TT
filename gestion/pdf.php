@@ -159,7 +159,11 @@
                                 $horario32 = mysql_query($horario31) or die('Consulta fallida: '.mysql_error());
                                 $horario33 = mysql_fetch_assoc($horario32);
                                 $horario34 = $horario33['Periodo'];
-                                echo "<td width='200px'>".$horario14."<br>".$horario24."<br>".$horario34."</td>";
+                                if($horario34 == "Sin Periodo"){
+                                    echo "<td width='200px'>".$horario14."<br>".$horario24."</td>";
+                                } else {
+                                    echo "<td width='200px'>".$horario14."<br>".$horario24."<br>".$horario34."</td>";
+                                }
                                 echo "</tr>";
                                 $cuenta2++;
                             }
