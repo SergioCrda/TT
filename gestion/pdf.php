@@ -136,39 +136,62 @@
                             echo "</tr>";
                             echo "<tr>";
                             echo "<th colspan='4'>";
+                            
+                            echo "<br>";
                             $ramoPDF  = $seleccionRamoPDF3['ID_ramos_PDF'];
                             $seleccionSeccionRamoPDF1 = "SELECT * FROM `seccion_ramo_PDF` WHERE `Ramos_PDF_id_Ramos_PDF`= " . $ramoPDF;
                             $seleccionSeccionRamoPDF2 = mysql_query($seleccionSeccionRamoPDF1) or die('Consulta fallida: '.mysql_error());
-                            $cuenta2 = 1;
                             while($seleccionSeccionRamoPDF3 = mysql_fetch_assoc($seleccionSeccionRamoPDF2)){
-                                if($cuenta2==1){
-                                    echo "<br>";
-                                    echo '<table align="center" border="1" cellpadding="3" cellspacing="0" id="pdfTablaSeccion'.$cuenta1.$cuenta2.'"><tr class="titulo_fila"><td>N&deg; Secci&oacute;n </td><td>Horarios</td></tr>';
+                                echo "<table align='center' border='1' cellspacing='0' cellpadding='3' width='700px' class='media'>";
+                                echo "<tr><td class='titulo_fila media' colspan='4'>Secci&oacute;n N&uacute;mero ".$seleccionSeccionRamoPDF3['Numero_seccion']."</td></tr>";
+                                for($k = 0; $k < 3; $k++) {
+                                    echo "<tr>";
+                                    echo "<td class='titulo_fila' width='35%'>Horario ".($k+1)."</td>";
+                                    if($k == 0){
+                                        $auxHorario = $seleccionSeccionRamoPDF3['Horario_1'];
+                                    } else if ($k == 1){
+                                        $auxHorario = $seleccionSeccionRamoPDF3['Horario_2'];
+                                    } else if ($k == 2){
+                                        $auxHorario = $seleccionSeccionRamoPDF3['Horario_3'];
+                                    }
+                                    $horarioE1 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = ". $auxHorario;
+                                    $horarioE2 = mysql_query($horarioE1) or die('Consulta fallida: '.mysql_error());
+                                    $horarioE3 = mysql_fetch_assoc($horarioE2);
+                                    $horarioE4 = $horarioE3['Periodo'];
+                                    echo "<td>".$horarioE4."</td>";
+                                    echo "<td class='titulo_fila' width='25%'>Sala ".($k+1)."</td>";
+                                    if($k == 0){
+                                        $auxSala = $seleccionSeccionRamoPDF3['Sala_1'];
+                                    } else if ($k == 1){
+                                        $auxSala = $seleccionSeccionRamoPDF3['Sala_2'];
+                                    } else if ($k == 2){
+                                        $auxSala = $seleccionSeccionRamoPDF3['Sala_3'];
+                                    }
+                                    $salaE1 = "SELECT * FROM `salas` WHERE `ID_sala` = ". $auxSala ;
+                                    $salaE2 = mysql_query($salaE1) or die('Consulta fallida: '.mysql_error());
+                                    $salaE3 = mysql_fetch_assoc($salaE2);
+                                    $salaE4 = $salaE3['Nombre_sala'];
+                                    $salaE5 = $salaE3['Edificio'];
+                                    if($auxSala == 0){
+                                        echo "<td>Sin Periodo</td>";
+                                    } else {
+                                        echo "<td>".$salaE5." ".$salaE4."</td>";
+                                    }
+                                    echo "</tr>";
                                 }
-                                echo "<tr class='centro'>";
-                                echo "<td width='110px'>" .$cuenta2. "</td>";
-                                $horario11 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = " . $seleccionSeccionRamoPDF3['Horario_1'];
-                                $horario12 = mysql_query($horario11) or die('Consulta fallida: '.mysql_error());
-                                $horario13 = mysql_fetch_assoc($horario12);
-                                $horario14 = $horario13['Periodo'];
-                                $horario21 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = " . $seleccionSeccionRamoPDF3['Horario_2'];
-                                $horario22 = mysql_query($horario21) or die('Consulta fallida: '.mysql_error());
-                                $horario23 = mysql_fetch_assoc($horario22);
-                                $horario24 = $horario23['Periodo'];
-                                $horario31 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = " . $seleccionSeccionRamoPDF3['Horario_3'];
-                                $horario32 = mysql_query($horario31) or die('Consulta fallida: '.mysql_error());
-                                $horario33 = mysql_fetch_assoc($horario32);
-                                $horario34 = $horario33['Periodo'];
-                                if($horario34 == "Sin Periodo"){
-                                    echo "<td width='200px'>".$horario14."<br>".$horario24."</td>";
-                                } else {
-                                    echo "<td width='200px'>".$horario14."<br>".$horario24."<br>".$horario34."</td>";
-                                }
+                                echo "<tr>";
+                                echo "<td class='titulo_fila'>Profesor</td>";
+                                echo "<td colspan='3'>".$seleccionSeccionRamoPDF3['Nombre_docente']."</td>";
                                 echo "</tr>";
-                                $cuenta2++;
+                                echo "<tr>";
+                                echo "<td class='titulo_fila'>Cantidad de Estudiantes</td>";
+                                echo "<td colspan='3'>".$seleccionSeccionRamoPDF3['Cantidad_alumnos']."</td>";
+                                echo "</tr>";
+                                echo "</table>";
+                                echo "<br>";
                             }
-                            echo "</table>";
                             echo "<br>";
+                            
                             echo "</th></tr>";
                             echo "</table>";
                             echo "<br>";
