@@ -123,10 +123,10 @@
                         $asignacion12 = mysql_query($asignacion11) or die('Consulta fallida: '.mysql_error());
                         $asignacion10 = mysql_num_rows($asignacion12);  
                         if($asignacion10 == 0){
-                            $salas11 = "SELECT * FROM `salas`";
+                            $salas11 = "SELECT * FROM `salas` WHERE `ID_sala` <> 0";
                             $salas12 = mysql_query($salas11) or die('Consulta fallida: '.mysql_error());
                         } else {
-                            $salas11 = "SELECT * FROM `salas` WHERE `ID_sala` <> ( SELECT `ID_sala_asignacion` FROM `asignacion_salas` WHERE `ID_periodo_asignacion` = " . $seleccionSeccionRamoPDI3['Horario_1'].")";
+                            $salas11 = "SELECT * FROM `salas` WHERE `ID_sala` <> ( SELECT `ID_sala_asignacion` FROM `asignacion_salas` WHERE `ID_periodo_asignacion` = " . $seleccionSeccionRamoPDI3['Horario_1'].") AND `ID_sala` <> 0";
                             $salas12 = mysql_query($salas11) or die('Consulta fallida: '.mysql_error());
                         }
 
@@ -134,10 +134,10 @@
                         $asignacion22 = mysql_query($asignacion21) or die('Consulta fallida: '.mysql_error());
                         $asignacion20 = mysql_num_rows($asignacion22);  
                         if($asignacion20 == 0){
-                            $salas21 = "SELECT * FROM `salas`";
+                            $salas21 = "SELECT * FROM `salas` WHERE `ID_sala` <> 0";
                             $salas22 = mysql_query($salas21) or die('Consulta fallida: '.mysql_error());
                         } else {
-                            $salas21 = "SELECT * FROM `salas` WHERE `ID_sala` <> ( SELECT `ID_sala_asignacion` FROM `asignacion_salas` WHERE `ID_periodo_asignacion` = " . $seleccionSeccionRamoPDI3['Horario_2'].")";
+                            $salas21 = "SELECT * FROM `salas` WHERE `ID_sala` <> ( SELECT `ID_sala_asignacion` FROM `asignacion_salas` WHERE `ID_periodo_asignacion` = " . $seleccionSeccionRamoPDI3['Horario_2'].") AND `ID_sala` <> 0";
                             $salas22 = mysql_query($salas21) or die('Consulta fallida: '.mysql_error());
                         }
                             
@@ -159,15 +159,15 @@
                             echo "<option value='0' selected='selected'></option></select>";
                         } else{
                             echo "<select id='salas".($cuenta1-1).($cuenta2-1)."2' name='salas_id".($cuenta1-1)."[".($cuenta2-1)."][2]'>";
-                            echo "<option value='0' selected='selected'>Seleccione Sala</option>";
+                            echo "<option value='' selected='selected'>Seleccione Sala</option>";
                             $asignacion31 = "SELECT `ID_sala_asignacion` FROM `asignacion_salas` WHERE `ID_periodo_asignacion` = " . $seleccionSeccionRamoPDI3['Horario_3'];
                             $asignacion32 = mysql_query($asignacion31) or die('Consulta fallida: '.mysql_error());
                             $asignacion30 = mysql_num_rows($asignacion32);  
                             if($asignacion30 == 0){
-                                $salas31 = "SELECT * FROM `salas`";
+                                $salas31 = "SELECT * FROM `salas` WHERE `ID_sala` <> 0";
                                 $salas32 = mysql_query($salas31) or die('Consulta fallida: '.mysql_error());
                             } else {
-                                $salas31 = "SELECT * FROM `salas` WHERE `ID_sala` <> ( SELECT `ID_sala_asignacion` FROM `asignacion_salas` WHERE `ID_periodo_asignacion` = " . $seleccionSeccionRamoPDI3['Horario_3'].")";
+                                $salas31 = "SELECT * FROM `salas` WHERE `ID_sala` <> ( SELECT `ID_sala_asignacion` FROM `asignacion_salas` WHERE `ID_periodo_asignacion` = " . $seleccionSeccionRamoPDI3['Horario_3'].") AND `ID_sala` <> 0";
                                 $salas32 = mysql_query($salas31) or die('Consulta fallida: '.mysql_error());
                             }
                             while($salas33 = mysql_fetch_assoc($salas32)){

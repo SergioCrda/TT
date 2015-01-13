@@ -45,6 +45,8 @@ h3 small { font-variant: small-caps; letter-spacing: 1px }
 /* TABLAS */
 
 .pequena { font-size: 75%; }
+.media { font-size: 90%; }
+.grande { font-size: 105%; }
 
 .titulo_fila { 
 	font: 13px Verdana; 

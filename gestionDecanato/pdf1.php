@@ -79,7 +79,6 @@
 							echo "</tr>";
                             
                             $IDSeccionRamoPDF1 = "SELECT * FROM `seccion_ramo_PDF` WHERE `Ramos_PDF_id_Ramos_PDF` = " .$seleccionRamoPDF3['ID_ramos_PDF'];
-                            //print_r($IDSeccionRamoPDF1);
                             $cuenta2 = 0;
                             $IDSeccionRamoPDF2 = mysql_query($IDSeccionRamoPDF1) or die('Consulta fallida: '.mysql_error());
                             while($IDSeccionRamoPDF3 = mysql_fetch_assoc($IDSeccionRamoPDF2)){
@@ -87,13 +86,16 @@
                                 $horario[$cuenta1][$cuenta2][0] = $IDSeccionRamoPDF3['Horario_1'];
                                 $horario[$cuenta1][$cuenta2][1] = $IDSeccionRamoPDF3['Horario_2'];
                                 $horario[$cuenta1][$cuenta2][2] = $IDSeccionRamoPDF3['Horario_3'];
+                                $sala[$cuenta1][$cuenta2][0] = $IDSeccionRamoPDF3['Sala_1'];
+                                $sala[$cuenta1][$cuenta2][1] = $IDSeccionRamoPDF3['Sala_2'];
+                                $sala[$cuenta1][$cuenta2][2] = $IDSeccionRamoPDF3['Sala_3'];
                                 $profe[$cuenta1][$cuenta2]      = $IDSeccionRamoPDF3['Nombre_docente'];
                                 $alumnos[$cuenta1][$cuenta2]    = $IDSeccionRamoPDF3['Cantidad_alumnos'];
                                 $cuenta2++;
                             }
                             $cuenta1++;
                         }
-                        $data = array($codigoRamos, $nombreRamos, $cantidRamos, $noSeccion, $horario, $profe, $alumnos);
+                        $data = array($codigoRamos, $nombreRamos, $cantidRamos, $noSeccion, $horario, $profe, $alumnos, $sala);
                         function array_envia($array) { 
                             $tmp = serialize($array); 
                             $tmp = urlencode($tmp); 

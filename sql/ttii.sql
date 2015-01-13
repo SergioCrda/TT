@@ -2,36 +2,52 @@
 -- version 4.1.12
 -- http://www.phpmyadmin.net
 --
--- Host: localhost:8889
--- Generation Time: Aug 18, 2014 at 12:48 AM
--- Server version: 5.5.34
--- PHP Version: 5.5.10
+-- Servidor: localhost:8889
+-- Tiempo de generación: 13-01-2015 a las 01:10:21
+-- Versión del servidor: 5.5.34
+-- Versión de PHP: 5.5.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Database: `ttii`
+-- Base de datos: `ttii`
 --
-CREATE DATABASE IF NOT EXISTS `ttii` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `ttii`;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `carreras`
+-- Estructura de tabla para la tabla `asignacion_salas`
 --
 
-DROP TABLE IF EXISTS `carreras`;
-CREATE TABLE IF NOT EXISTS `carreras` (
+CREATE TABLE `asignacion_salas` (
+  `ID_asignacion` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_sala_asignacion` int(11) NOT NULL,
+  `ID_periodo_asignacion` int(11) NOT NULL,
+  `ID_ramos_asignacion` int(11) NOT NULL,
+  `ID_PDF_asignacion` int(11) NOT NULL,
+  PRIMARY KEY (`ID_asignacion`),
+  KEY `ID_periodo_asignacion` (`ID_periodo_asignacion`),
+  KEY `ID_PDF_asignacion` (`ID_PDF_asignacion`),
+  KEY `ID_sala_asignacion` (`ID_sala_asignacion`),
+  KEY `ID_rama_asignacion` (`ID_ramos_asignacion`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `carreras`
+--
+
+CREATE TABLE `carreras` (
   `ID_carrera` int(11) NOT NULL,
-  `Codigo_carrera` varchar(45) NOT NULL,
-  `Nombre_carrera` varchar(45) NOT NULL,
+  `Codigo_carrera` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `Nombre_carrera` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`ID_carrera`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `carreras`
+-- Volcado de datos para la tabla `carreras`
 --
 
 INSERT INTO `carreras` (`ID_carrera`, `Codigo_carrera`, `Nombre_carrera`) VALUES
@@ -174,18 +190,17 @@ INSERT INTO `carreras` (`ID_carrera`, `Codigo_carrera`, `Nombre_carrera`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `departamentos`
+-- Estructura de tabla para la tabla `departamentos`
 --
 
-DROP TABLE IF EXISTS `departamentos`;
-CREATE TABLE IF NOT EXISTS `departamentos` (
+CREATE TABLE `departamentos` (
   `ID_depto` int(11) NOT NULL,
-  `Nombre_depto` varchar(45) NOT NULL,
+  `Nombre_depto` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`ID_depto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `departamentos`
+-- Volcado de datos para la tabla `departamentos`
 --
 
 INSERT INTO `departamentos` (`ID_depto`, `Nombre_depto`) VALUES
@@ -214,38 +229,86 @@ INSERT INTO `departamentos` (`ID_depto`, `Nombre_depto`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `PDI`
+-- Estructura de tabla para la tabla `PDF`
 --
 
-DROP TABLE IF EXISTS `PDI`;
-CREATE TABLE IF NOT EXISTS `PDI` (
+CREATE TABLE `PDF` (
+  `ID_PDF` int(11) NOT NULL AUTO_INCREMENT,
+  `Estado` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `Nombre_docente` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `ID_profesor` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `ID_escuela` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `Fecha_PDF` datetime NOT NULL,
+  `carreras_ID_carrera` int(11) NOT NULL,
+  `departamentos_ID_depto` int(11) NOT NULL,
+  `ID_PDI` int(11) NOT NULL,
+  PRIMARY KEY (`ID_PDF`,`departamentos_ID_depto`,`carreras_ID_carrera`),
+  UNIQUE KEY `ID_PDF` (`ID_PDF`),
+  KEY `fk_PDF_carreras1_idx` (`carreras_ID_carrera`),
+  KEY `fk_PDF_departamentos1_idx` (`departamentos_ID_depto`),
+  KEY `fk_PDF_ID_PDI_idx` (`ID_PDI`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=64 ;
+
+--
+-- Volcado de datos para la tabla `PDF`
+--
+
+INSERT INTO `PDF` (`ID_PDF`, `Estado`, `Nombre_docente`, `ID_profesor`, `ID_escuela`, `Fecha_PDF`, `carreras_ID_carrera`, `departamentos_ID_depto`, `ID_PDI`) VALUES
+(30, 'Revision VRAC', 'NOMBRE_PRUEBA', '1', '1', '2014-11-12 15:29:31', 13, 3, 33),
+(33, 'Revision VRAC', 'NOMBRE_PRUEBA', '1', '1', '2014-11-12 17:47:56', 13, 3, 33),
+(61, 'Revisión Decanato', 'NOMBRE_PRUEBA', '1', '1', '2014-12-30 23:32:26', 1, 1, 31),
+(63, 'Revisión Decanato', 'NOMBRE_PRUEBA', '1', '1', '2015-01-12 23:39:46', 1, 2, 32);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `PDI`
+--
+
+CREATE TABLE `PDI` (
   `ID_PDI` int(11) NOT NULL AUTO_INCREMENT,
-  `Nombre_docente` varchar(45) NOT NULL,
-  `ID_profesor` varchar(45) NOT NULL,
-  `ID_escuela` varchar(45) NOT NULL,
+  `Estado` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `Nombre_docente` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `ID_profesor` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `ID_escuela` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `Fecha_PDI` datetime NOT NULL,
   `carreras_ID_carrera` int(11) NOT NULL,
   `departamentos_ID_depto` int(11) NOT NULL,
   PRIMARY KEY (`ID_PDI`,`departamentos_ID_depto`,`carreras_ID_carrera`),
   KEY `fk_PDI_carreras1_idx` (`carreras_ID_carrera`),
   KEY `fk_PDI_departamentos1_idx` (`departamentos_ID_depto`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=42 ;
+
+--
+-- Volcado de datos para la tabla `PDI`
+--
+
+INSERT INTO `PDI` (`ID_PDI`, `Estado`, `Nombre_docente`, `ID_profesor`, `ID_escuela`, `Fecha_PDI`, `carreras_ID_carrera`, `departamentos_ID_depto`) VALUES
+(31, 'PDI Aprobado', 'NOMBRE_PRUEBA', '1', '1', '2014-10-27 23:39:38', 1, 1),
+(32, 'PDI Aprobado', 'NOMBRE_PRUEBA', '1', '1', '2014-10-27 23:41:01', 1, 2),
+(33, 'Cerrado', 'NOMBRE_PRUEBA', '1', '1', '2014-10-27 23:57:40', 13, 3),
+(35, 'PDI Aprobado', 'NOMBRE_PRUEBA', '1', '1', '2014-11-13 17:03:52', 3, 2),
+(36, 'PDI Aprobado', 'NOMBRE_PRUEBA', '1', '1', '2014-11-24 12:18:34', 6, 10),
+(37, 'Cerrado', 'NOMBRE_PRUEBA', '1', '1', '2014-12-04 23:04:18', 10, 20),
+(38, 'PDI Aprobado', 'NOMBRE_PRUEBA', '1', '1', '2014-12-04 23:09:57', 6, 4),
+(39, 'PDI Aprobado', 'NOMBRE_PRUEBA', '1', '1', '2014-12-04 23:12:46', 9, 12),
+(40, 'PDI Aprobado', 'NOMBRE_PRUEBA', '1', '1', '2014-12-04 23:13:40', 6, 14),
+(41, 'Cerrado', 'NOMBRE_PRUEBA', '1', '1', '2014-12-04 23:14:46', 10, 19);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `periodos`
+-- Estructura de tabla para la tabla `periodos`
 --
 
-DROP TABLE IF EXISTS `periodos`;
-CREATE TABLE IF NOT EXISTS `periodos` (
+CREATE TABLE `periodos` (
   `ID_periodo` int(11) NOT NULL,
-  `Periodo` varchar(45) NOT NULL,
+  `Periodo` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`ID_periodo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `periodos`
+-- Volcado de datos para la tabla `periodos`
 --
 
 INSERT INTO `periodos` (`ID_periodo`, `Periodo`) VALUES
@@ -308,22 +371,21 @@ INSERT INTO `periodos` (`ID_periodo`, `Periodo`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ramos`
+-- Estructura de tabla para la tabla `ramos`
 --
 
-DROP TABLE IF EXISTS `ramos`;
-CREATE TABLE IF NOT EXISTS `ramos` (
+CREATE TABLE `ramos` (
   `ID_ramo` int(11) NOT NULL,
-  `ID_ramo_depto` varchar(45) NOT NULL,
-  `Codigo_ramo` varchar(45) NOT NULL,
-  `Nombre_ramo` varchar(45) NOT NULL,
+  `ID_ramo_depto` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `Codigo_ramo` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `Nombre_ramo` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `departamentos_ID_depto` int(11) NOT NULL,
-  PRIMARY KEY (`ID_ramo`,`departamentos_ID_depto`),
+  PRIMARY KEY (`ID_ramo`),
   KEY `fk_ramos_departamentos1_idx` (`departamentos_ID_depto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `ramos`
+-- Volcado de datos para la tabla `ramos`
 --
 
 INSERT INTO `ramos` (`ID_ramo`, `ID_ramo_depto`, `Codigo_ramo`, `Nombre_ramo`, `departamentos_ID_depto`) VALUES
@@ -3495,29 +3557,151 @@ INSERT INTO `ramos` (`ID_ramo`, `ID_ramo_depto`, `Codigo_ramo`, `Nombre_ramo`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ramos_PDI`
+-- Estructura de tabla para la tabla `ramos_PDF`
 --
 
-DROP TABLE IF EXISTS `ramos_PDI`;
-CREATE TABLE IF NOT EXISTS `ramos_PDI` (
+CREATE TABLE `ramos_PDF` (
+  `ID_ramos_PDF` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_ramo` int(11) NOT NULL,
+  `Cantidad_secciones` int(11) NOT NULL,
+  `PDF_id_PDF` int(11) NOT NULL,
+  PRIMARY KEY (`ID_ramos_PDF`,`PDF_id_PDF`),
+  KEY `fk_Ramos_PDF_PDF_idx` (`PDF_id_PDF`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=82 ;
+
+--
+-- Volcado de datos para la tabla `ramos_PDF`
+--
+
+INSERT INTO `ramos_PDF` (`ID_ramos_PDF`, `ID_ramo`, `Cantidad_secciones`, `PDF_id_PDF`) VALUES
+(78, 101, 1, 61),
+(79, 102, 2, 61),
+(80, 134, 1, 63),
+(81, 109, 1, 63);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ramos_PDI`
+--
+
+CREATE TABLE `ramos_PDI` (
   `ID_ramos_PDI` int(11) NOT NULL AUTO_INCREMENT,
   `ID_ramo` int(11) NOT NULL,
   `Cantidad_secciones` int(11) NOT NULL,
   `PDI_id_PDI` int(11) NOT NULL,
   PRIMARY KEY (`ID_ramos_PDI`,`PDI_id_PDI`),
   KEY `fk_Ramos_PDI_PDI_idx` (`PDI_id_PDI`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=52 ;
+
+--
+-- Volcado de datos para la tabla `ramos_PDI`
+--
+
+INSERT INTO `ramos_PDI` (`ID_ramos_PDI`, `ID_ramo`, `Cantidad_secciones`, `PDI_id_PDI`) VALUES
+(33, 101, 1, 31),
+(34, 102, 2, 31),
+(35, 134, 1, 32),
+(36, 367, 1, 32),
+(37, 694, 1, 33),
+(38, 695, 2, 33),
+(39, 882, 2, 35),
+(40, 889, 1, 35),
+(41, 12, 2, 36),
+(42, 15, 1, 36),
+(43, 195, 3, 36),
+(44, 16, 3, 37),
+(45, 3, 1, 38),
+(46, 1, 3, 39),
+(47, 37, 3, 40),
+(48, 50, 2, 40),
+(49, 28, 3, 41),
+(50, 41, 2, 41),
+(51, 250, 1, 41);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `seccion_ramo_PDI`
+-- Estructura de tabla para la tabla `salas`
 --
 
-DROP TABLE IF EXISTS `seccion_ramo_PDI`;
-CREATE TABLE IF NOT EXISTS `seccion_ramo_PDI` (
+CREATE TABLE `salas` (
+  `ID_sala` int(11) NOT NULL AUTO_INCREMENT,
+  `Nombre_sala` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `Edificio` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  PRIMARY KEY (`ID_sala`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+
+--
+-- Volcado de datos para la tabla `salas`
+--
+
+INSERT INTO `salas` (`ID_sala`, `Nombre_sala`, `Edificio`) VALUES
+(0, 'Sin Sala', 'Sin Edificio'),
+(1, '101', 'M1'),
+(2, '102', 'M1'),
+(3, '103', 'M1'),
+(4, '201', 'M1'),
+(5, '202', 'M1'),
+(6, '203', 'M1'),
+(7, '301', 'M1'),
+(8, '302', 'M1'),
+(9, '303', 'M1'),
+(10, '201', 'M2'),
+(11, '202', 'M2'),
+(12, '203', 'M2'),
+(13, '204', 'M2'),
+(14, '301', 'M2'),
+(15, '302', 'M2');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `seccion_ramo_PDF`
+--
+
+CREATE TABLE `seccion_ramo_PDF` (
+  `ID_seccion_ramo_PDF` int(11) NOT NULL AUTO_INCREMENT,
+  `Numero_seccion` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `Ramos_PDF_id_Ramos_PDF` int(11) NOT NULL,
+  `Horario_1` int(11) NOT NULL,
+  `Horario_2` int(11) NOT NULL,
+  `Horario_3` int(11) NOT NULL DEFAULT '0',
+  `Sala_1` int(11) NOT NULL,
+  `Sala_2` int(11) NOT NULL,
+  `Sala_3` int(11) NOT NULL DEFAULT '0',
+  `Nombre_docente` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `Cantidad_alumnos` int(11) NOT NULL,
+  PRIMARY KEY (`ID_seccion_ramo_PDF`,`Ramos_PDF_id_Ramos_PDF`,`Horario_1`,`Horario_2`,`Horario_3`,`Sala_1`,`Sala_2`,`Sala_3`),
+  KEY `fk_Horario1_ID_periodo_idx` (`Horario_1`),
+  KEY `fk_Horario2_ID_periodo_idx` (`Horario_2`),
+  KEY `fk_Horario3_ID_periodo_idx` (`Horario_3`),
+  KEY `fk_Sala1_ID_sala_idx` (`Sala_1`),
+  KEY `fk_Sala2_ID_sala_idx` (`Sala_2`),
+  KEY `fk_Sala3_ID_sala_idx` (`Sala_3`),
+  KEY `fk_Seccion_Ramo_PDF_Ramos_PDF1_idx` (`Ramos_PDF_id_Ramos_PDF`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+
+--
+-- Volcado de datos para la tabla `seccion_ramo_PDF`
+--
+
+INSERT INTO `seccion_ramo_PDF` (`ID_seccion_ramo_PDF`, `Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Sala_1`, `Sala_2`, `Sala_3`, `Nombre_docente`, `Cantidad_alumnos`) VALUES
+(5, '1', 78, 1, 2, 0, 2, 1, 0, '1', 10),
+(6, '1', 79, 3, 4, 0, 1, 1, 0, '2', 20),
+(7, '2', 79, 5, 6, 0, 1, 1, 0, '3', 30),
+(8, '1', 80, 1, 2, 0, 2, 3, 0, '1', 10),
+(9, '1', 81, 2, 3, 0, 1, 1, 0, '2', 20);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `seccion_ramo_PDI`
+--
+
+CREATE TABLE `seccion_ramo_PDI` (
   `ID_seccion_ramo_PDI` int(11) NOT NULL AUTO_INCREMENT,
-  `Numero_seccion` varchar(45) NOT NULL,
+  `Numero_seccion` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `Ramos_PDI_id_Ramos_PDI` int(11) NOT NULL,
   `Horario_1` int(11) NOT NULL,
   `Horario_2` int(11) NOT NULL,
@@ -3527,33 +3711,108 @@ CREATE TABLE IF NOT EXISTS `seccion_ramo_PDI` (
   KEY `fk_Horario2_ID_periodo_idx` (`Horario_2`),
   KEY `fk_Horario3_ID_periodo_idx` (`Horario_3`),
   KEY `fk_Horario1_ID_periodo_idx` (`Horario_1`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=74 ;
 
 --
--- Constraints for dumped tables
+-- Volcado de datos para la tabla `seccion_ramo_PDI`
+--
+
+INSERT INTO `seccion_ramo_PDI` (`ID_seccion_ramo_PDI`, `Numero_seccion`, `Ramos_PDI_id_Ramos_PDI`, `Horario_1`, `Horario_2`, `Horario_3`) VALUES
+(40, '1', 33, 1, 2, 0),
+(41, '1', 34, 3, 4, 0),
+(42, '2', 34, 5, 6, 0),
+(43, '1', 35, 1, 2, 0),
+(44, '1', 36, 2, 3, 0),
+(45, '1', 37, 1, 2, 0),
+(46, '1', 38, 3, 4, 5),
+(47, '2', 38, 10, 11, 0),
+(48, '1', 39, 19, 20, 0),
+(49, '2', 39, 25, 26, 27),
+(50, '1', 40, 46, 47, 0),
+(51, '1', 41, 1, 1, 0),
+(52, '2', 41, 11, 11, 11),
+(53, '1', 42, 21, 21, 21),
+(54, '1', 43, 31, 31, 0),
+(55, '2', 43, 41, 32, 32),
+(56, '3', 43, 51, 51, 51),
+(57, '1', 44, 1, 1, 0),
+(58, '2', 44, 2, 2, 2),
+(59, '1', 45, 1, 1, 0),
+(60, '1', 46, 1, 1, 0),
+(61, '2', 46, 2, 2, 2),
+(62, '3', 46, 3, 3, 0),
+(63, '1', 47, 1, 1, 0),
+(64, '2', 47, 2, 2, 2),
+(65, '3', 47, 3, 3, 0),
+(66, '1', 48, 10, 10, 0),
+(67, '2', 48, 11, 11, 13),
+(68, '1', 49, 1, 1, 0),
+(69, '2', 49, 2, 2, 2),
+(70, '3', 49, 3, 3, 0),
+(71, '1', 50, 10, 10, 0),
+(72, '2', 50, 11, 11, 0),
+(73, '1', 51, 19, 19, 0);
+
+--
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `PDI`
+-- Filtros para la tabla `asignacion_salas`
+--
+ALTER TABLE `asignacion_salas`
+  ADD CONSTRAINT `asignacion_salas_ibfk_4` FOREIGN KEY (`ID_PDF_asignacion`) REFERENCES `PDF` (`ID_PDF`),
+  ADD CONSTRAINT `asignacion_salas_ibfk_1` FOREIGN KEY (`ID_sala_asignacion`) REFERENCES `salas` (`ID_sala`),
+  ADD CONSTRAINT `asignacion_salas_ibfk_2` FOREIGN KEY (`ID_periodo_asignacion`) REFERENCES `periodos` (`ID_periodo`),
+  ADD CONSTRAINT `asignacion_salas_ibfk_3` FOREIGN KEY (`ID_ramos_asignacion`) REFERENCES `ramos` (`ID_ramo`);
+
+--
+-- Filtros para la tabla `PDF`
+--
+ALTER TABLE `PDF`
+  ADD CONSTRAINT `fk_PDF_carreras1` FOREIGN KEY (`carreras_ID_carrera`) REFERENCES `carreras` (`ID_carrera`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_PDF_departamentos1` FOREIGN KEY (`departamentos_ID_depto`) REFERENCES `departamentos` (`ID_depto`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_PDF_ID_PDI_idx` FOREIGN KEY (`ID_PDI`) REFERENCES `PDI` (`ID_PDI`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `PDI`
 --
 ALTER TABLE `PDI`
   ADD CONSTRAINT `fk_PDI_carreras1` FOREIGN KEY (`carreras_ID_carrera`) REFERENCES `carreras` (`ID_carrera`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_PDI_departamentos1` FOREIGN KEY (`departamentos_ID_depto`) REFERENCES `departamentos` (`ID_depto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `ramos`
+-- Filtros para la tabla `ramos`
 --
 ALTER TABLE `ramos`
   ADD CONSTRAINT `fk_ramos_departamentos1` FOREIGN KEY (`departamentos_ID_depto`) REFERENCES `departamentos` (`ID_depto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `ramos_PDI`
+-- Filtros para la tabla `ramos_PDF`
+--
+ALTER TABLE `ramos_PDF`
+  ADD CONSTRAINT `fk_Ramos_PDF_PDF` FOREIGN KEY (`PDF_id_PDF`) REFERENCES `PDF` (`ID_PDF`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `ramos_PDI`
 --
 ALTER TABLE `ramos_PDI`
   ADD CONSTRAINT `fk_Ramos_PDI_PDI` FOREIGN KEY (`PDI_id_PDI`) REFERENCES `PDI` (`ID_PDI`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `seccion_ramo_PDI`
+-- Filtros para la tabla `seccion_ramo_PDF`
+--
+ALTER TABLE `seccion_ramo_PDF`
+  ADD CONSTRAINT `fk_Horario1_ID_periodo_pdf` FOREIGN KEY (`Horario_1`) REFERENCES `periodos` (`ID_periodo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Horario2_ID_periodo_pdf` FOREIGN KEY (`Horario_2`) REFERENCES `periodos` (`ID_periodo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Horario3_ID_periodo_pdf` FOREIGN KEY (`Horario_3`) REFERENCES `periodos` (`ID_periodo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Sala1_ID_sala_pdf` FOREIGN KEY (`Sala_1`) REFERENCES `salas` (`ID_sala`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Sala2_ID_sala_pdf` FOREIGN KEY (`Sala_2`) REFERENCES `salas` (`ID_sala`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Sala3_ID_sala_pdf` FOREIGN KEY (`Sala_3`) REFERENCES `salas` (`ID_sala`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Seccion_Ramo_PDF_Ramos_PDF1` FOREIGN KEY (`Ramos_PDF_id_Ramos_PDF`) REFERENCES `ramos_PDF` (`ID_ramos_PDF`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `seccion_ramo_PDI`
 --
 ALTER TABLE `seccion_ramo_PDI`
   ADD CONSTRAINT `fk_Horario1_ID_periodo` FOREIGN KEY (`Horario_1`) REFERENCES `periodos` (`ID_periodo`) ON DELETE NO ACTION ON UPDATE NO ACTION,

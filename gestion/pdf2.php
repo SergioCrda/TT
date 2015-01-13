@@ -32,9 +32,12 @@
                 $profe[$i] = $_POST['profe_id'.$i];
             }
             for($i = 0; $i < count($ramos); $i++) {
+                $sala[$i] = $_POST['salas_id'.$i];
+            }
+            for($i = 0; $i < count($ramos); $i++) {
                 $alumnos[$i] = $_POST['cant_alumnos'.$i];
             }
-            $data = array($codramos, $ramos, $cantidadSecciones, $noSeccion, $horario, $profe, $alumnos);
+            $data = array($codramos, $ramos, $cantidadSecciones, $noSeccion, $horario, $profe, $alumnos, $sala);
             function array_envia($array) {
 				$tmp = serialize($array); 
 				$tmp = urlencode($tmp); 
@@ -90,10 +93,14 @@
                 //inserta las secciones de un ramo
                 for($j = 0; $j < count($horario[$i]); $j++){
                     if($horario[$i][$j][2]==""){
-                        $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDF`(`Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Nombre_docente`, `Cantidad_alumnos`) VALUES (".($j+1).", '".$ID_ramo_PDF."', ".$horario[$i][$j][0].", ".$horario[$i][$j][1].", 0, ".$profe[$i][$j].",".$alumnos[$i][$j].")";
+                        $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDF`(`Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Sala_1`, `Sala_2`, `Sala_3`, `Nombre_docente`, `Cantidad_alumnos`) 
+                                        VALUES (".($j+1).", '".$ID_ramo_PDF."', ".$horario[$i][$j][0].", ".$horario[$i][$j][1].", 0, ".$sala[$i][$j][0].", ".$sala[$i][$j][1].", 0, " .$profe[$i][$j].", ".$alumnos[$i][$j].")";
                     } else {
-                        $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDF`(`Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Nombre_docente`, `Cantidad_alumnos`) VALUES (".($j+1).", '".$ID_ramo_PDF."', ".$horario[$i][$j][0].", ".$horario[$i][$j][1].", ".$horario[$i][$j][2].", ".$profe[$i][$j].",".$alumnos[$i][$j].")";
+                        $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDF`(`Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Sala_1`, `Sala_2`, `Sala_3`, `Nombre_docente`, `Cantidad_alumnos`) 
+                                        VALUES (".($j+1).", '".$ID_ramo_PDF."', ".$horario[$i][$j][0].", ".$horario[$i][$j][1].", ".$horario[$i][$j][2].", ".$sala[$i][$j][0].", ".$sala[$i][$j][1].", ".$sala[$i][$j][2].", ".$profe[$i][$j].", ".$alumnos[$i][$j].")";
                     }
+                    print($nuevaSeccion1);
+                    print("<br>");
                     $nuevaSeccion2 = mysql_query($nuevaSeccion1) or die('Consulta fallida: ' . mysql_error());
                 }
             }
@@ -116,40 +123,53 @@
                             echo "<td>C&oacute;digo</td>";
                             echo "<td>Nombre Ramo</td>";
                             echo "<td>Cantiadad de Secciones</td>";
-					        echo "</tr>";
-							echo "<tr class='centro'>";
+                            echo "</tr>";
+                            echo "<tr class='centro'>";
 							echo "<td>".$codramos[$i]."</td>";
 							echo "<td>".$ramos[$i]."</td>";
 							echo "<td>".$cantidadSecciones[$i]."</td>";
 							echo "</tr>";
-							echo "<tr>";
+                            echo "<tr>";
 							echo "<th colspan='3'>";
-							echo "<br>";
-                            echo "<table align='center' border='1' cellspacing='0' cellpadding='3' width='90%'>";
-                            echo "<tr class='titulo_fila'>";
-                            echo "<td>N&deg; de Secci&oacute;n</td>";
-                            echo "<td width='150px'>Horario 1</td>";
-                            echo "<td width='150px'>Horario 2</td>";
-                            echo "<td width='150px'>Horario 3</td>";
-                            echo "<td width='200px'>Profesor</td>";
-                            echo "<td>Cantidad de Estudiantes</td>";
-                            echo "</tr>";
+                            echo "<br>";
                             $max2 = $cantidadSecciones[$i];
                             for($j = 0; $j < $max2; $j++){
-                                echo "<tr class='centro'>";
-                                echo "<td>".$noSeccion[$i][$j]."</td>";
+                                echo "<table align='center' border='1' cellspacing='0' cellpadding='3' width='700px' class='media'>";
+                                echo "<tr><td class='titulo_fila media' colspan='4'>Secci&oacute;n N&uacute;mero ".$noSeccion[$i][$j]."</td></tr>";
                                 for($k = 0; $k < 3; $k++) {
+                                    echo "<tr>";
+                                    echo "<td class='titulo_fila' width='35%'>Horario ".($k+1)."</td>";
                                     $horarioE1 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = ".$horario[$i][$j][$k];
                                     $horarioE2 = mysql_query($horarioE1) or die('Consulta fallida: '.mysql_error());
                                     $horarioE3 = mysql_fetch_assoc($horarioE2);
                                     $horarioE4 = $horarioE3['Periodo'];
                                     echo "<td>".$horarioE4."</td>";
+                                    echo "<td class='titulo_fila' width='25%'>Sala ".($k+1)."</td>";
+                                    $salaE1 = "SELECT * FROM `salas` WHERE `ID_sala` = ".$sala[$i][$j][$k];
+                                    //print($salaE1);
+                                    $salaE2 = mysql_query($salaE1) or die('Consulta fallida: '.mysql_error());
+                                    $salaE3 = mysql_fetch_assoc($salaE2);
+                                    $salaE4 = $salaE3['Nombre_sala'];
+                                    $salaE5 = $salaE3['Edificio'];
+                                    if($sala[$i][$j][$k] == 0){
+                                        echo "<td>Sin Periodo</td>";
+                                    } else {
+                                        echo "<td>".$salaE5." ".$salaE4."</td>";
+                                    }
+                                    echo "</tr>";
                                 }
-                                echo "<td>".$profe[$i][$j]."</td>";
-                                echo "<td>".$alumnos[$i][$j]."</td>";
+                                echo "<tr>";
+                                echo "<td class='titulo_fila'>Profesor</td>";
+                                echo "<td colspan='3'>".$profe[$i][$j]."</td>";
                                 echo "</tr>";
+                                echo "<tr>";
+                                echo "<td class='titulo_fila'>Cantidad de Estudiantes</td>";
+                                echo "<td colspan='3'>".$alumnos[$i][$j]."</td>";
+                                echo "</tr>";
+                                echo "</table>";
+                                echo "<br>";
                             }
-                            echo "</table>";
+                            
                             echo "<br>";
                             echo "</th>";
                             echo "</tr>";
