@@ -199,7 +199,7 @@
                     if($cuenta == 0) {
                         echo '<div class="ayuda" style="text-align: left">
         <div style="float:right"><img src="../images/icons/status_unknown.png" border="0" alt="·Atención!" title="·Atención!" width="32"></div>
-        <b>Estimado Docente:</b><br><p>No existe(n) Programaci&oacute;n(es) Docente Inicial para revisar en Decanato o no es fecha para realizar solicitudes.</p>
+        <b>Estimado Docente:</b><br><p>No existe(n) Programaci&oacute;n(es) Docente Inicial para revisar o no es fecha para realizar solicitudes.</p>
         </div>';
                     } else {
                         echo '</table>';

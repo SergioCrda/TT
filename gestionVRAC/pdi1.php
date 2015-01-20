@@ -20,7 +20,7 @@
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
 
-            $actualizarPDI1 = "UPDATE `PDI` SET `Estado`='".utf8_decode($estadoCambiar)."' WHERE `ID_PDI`=".$idpdi;
+            $actualizarPDI1 = "UPDATE `PDI` SET `Estado_PDI`=".$estadoCambiar." WHERE `ID_PDI`=".$idpdi;
             $actualizarPDI2 = mysql_query($actualizarPDI1) or die('Consulta fallida: ' . mysql_error());
 
             $seleccionPDI1 = "SELECT * FROM `PDI` WHERE `ID_PDI` = " . $idpdi;

@@ -51,7 +51,7 @@
 		<?php
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
-            $PDI1 = "SELECT * FROM `PDI` WHERE `ID_profesor` = '1' AND (`Estado` = 'Cerrado' OR `Estado` = 'Revision Decanato' OR `Estado` = 'Revision VRAC' OR `Estado` = 'Revision DEA' OR `Estado` = 'PDI Aprobado')";
+            $PDI1 = "SELECT * FROM `PDI` WHERE `ID_profesor` = '1' AND (`Estado_PDI` = 6 OR `Estado_PDI` = 1 OR `Estado_PDI` = 2 OR `Estado_PDI` = 3 OR `Estado_PDI` = 4)";
             $PDI2 = mysql_query($PDI1) or die('Consulta fallida: '.mysql_error());
             $cuenta = 0;
             while($fila = mysql_fetch_assoc($PDI2)){
@@ -70,13 +70,19 @@
                 echo '<td>'.$fila['Fecha_PDI'].'</td>';
                 echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 echo '<td>'.$depto3['Nombre_depto'].'</td>';
-                echo '<td>'.$fila['Estado'].'</td>';
+                
+                $estado01 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$fila['Estado_PDI'];
+                $estado02 = mysql_query($estado01) or die('Consulta fallida: '.mysql_error());
+                $estado03 = mysql_fetch_assoc($estado02);
+                $estado04 = $estado03['Nombre'];
+                
+                echo '<td>'.$estado04.'</td>';
                 echo "<td><select id='id_estado".$cuenta."' name='estado".$cuenta."' onChange=changeText('id_estado".$cuenta."','estado".$cuenta."');validarSelect('id_estado".$cuenta."','estado".$cuenta."')>";
                 echo "<option value='0'>Seleccione el Estado</option>";
-                echo "<option value='Cerrado'>Cerrar PDI</option>";
-                echo "<option value='Revision Decanato'>Solicitar Re-Aprobaci&oacute;n de Decanato</option>";
-                echo "<option value='Revision VRAC'>Solicitar Re-Aprobaci&oacute;n de VRAC</option>";
-                echo "<option value='PDI Aprobado'>Aprobar PDI</option>";
+                echo "<option value='6'>Cerrar PDI</option>";
+                echo "<option value='1'>Solicitar Re-Aprobaci&oacute;n de Decanato</option>";
+                echo "<option value='2'>Solicitar Re-Aprobaci&oacute;n de VRAC</option>";
+                echo "<option value='4'>Aprobar PDI</option>";
 				echo "</select></td>";
                 echo '<td><center><a id="estado'.$cuenta.'" href="pdi1.php?id_pdi='.$fila['ID_PDI'].'&estado=" style="display:none">Enviar</a></center></td>';
                 echo '</tr>';

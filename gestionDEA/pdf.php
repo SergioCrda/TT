@@ -71,7 +71,14 @@
                 echo '<td>'.$fila['Fecha_PDF'].'</td>';
                 echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 echo '<td>'.$depto3['Nombre_depto'].'</td>';
-                echo '<td>'.$fila['Estado'].'</td>';
+                //echo '<td>'.$fila['Estado'].'</td>';
+                
+                if($fila['Estado']=="Revisión DEA"){
+                    echo '<td BGCOLOR="#31B404">'.$fila['Estado'].'</td>';
+                } else {
+                    echo '<td>'.$fila['Estado'].'</td>';
+                }
+                
                 echo '<td>';
                 echo "<select id='id_estado".$cuenta."' name='estado".$cuenta."' onChange=changeText('id_estado".$cuenta."','estado".$cuenta."');validarSelect('id_estado".$cuenta."','estado".$cuenta."')>";
                 echo "<option value='0'>Seleccione el Estado</option>";

@@ -49,7 +49,7 @@
 
             //inserta datos en PDI
             $fechaHora = date('Y-m-j H:i:s');
-            $nuevaPDI1 = "INSERT INTO `PDI`(`Estado`, `Nombre_docente`, `ID_profesor`, `ID_escuela`, `Fecha_PDI` , `carreras_ID_carrera`, `departamentos_ID_depto`) VALUES ('".utf8_decode('Revisión Decanato')."' ,'NOMBRE_PRUEBA', 1, 1, '".$fechaHora."', '".$ID_carrera."','".$ID_depto."' )";
+            $nuevaPDI1 = "INSERT INTO `PDI`(`Estado_PDI`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDI`,`carreras_ID_carrera`,`departamentos_ID_depto`) VALUES (1,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$ID_carrera."','".$ID_depto."')";
             $nuevaPDI2 = mysql_query($nuevaPDI1) or die('Consulta fallida: ' . mysql_error());
             
             //obtiene el ID_PDI
@@ -82,7 +82,6 @@
                     } else {
                         $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDI`(`Numero_seccion`, `Ramos_PDI_id_Ramos_PDI`, `Horario_1`, `Horario_2`, `Horario_3`) VALUES (".($j+1).", '".$ID_ramo_PDI."', ".$hora_seccion[$i][$j][0].", ".$hora_seccion[$i][$j][1].", ".$hora_seccion[$i][$j][2].")";
                     }
-                    print_r($nuevaSeccion1);
                     $nuevaSeccion2 = mysql_query($nuevaSeccion1) or die('Consulta fallida: ' . mysql_error());
                 }
             }

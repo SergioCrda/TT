@@ -20,15 +20,15 @@
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
 
-            $actualizarPDI1 = "UPDATE `PDI` SET `Estado`='".utf8_decode($estadoCambiar)."' WHERE `ID_PDI`=".$idpdi;
+            $actualizarPDI1 = "UPDATE `PDI` SET `Estado_PDI`=".$estadoCambiar." WHERE `ID_PDI`=".$idpdi;
             $actualizarPDI2 = mysql_query($actualizarPDI1) or die('Consulta fallida: ' . mysql_error());
 
-            $seleccionPDI1 = "SELECT * FROM `PDI` WHERE `ID_PDI` = " . $idpdi;
+            $seleccionPDI1 = "SELECT * FROM `PDI` WHERE `ID_PDI` = ".$idpdi;
             $seleccionPDI2 = mysql_query($seleccionPDI1) or die('Consulta fallida: '.mysql_error());
             $seleccionPDI3 = mysql_fetch_assoc($seleccionPDI2);
 
             $ID_PDI = $seleccionPDI3['ID_PDI'];
-            $estado = $seleccionPDI3['Estado'];
+            $estado = $seleccionPDI3['Estado_PDI'];
             $nombre_docente = $seleccionPDI3['Nombre_docente'];
             $ID_profesor = $seleccionPDI3['ID_profesor'];
             $ID_escuela = $seleccionPDI3['ID_escuela'];

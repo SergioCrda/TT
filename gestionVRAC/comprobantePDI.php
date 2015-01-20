@@ -96,7 +96,16 @@
 	$pdf->Cell(200,10,'Estado: ',0,0,'L');
 	$pdf->SetFont('Arial','B',11);
 	$pdf->SetX(50);
-	$pdf->Cell(200,10,$_GET['estado'],0,0,'L');
+	
+    $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
+    mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
+
+    $estado01 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$_GET['estado'];
+    $estado02 = mysql_query($estado01) or die('Consulta fallida: '.mysql_error());
+    $estado03 = mysql_fetch_assoc($estado02);
+    $estado04 = $estado03['Nombre'];
+
+	$pdf->Cell(200,10,$estado04,0,0,'L');
 	$pdf->Ln(15);
 	
 	//Cuerpo

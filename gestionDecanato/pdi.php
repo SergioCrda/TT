@@ -51,7 +51,7 @@
 		<?php
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
-            $PDI1 = "SELECT * FROM `PDI` WHERE `ID_profesor` = '1' AND `Estado` = 'Revision Decanato'";
+            $PDI1 = "SELECT * FROM `PDI` WHERE `ID_profesor` = '1' AND `Estado_PDI` = 1";
             $PDI2 = mysql_query($PDI1) or die('Consulta fallida: '.mysql_error());
             $cuenta = 0;
             while($fila = mysql_fetch_assoc($PDI2)){
@@ -73,8 +73,8 @@
                 echo '<td>';
                 echo "<select id='id_estado".$cuenta."' name='estado".$cuenta."' onChange=changeText('id_estado".$cuenta."','estado".$cuenta."');validarSelect('id_estado".$cuenta."','estado".$cuenta."')>";
                 echo "<option value='0'>Seleccione el Estado</option>";
-                echo "<option value='Cerrado'>Cerrar PDI</option>";
-                echo "<option value='Revision VRAC'>Aprobar (Enviar a VRAC)</option>";
+                echo "<option value='6'>Cerrar PDI</option>";
+                echo "<option value='2'>Aprobar (Enviar a VRAC)</option>";
 				echo "</select>";
                 echo '</td>';
                 echo '<td><center><a id="estado'.$cuenta.'" href="pdi1.php?id_pdi='.$fila['ID_PDI'].'&estado=" style="display:none">Enviar</a></center></td>';
@@ -88,7 +88,7 @@
                 while($seleccionRamoPDI3 = mysql_fetch_assoc($seleccionRamoPDI2)){
                     $cuenta1++;
                     echo "<br>";
-                    echo '<table align="center" width="800px" border="1" cellpadding="3" cellspacing="0" id="pdfTablaRamos'.$cuenta1.'"><tr class="titulo_fila"><td>N&deg; Ramo</td><td>C&oacute;d. de Ramo</td><td>Nombre del Ramo</td><td>Cantidad de Secciones</td></tr>';
+                    echo '<table align="center" width="800px" border="1" cellpadding="3" cellspacing="0" id="pdfTablaRamos'.$cuenta1.'"><tr class="titulo_fila"><td>N&deg; Ramo</td><td>C&oacute;d. de Ramo</td><td>Nombre del Ramo</td><td>Secciones</td></tr>';
                     echo "<tr class='centro'>";
                     echo "<td width='80px'>" .$cuenta1. "</td>";
                     
