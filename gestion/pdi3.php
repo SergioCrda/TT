@@ -85,10 +85,6 @@
                     $nuevaSeccion2 = mysql_query($nuevaSeccion1) or die('Consulta fallida: ' . mysql_error());
                 }
             }
-            //1. ID_profesor debe ir rut o id de profesor segun la tabla y relacionarlos
-            //2. ID_escuela debe ir id de escuela segùn el profesor y relacionarlos
-            //3. validar periodos (no elejir periodos menores en el siguiente)
-            //4. agregar horario de las secciones a los comprobantes (complejo)
 		?>
 		<div>
 			<dd>

@@ -20,7 +20,7 @@
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
 
-            $actualizarPDF1 = "UPDATE `PDF` SET `Estado`='".utf8_decode($estadoCambiar)."' WHERE `ID_PDF`=".$idpdf;
+            $actualizarPDF1 = "UPDATE `PDF` SET `Estado_PDF`=".$estadoCambiar." WHERE `ID_PDF`=".$idpdf;
             $actualizarPDF2 = mysql_query($actualizarPDF1) or die('Consulta fallida: ' . mysql_error());
 
             $seleccionPDF1 = "SELECT * FROM `PDF` WHERE `ID_PDF` = " . $idpdf;
@@ -28,7 +28,7 @@
             $seleccionPDF3 = mysql_fetch_assoc($seleccionPDF2);
 
             $ID_PDF = $seleccionPDF3['ID_PDF'];
-            $estado = $seleccionPDF3['Estado'];
+            $estado = $seleccionPDF3['Estado_PDF'];
             $nombre_docente = $seleccionPDF3['Nombre_docente'];
             $ID_profesor = $seleccionPDF3['ID_profesor'];
             $ID_escuela = $seleccionPDF3['ID_escuela'];
@@ -87,13 +87,16 @@
                                 $horario[$cuenta1][$cuenta2][0] = $IDSeccionRamoPDF3['Horario_1'];
                                 $horario[$cuenta1][$cuenta2][1] = $IDSeccionRamoPDF3['Horario_2'];
                                 $horario[$cuenta1][$cuenta2][2] = $IDSeccionRamoPDF3['Horario_3'];
+                                $sala[$cuenta1][$cuenta2][0]    = $IDSeccionRamoPDF3['Sala_1'];
+                                $sala[$cuenta1][$cuenta2][1]    = $IDSeccionRamoPDF3['Sala_2'];
+                                $sala[$cuenta1][$cuenta2][2]    = $IDSeccionRamoPDF3['Sala_3'];
                                 $profe[$cuenta1][$cuenta2]      = $IDSeccionRamoPDF3['Nombre_docente'];
                                 $alumnos[$cuenta1][$cuenta2]    = $IDSeccionRamoPDF3['Cantidad_alumnos'];
                                 $cuenta2++;
                             }
                             $cuenta1++;
                         }
-                        $data = array($codigoRamos, $nombreRamos, $cantidRamos, $noSeccion, $horario, $profe, $alumnos);
+                        $data = array($codigoRamos, $nombreRamos, $cantidRamos, $noSeccion, $horario, $profe, $alumnos,$sala);
                         function array_envia($array) { 
                             $tmp = serialize($array); 
                             $tmp = urlencode($tmp); 

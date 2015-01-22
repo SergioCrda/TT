@@ -51,7 +51,7 @@
 		<?php
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
-            $PDF1 = "SELECT * FROM `PDF` WHERE `ID_profesor` = '1' AND (`Estado` = 'Cerrado' OR `Estado` = 'Revision Decanato' OR `Estado` = 'Revision VRAC' OR `Estado` = 'Revision DEA' OR `Estado` = 'PDF Aprobado')";
+            $PDF1 = "SELECT * FROM `PDF` WHERE `ID_profesor` = '1' AND (`Estado_PDF` = 16 OR `Estado_PDF` = 12 OR `Estado_PDF` = 13 OR `Estado_PDF` = 14 OR `Estado_PDF` = 15)";
             
             $PDF2 = mysql_query($PDF1) or die('Consulta fallida: '.mysql_error());
             $cuenta = 0;
@@ -71,21 +71,25 @@
                 echo '<td>'.$fila['Fecha_PDF'].'</td>';
                 echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 echo '<td>'.$depto3['Nombre_depto'].'</td>';
-                //echo '<td>'.$fila['Estado'].'</td>';
                 
-                if($fila['Estado']=="Revisión DEA"){
-                    echo '<td BGCOLOR="#31B404">'.$fila['Estado'].'</td>';
+                $estado01 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$fila['Estado_PDF'];
+                $estado02 = mysql_query($estado01) or die('Consulta fallida: '.mysql_error());
+                $estado03 = mysql_fetch_assoc($estado02);
+                $estado04 = $estado03['Nombre'];
+                
+                if($fila['Estado_PDF']==14){
+                    echo '<td BGCOLOR="#31B404">'.$estado04.'</td>';
                 } else {
-                    echo '<td>'.$fila['Estado'].'</td>';
+                    echo '<td>'.$estado04.'</td>';
                 }
                 
                 echo '<td>';
                 echo "<select id='id_estado".$cuenta."' name='estado".$cuenta."' onChange=changeText('id_estado".$cuenta."','estado".$cuenta."');validarSelect('id_estado".$cuenta."','estado".$cuenta."')>";
                 echo "<option value='0'>Seleccione el Estado</option>";
-                echo "<option value='Cerrado'>Cerrar PDF</option>";
-                echo "<option value='Revision Decanato'>Solicitar Re-Aprobaci&oacute;n de Decanato</option>";
-                echo "<option value='Revision VRAC'>Solicitar Re-Aprobaci&oacute;n de VRAC</option>";
-                echo "<option value='PDF Aprobado'>Aprobar PDF</option>";
+                echo "<option value='16'>Cerrar PDF</option>";
+                echo "<option value='12'>Solicitar Re-Aprobaci&oacute;n de Decanato</option>";
+                echo "<option value='13'>Solicitar Re-Aprobaci&oacute;n de VRAC</option>";
+                echo "<option value='15'>Aprobar PDF</option>";
 				echo "</select>";
                 echo '</td>';
                 echo '<td><center><a id="estado'.$cuenta.'" href="pdf1.php?id_pdf='.$fila['ID_PDF'].'&estado=" style="display:none">Enviar</a></center></td>';

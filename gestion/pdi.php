@@ -112,7 +112,7 @@
                     while($fila = mysql_fetch_assoc($PDI2)){
                         $cuenta++;
                         if($cuenta == 1){
-                            echo '<table align="center" width="90%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdiTabla"><tr class="titulo_fila"><td>Folio</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado Actual</td></tr>';
+                            echo '<table align="center" width="90%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdiTabla"><tr class="titulo_fila"><td>Folio PDI</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado Actual</td></tr>';
                         }
                         $carrera1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = ".$fila['carreras_ID_carrera'] ;
                         $carrera2 = mysql_query($carrera1) or die('Consulta fallida: ' . mysql_error());
@@ -125,7 +125,13 @@
                         echo '<td>'.$fila['Fecha_PDI'].'</td>';
                         echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                         echo '<td>'.$depto3['Nombre_depto'].'</td>';
-                        echo '<td>'.$fila['Estado'].'</td>';
+                        
+                        $estado01 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$fila['Estado_PDI'];
+                        $estado02 = mysql_query($estado01) or die('Consulta fallida: '.mysql_error());
+                        $estado03 = mysql_fetch_assoc($estado02);
+                        $estado04 = $estado03['Nombre'];
+                        
+                        echo '<td>'.$estado04.'</td>';
                         echo '</tr>';
 
                         $seleccionRamoPDI1 = "SELECT * FROM `ramos_PDI` WHERE `PDI_id_PDI` = ".$fila['ID_PDI'];

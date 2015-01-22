@@ -129,12 +129,12 @@
 	$pdf->SetFont('Arial','B',11);
 	$pdf->SetFillColor(208,208,208);
 	$pdf->SetX(20);
-	$pdf->Cell(30,8, utf8_decode('Código'),1,0,'C',true);
+	$pdf->Cell(30,10, utf8_decode('Código'),1,0,'C',true);
 	$pdf->SetX(50);
-	$pdf->Cell(110,8,'Nombre Ramo',1,0,'C',true);
+	$pdf->Cell(110,10,'Nombre Ramo',1,0,'C',true);
 	$pdf->SetX(160);
-	$pdf->Cell(30,8,'Secciones',1,0,'C',true);
-	$pdf->Ln(8);
+	$pdf->Cell(30,10,'Secciones',1,0,'C',true);
+	$pdf->Ln(10);
 	
 	//lista ramos
 	$max = count($data[0]);
@@ -142,12 +142,12 @@
 		$pdf->SetFont('Arial','',11);
         $pdf->SetFillColor(232,232,232);
 		$pdf->SetX(20);
-		$pdf->Cell(30,5,$data[0][$i],1,0,'C',$fill);
+		$pdf->Cell(30,8,$data[0][$i],1,0,'C',$fill);
 		$pdf->SetX(50);
-		$pdf->Cell(110,5,mb_strtoupper(substr($data[1][$i],0,45)),1,0,'C',$fill);
+		$pdf->Cell(110,8,mb_strtoupper(substr($data[1][$i],0,45)),1,0,'C',$fill);
 		$pdf->SetX(160);
-		$pdf->Cell(30,5,$data[2][$i],1,0,'C',$fill);
-		$pdf->Ln(5);
+		$pdf->Cell(30,8,$data[2][$i],1,0,'C',$fill);
+		$pdf->Ln(8);
 		$fill = !$fill;
 	}
 	$pdf->Ln(15);

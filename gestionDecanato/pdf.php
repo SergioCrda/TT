@@ -51,7 +51,7 @@
 		<?php
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
-            $PDF1 = "SELECT * FROM `PDF` WHERE `ID_profesor` = '1' AND `Estado` = 'Revision Decanato'";
+            $PDF1 = "SELECT * FROM `PDF` WHERE `ID_profesor` = '1' AND `Estado_PDF` = 12";
             $PDF2 = mysql_query($PDF1) or die('Consulta fallida: '.mysql_error());
             $cuenta = 0;
             while($fila = mysql_fetch_assoc($PDF2)){
@@ -73,8 +73,8 @@
                 echo '<td>';
                 echo "<select id='id_estado".$cuenta."' name='estado".$cuenta."' onChange=changeText('id_estado".$cuenta."','estado".$cuenta."');validarSelect('id_estado".$cuenta."','estado".$cuenta."')>";
                 echo "<option value='0'>Seleccione el Estado</option>";
-                echo "<option value='Cerrado'>Cerrar PDF</option>";
-                echo "<option value='Revision VRAC'>Aprobar (Enviar a VRAC)</option>";
+                echo "<option value='16'>Cerrar PDF</option>";
+                echo "<option value='13'>Aprobar (Enviar a VRAC)</option>";
 				echo "</select>";
                 echo '</td>';
                 echo '<td><center><a id="estado'.$cuenta.'" href="pdf1.php?id_pdf='.$fila['ID_PDF'].'&estado=" style="display:none">Enviar</a></center></td>';

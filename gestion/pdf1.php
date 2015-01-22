@@ -23,7 +23,13 @@
                 $seleccionPDI3 = mysql_fetch_assoc($seleccionPDI2);
 
                 $ID_PDI = $seleccionPDI3['ID_PDI'];
-                $estado = $seleccionPDI3['Estado'];
+                $estado = $seleccionPDI3['Estado_PDI'];
+
+                $estado01 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$estado;
+                $estado02 = mysql_query($estado01) or die('Consulta fallida: '.mysql_error());
+                $estado03 = mysql_fetch_assoc($estado02);
+                $estado04 = $estado03['Nombre'];
+
                 $nombre_docente = $seleccionPDI3['Nombre_docente'];
                 $ID_profesor = $seleccionPDI3['ID_profesor'];
                 $ID_escuela = $seleccionPDI3['ID_escuela'];
@@ -49,8 +55,7 @@
                 echo "<td>".$ID_escuela."<input type='hidden' id='IDEscuela' name='ID_Escuela' value='$ID_escuela'/></td>";
                 echo "<td>".$departamento4."<input type='hidden' id='depa' name='depto' value='$departamento4'/></td>";
                 echo "<td>".$carrera4."<input type='hidden' id='carre' name='carrera' value='$carrera4'/></td>";
-                echo "<td>".$estado."</td>";
-                //echo "ID Profesor : ".$ID_profesor;
+                echo "<td>".$estado04."</td>";
                 echo "</tr>";
                 echo "<tr>";
                 echo "<th colspan='7'>";
@@ -74,9 +79,6 @@
                     echo "<td width='400px'>".$ramo4."<input type='hidden' id='ramo' name='ramos[]' value='$ramo4'/></td>";
                     $seleccionRamoPDI4 = $seleccionRamoPDI3['Cantidad_secciones'];
                     echo "<td>".$seleccionRamoPDI4."<input type='hidden' id='cantidadSecciones' name='cantidad_secciones[]' value='$seleccionRamoPDI4'/></td>";
-                    //echo "ID PDI : ".$seleccionRamoPDI3['PDI_id_PDI'];
-                    //$ramoPDI  = $seleccionRamoPDI3['ID_ramos_PDI'];
-                    //echo "ID Ramo PDI : ".$ramoPDI;
                     echo "</tr>";
                     echo "<tr>";
                     echo "<th colspan='4'>";
@@ -89,23 +91,19 @@
                             echo "<br>";
                             echo '<table align="center" width="95%" border="1" cellpadding="3" cellspacing="0" id="pdfTablaSeccion'.$cuenta1.$cuenta2.'"><tr class="titulo_fila"><td>N&deg; Secci&oacute;n </td><td>Horarios</td><td>Salas</td><td>Asignar Docente</td><td>Cantidad Estudiantes</td></tr>';
                         }
-                        echo "<tr class='centro'>"
-                            ;
+                        echo "<tr class='centro'>";
                         echo "<td width='95px'>" .$cuenta2. "<input type='hidden' id='noSeccion' name='no_seccion".($cuenta1-1)."[]' value='$cuenta2'/></td>";
-                        
-                        //echo "ID Seccion Ramo PDI : ".$seleccionSeccionRamoPDI3['ID_seccion_ramo_PDI'];
-                        //echo "Numero de Seccion : ".$seleccionSeccionRamoPDI3['Numero_seccion'];
-                        //echo "ID Ramo PDI : ".$seleccionSeccionRamoPDI3['Ramos_PDI_id_Ramos_PDI'];
+
                         $horario11 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = " . $seleccionSeccionRamoPDI3['Horario_1'];
                         $horario12 = mysql_query($horario11) or die('Consulta fallida: '.mysql_error());
                         $horario13 = mysql_fetch_assoc($horario12);
                         $horario14 = $horario13['Periodo'];
-                        //echo "<td width='120px'>".$horario14."<input type='hidden' name='horario".($cuenta1-1)."[".($cuenta2-1)."][0]' value='".$seleccionSeccionRamoPDI3['Horario_1']."'/></td>";
+                        
                         $horario21 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = " . $seleccionSeccionRamoPDI3['Horario_2'];
                         $horario22 = mysql_query($horario21) or die('Consulta fallida: '.mysql_error());
                         $horario23 = mysql_fetch_assoc($horario22);
                         $horario24 = $horario23['Periodo'];
-                        //echo "<td width='120px'>".$horario24."<input type='hidden' name='horario".($cuenta1-1)."[".($cuenta2-1)."][1]' value='".$seleccionSeccionRamoPDI3['Horario_2']."'/></td>";
+                        
                         $horario31 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = " . $seleccionSeccionRamoPDI3['Horario_3'];
                         $horario32 = mysql_query($horario31) or die('Consulta fallida: '.mysql_error());
                         $horario33 = mysql_fetch_assoc($horario32);

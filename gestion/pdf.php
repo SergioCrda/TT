@@ -48,13 +48,13 @@
         <?php
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
-            $PDI1 = "SELECT * FROM `PDI` WHERE `ID_profesor` = '1' AND `Estado` = 'PDI Aprobado'";
+            $PDI1 = "SELECT * FROM `PDI` WHERE `ID_profesor` = '1' AND `Estado_PDI` = 4";
             $PDI2 = mysql_query($PDI1) or die('Consulta fallida: '.mysql_error());
             $cuenta = 0;
             while($fila = mysql_fetch_assoc($PDI2)){
                 $cuenta++;
                 if($cuenta == 1){
-                    echo '<table align="center" width="75%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdiTabla"><tr class="titulo_fila"><td>Folio</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado</td><td>Solicitar <br>Programaci&oacute;n Docente Final</td></tr>';
+                    echo '<table align="center" width="75%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdiTabla"><tr class="titulo_fila"><td>Folio PDI</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado</td><td>Solicitar <br>Programaci&oacute;n Docente Final</td></tr>';
                 }
                 $carrera1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = ".$fila['carreras_ID_carrera'] ;
                 $carrera2 = mysql_query($carrera1) or die('Consulta fallida: ' . mysql_error());
@@ -67,7 +67,13 @@
                 echo '<td>'.$fila['Fecha_PDI'].'</td>';
                 echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 echo '<td>'.$depto3['Nombre_depto'].'</td>';
-                echo '<td>'.$fila['Estado'].'</td>';
+
+                $estado01 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$fila['Estado_PDI'];
+                $estado02 = mysql_query($estado01) or die('Consulta fallida: '.mysql_error());
+                $estado03 = mysql_fetch_assoc($estado02);
+                $estado04 = $estado03['Nombre'];
+                
+                echo '<td>'.$estado04.'</td>';
                 echo '<td><center><a href="pdf1.php?id_pdi='.$fila['ID_PDI'].'">Enviar</a></center></td>';
                 echo '</tr>';     
             }
@@ -95,7 +101,7 @@
                     while($fila2 = mysql_fetch_assoc($PDF22)){
                         $cuenta0++;
                         if($cuenta0 == 1){
-                            echo '<table align="center" width="90%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdfTabla"><tr class="titulo_fila"><td>Folio</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado Actual</td></tr>';
+                            echo '<table align="center" width="90%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdfTabla"><tr class="titulo_fila"><td>Folio PDF</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado Actual</td><td>Folio PDI<br>Relacionado</td></tr>';
                         }
                         $carrera21 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = ".$fila2['carreras_ID_carrera'] ;
                         $carrera22 = mysql_query($carrera21) or die('Consulta fallida: ' . mysql_error());
@@ -103,12 +109,17 @@
                         $depto21 = "SELECT `Nombre_depto` FROM `departamentos` WHERE `ID_depto` = ".$fila2['departamentos_ID_depto'] ;
                         $depto22 = mysql_query($depto21) or die('Consulta fallida: '.mysql_error());
                         $depto23 = mysql_fetch_assoc($depto22);
+                        $estado11 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$fila2['Estado_PDF'];
+                        $estado12 = mysql_query($estado11) or die('Consulta fallida: '.mysql_error());
+                        $estado13 = mysql_fetch_assoc($estado12);
+                        $estado14 = $estado13['Nombre'];
                         echo '<tr class="centro">';
                         echo '<td onClick=mostrar("detalle'.$cuenta0.'")>'.$fila2['ID_PDF'].' [<a href="#" class="no_linea">ver detalle</a>]</td>';
                         echo '<td>'.$fila2['Fecha_PDF'].'</td>';
                         echo '<td>'.$carrera23['Nombre_carrera'].'</td>';
                         echo '<td>'.$depto23['Nombre_depto'].'</td>';
-                        echo '<td>'.$fila2['Estado'].'</td>';
+                        echo '<td>'.$estado14.'</td>';
+                        echo '<td>'.$fila2['ID_PDI'].'</td>';
                         echo '</tr>';
 
                         $seleccionRamoPDF1 = "SELECT * FROM `ramos_PDF` WHERE `PDF_id_PDF` = ".$fila2['ID_PDF'];

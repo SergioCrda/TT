@@ -26,23 +26,7 @@
 			}
 			$data = array_envia($data);
 		?>
-		<div>
-			<!--?php
-				print_r($departamento);
-				print("<br>");
-				print_r($carrera);
-				print("<br>");
-				print_r($cod_ramo);
-				print("<br>");
-				print_r($ramo);
-				print("<br>");
-				print_r($seccion);
-				print("<br>");
-				print_r($data);
-				print("<br>");
-			?-->
-		</div>
-		<br />
+		<br/>
 		<h4>Seleccione Horario de las siguientes asignaturas</h4>
 		<form name="PDI" method="post" action="pdi1.php">
 		    <?php

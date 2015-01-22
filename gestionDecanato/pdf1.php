@@ -20,7 +20,7 @@
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
 
-            $actualizarPDF1 = "UPDATE `PDF` SET `Estado`='".utf8_decode($estadoCambiar)."' WHERE `ID_PDF`=".$idpdf;
+            $actualizarPDF1 = "UPDATE `PDF` SET `Estado_PDF`=".$estadoCambiar." WHERE `ID_PDF`=".$idpdf;
             $actualizarPDF2 = mysql_query($actualizarPDF1) or die('Consulta fallida: ' . mysql_error());
 
             $seleccionPDF1 = "SELECT * FROM `PDF` WHERE `ID_PDF` = " . $idpdf;
@@ -28,7 +28,7 @@
             $seleccionPDF3 = mysql_fetch_assoc($seleccionPDF2);
 
             $ID_PDF = $seleccionPDF3['ID_PDF'];
-            $estado = $seleccionPDF3['Estado'];
+            $estado = $seleccionPDF3['Estado_PDF'];
             $nombre_docente = $seleccionPDF3['Nombre_docente'];
             $ID_profesor = $seleccionPDF3['ID_profesor'];
             $ID_escuela = $seleccionPDF3['ID_escuela'];

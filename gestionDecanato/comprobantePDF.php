@@ -96,7 +96,16 @@
 	$pdf->Cell(200,10,'Estado: ',0,0,'L');
 	$pdf->SetFont('Arial','B',11);
 	$pdf->SetX(50);
-	$pdf->Cell(200,10,$_GET['estado'],0,0,'L');
+    
+    $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
+    mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
+
+    $estado01 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$_GET['estado'];
+    $estado02 = mysql_query($estado01) or die('Consulta fallida: '.mysql_error());
+    $estado03 = mysql_fetch_assoc($estado02);
+    $estado04 = $estado03['Nombre'];
+
+	$pdf->Cell(200,10,$estado04,0,0,'L');
 	$pdf->Ln(15);
 	
 	//Cuerpo
@@ -131,51 +140,33 @@
 	$pdf->Cell(175,10,'Listado de asignaturas',0,0,'C');
 	$pdf->Ln(15);
 	
-	$fill = false;
 	$max = count($data[0]);
 	for($i = 0; $i < $max; $i++){
         $pdf->SetFont('Arial','B',11);
         $pdf->SetFillColor(208,208,208);
         $pdf->SetX(20);
-        $pdf->Cell(30,8, utf8_decode('Código'),1,0,'C',true);
+        $pdf->Cell(30,10, utf8_decode('Código'),1,0,'C',true);
         $pdf->SetX(50);
-        $pdf->Cell(110,8,'Nombre Ramo',1,0,'C',true);
+        $pdf->Cell(110,10,'Nombre Ramo',1,0,'C',true);
         $pdf->SetX(160);
-        $pdf->Cell(30,8,'Secciones',1,0,'C',true);
-        $pdf->Ln(8);
+        $pdf->Cell(30,10,'Secciones',1,0,'C',true);
+        $pdf->Ln(10);
 		$pdf->SetFont('Arial','',11);		
 		$pdf->SetX(20);
-		$pdf->Cell(30,5,$data[0][$i],1,0,'C',$fill);
+		$pdf->Cell(30,8,$data[0][$i],1,0,'C',false);
 		$pdf->SetX(50);
-		$pdf->Cell(110,5,mb_strtoupper(substr($data[1][$i],0,45)),1,0,'C',$fill);
+		$pdf->Cell(110,8,mb_strtoupper(substr($data[1][$i],0,45)),1,0,'C',false);
 		$pdf->SetX(160);
-		$pdf->Cell(30,5,$data[2][$i],1,0,'C',$fill);
+		$pdf->Cell(30,8,$data[2][$i],1,0,'C',false);
         $pdf->SetX(10);
-		$pdf->Ln(5);
+		$pdf->Ln(8);
 		
         for($j = 0; $j < $data[2][$i]; $j++) {
-            if($j == 0) {
-                //cabecera de tabla
-                $pdf->SetFont('Arial','B',11);
-                $pdf->SetFillColor(232,232,232);
-                $pdf->SetX(20);
-                $pdf->Cell(25,10, utf8_decode('Nº Sección'),1,0,'C',true);
-                $pdf->SetX(45);
-                $pdf->Cell(55,10,'Horario',1,0,'C',true);
-                $pdf->SetX(100);
-                $pdf->Cell(50,10,'Profesor',1,0,'C',true);
-                $pdf->SetX(150);
-                $pdf->MultiCell(40,5,"Cantidad \nde Alumnos",1,"C",true);
-                //$pdf->Cell(40,8,'Cantidad de Alumnos',1,0,'C',true);
-                //$pdf->Ln(5);
-            }
-            
-            $pdf->SetFont('Arial','',11);
-            $pdf->SetX(20);
-            $pdf->Cell(25,15,$data[3][$i][$j],1,0,'C',$fill);
-            
-            $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
-            mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
+            $pdf->SetFont('Arial','B',11);
+            $pdf->SetFillColor(232,232,232);
+            $pdf->SetX(30);
+            $pdf->Cell(150,8, utf8_decode('Sección Nº ').$data[3][$i][$j],1,0,'C',true);
+            $pdf->Ln(8);
             
             $horario01 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = ".$data[4][$i][$j][0];
             $horario02 = mysql_query($horario01) or die('Consulta fallida: '.mysql_error());
@@ -191,18 +182,73 @@
             $horario22 = mysql_query($horario21) or die('Consulta fallida: '.mysql_error());
             $horario23 = mysql_fetch_assoc($horario22);
             $horario24 = $horario23['Periodo'];
-            $pdf->SetX(45);
-            $y = $pdf->GetY();
-            $pdf->MultiCell(55,5,$horario04."\n".$horario14."\n".$horario24,1,"C",$fill);
-            $pdf->SetXY(100,$y);
-            $pdf->Cell(50,15,$data[5][$i][$j],1,0,'C',$fill);
-            $pdf->SetX(150);
-            $pdf->Cell(40,15,$data[6][$i][$j],1,0,'C',$fill);
-            $pdf->SetX(10);
-            $pdf->Ln(15);
+            
+            $sala01 = "SELECT * FROM `salas` WHERE `ID_sala`= ".$data[7][$i][$j][0];
+            $sala02 = mysql_query($sala01) or die('Consulta fallida: '.mysql_error());
+            $sala03 = mysql_fetch_assoc($sala02);
+            $sala041 = $sala03['Nombre_sala'];
+            $sala042 = $sala03['Edificio'];
+            
+            $sala11 = "SELECT * FROM `salas` WHERE `ID_sala`= ".$data[7][$i][$j][1];
+            $sala12 = mysql_query($sala11) or die('Consulta fallida: '.mysql_error());
+            $sala13 = mysql_fetch_assoc($sala12);
+            $sala141 = $sala13['Nombre_sala'];
+            $sala142 = $sala13['Edificio'];
+            
+            if($data[7][$i][$j][2] != 0){
+                $sala21 = "SELECT * FROM `salas` WHERE `ID_sala`= ".$data[7][$i][$j][2];
+                $sala22 = mysql_query($sala21) or die('Consulta fallida: '.mysql_error());
+                $sala23 = mysql_fetch_assoc($sala22);
+                $sala241 = $sala23['Nombre_sala'];
+                $sala242 = $sala23['Edificio'];
+            } else {
+                $sala242 = "Sin Periodo";
+                $sala241 = "";
+            }
+            
+            $pdf->SetX(30);
+            $pdf->Cell(30,5, utf8_decode('Horario 1'),1,0,'C',true);
+            $pdf->SetX(60);
+            $pdf->Cell(50,5, $horario04,1,0,'C',false);
+            $pdf->SetX(110);
+            $pdf->Cell(30,5, utf8_decode('Sala 1'),1,0,'C',true);
+            $pdf->SetX(140);
+            $pdf->Cell(40,5, $sala042." ".$sala041 ,1,0,'C',false);
+            $pdf->Ln(5);
+            
+            $pdf->SetX(30);
+            $pdf->Cell(30,5, utf8_decode('Horario 2'),1,0,'C',true);
+            $pdf->SetX(60);
+            $pdf->Cell(50,5, $horario14,1,0,'C',false);
+            $pdf->SetX(110);
+            $pdf->Cell(30,5, utf8_decode('Sala 1'),1,0,'C',true);
+            $pdf->SetX(140);
+            $pdf->Cell(40,5, $sala142." ".$sala141 ,1,0,'C',false);
+            $pdf->Ln(5);
+            
+            $pdf->SetX(30);
+            $pdf->Cell(30,5, utf8_decode('Horario 3'),1,0,'C',true);
+            $pdf->SetX(60);
+            $pdf->Cell(50,5, $horario24,1,0,'C',false);
+            $pdf->SetX(110);
+            $pdf->Cell(30,5, utf8_decode('Sala 1'),1,0,'C',true);
+            $pdf->SetX(140);
+            $pdf->Cell(40,5, $sala242." ".$sala241 ,1,0,'C',false);
+            $pdf->Ln(5);
+            
+            $pdf->SetX(30);
+            $pdf->Cell(30,5,'Profesor',1,0,'C',true);
+            $pdf->SetX(60);
+            $pdf->Cell(120,5,$data[5][$i][$j],1,0,'C',false);
+            $pdf->Ln(5);
+            
+            $pdf->SetX(30);
+            $pdf->Cell(50,5,"Cantidad de Alumnos",1,0,"C",true);
+            $pdf->SetX(80);
+            $pdf->Cell(100,5,$data[6][$i][$j],1,0,'C',false);
+            $pdf->Ln(5);
         }
         $pdf->Ln(5);
-        //$fill = !$fill;
 	}
 	$pdf->Ln(15);
 	

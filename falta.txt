@@ -1,0 +1,6 @@
+- falta relacionar las salas de un PDF a asignacion_salas
+- ID_profesor debe ir rut o id de profesor segun la tabla y relacionarlos
+- ID_escuela debe ir id de escuela segùn el profesor y relacionarlos
+- validar profesores
+- validar capacidad de sala con cantidad ingresada en la seccion
+- validar periodos (no elejir periodos menores en el siguiente)

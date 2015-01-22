@@ -63,7 +63,7 @@
 
             //inserta datos en PDF
             $fechaHora = date('Y-m-j H:i:s');
-            $nuevaPDF1 = "INSERT INTO `PDF`(`Estado`, `Nombre_docente`, `ID_profesor`, `ID_escuela`, `Fecha_PDF` , `carreras_ID_carrera`, `departamentos_ID_depto` , `ID_PDI`) VALUES ('".utf8_decode('Revisión Decanato')."' ,'NOMBRE_PRUEBA', 1, 1, '".$fechaHora."', '".$ID_carrera."','".$ID_depto."' ,'".$idPDI."')";
+            $nuevaPDF1 = "INSERT INTO `PDF`(`Estado_PDF`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDF`,`carreras_ID_carrera`,`departamentos_ID_depto`,`ID_PDI`) VALUES (12,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$ID_carrera."','".$ID_depto."','".$idPDI."')";
             $nuevaPDF2 = mysql_query($nuevaPDF1) or die('Consulta fallida: ' . mysql_error());
 
             //obtiene el ID_PDF
@@ -99,14 +99,12 @@
                         $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDF`(`Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Sala_1`, `Sala_2`, `Sala_3`, `Nombre_docente`, `Cantidad_alumnos`) 
                                         VALUES (".($j+1).", '".$ID_ramo_PDF."', ".$horario[$i][$j][0].", ".$horario[$i][$j][1].", ".$horario[$i][$j][2].", ".$sala[$i][$j][0].", ".$sala[$i][$j][1].", ".$sala[$i][$j][2].", ".$profe[$i][$j].", ".$alumnos[$i][$j].")";
                     }
-                    print($nuevaSeccion1);
-                    print("<br>");
                     $nuevaSeccion2 = mysql_query($nuevaSeccion1) or die('Consulta fallida: ' . mysql_error());
                 }
             }
             
             //actualiza estado PDI 
-            $actualizarPDI1 = "UPDATE `PDI` SET `Estado`='".utf8_decode('En Proceso PDF')."' WHERE `ID_PDI`= ".$idPDI;
+            $actualizarPDI1 = "UPDATE `PDI` SET `Estado_PDI`= 5 WHERE `ID_PDI`= ".$idPDI;
             $actualizarPDI2 = mysql_query($actualizarPDI1) or die('Consulta fallida: ' . mysql_error());
         ?>
         <div>
@@ -146,7 +144,6 @@
                                     echo "<td>".$horarioE4."</td>";
                                     echo "<td class='titulo_fila' width='25%'>Sala ".($k+1)."</td>";
                                     $salaE1 = "SELECT * FROM `salas` WHERE `ID_sala` = ".$sala[$i][$j][$k];
-                                    //print($salaE1);
                                     $salaE2 = mysql_query($salaE1) or die('Consulta fallida: '.mysql_error());
                                     $salaE3 = mysql_fetch_assoc($salaE2);
                                     $salaE4 = $salaE3['Nombre_sala'];
@@ -174,11 +171,6 @@
                             echo "</th>";
                             echo "</tr>";
 						}
-                        //1. ID_profesor debe ir rut o id de profesor segun la tabla y relacionarlos
-                        //2. ID_escuela debe ir id de escuela segùn el profesor y relacionarlos
-                        //3. validar profesores
-                        //4. agregar sala
-                        //5. validar capacidad de sala con cantidad ingresada en la seccion
 					?>
 				</table>
 				</br></br>

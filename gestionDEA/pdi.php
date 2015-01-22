@@ -76,7 +76,12 @@
                 $estado03 = mysql_fetch_assoc($estado02);
                 $estado04 = $estado03['Nombre'];
                 
-                echo '<td>'.$estado04.'</td>';
+                if($fila['Estado_PDI']==3){
+                    echo '<td BGCOLOR="#31B404">'.$estado04.'</td>';
+                } else {
+                    echo '<td>'.$estado04.'</td>';
+                }
+                
                 echo "<td><select id='id_estado".$cuenta."' name='estado".$cuenta."' onChange=changeText('id_estado".$cuenta."','estado".$cuenta."');validarSelect('id_estado".$cuenta."','estado".$cuenta."')>";
                 echo "<option value='0'>Seleccione el Estado</option>";
                 echo "<option value='6'>Cerrar PDI</option>";
