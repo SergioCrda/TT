@@ -3,4 +3,4 @@
 - ID_escuela debe ir id de escuela segùn el profesor y relacionarlos
 - validar profesores
 - validar capacidad de sala con cantidad ingresada en la seccion
-- validar periodos (no elejir periodos menores en el siguiente)
+- validar periodos (no elejir periodos menores en el siguiente) //Probar con mayores secciones y cursos
