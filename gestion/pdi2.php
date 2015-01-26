@@ -10,6 +10,7 @@
             function desactivar1(id1,id2,id3) {
                 var final = document.getElementById(id1.id).value;
                 document.getElementById(id2.id).disabled = false;
+                document.getElementById(id3.id).disabled = true;
                 document.getElementById(id2.id).options[0].selected = true;
                 document.getElementById(id3.id).options[0].selected = true;
                 for(var i=1; i<=final; i++){
