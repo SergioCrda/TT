@@ -140,23 +140,23 @@
                         }
                             
                         echo "<td width='100px'>";
-                        echo "<select id='salas".($cuenta1-1).($cuenta2-1)."0' name='salas_id".($cuenta1-1)."[".($cuenta2-1)."][0]'>";
+                        echo "<select id='salas".($cuenta1-1).($cuenta2-1)."0' name='salas_id".($cuenta1-1)."[".($cuenta2-1)."][0]' required>";
                         echo "<option value='0'>Seleccione Sala</option>";
                         while($salas13 = mysql_fetch_assoc($salas12)){
                             echo "<option value='".$salas13['ID_sala']."'>".$salas13['Edificio']." ".$salas13['Nombre_sala']."</option>";
                         }
                         echo "</select><br>";
-                        echo "<select id='salas".($cuenta1-1).($cuenta2-1)."1' name='salas_id".($cuenta1-1)."[".($cuenta2-1)."][1]'>";
+                        echo "<select id='salas".($cuenta1-1).($cuenta2-1)."1' name='salas_id".($cuenta1-1)."[".($cuenta2-1)."][1]' required>";
                         echo "<option value='0'>Seleccione Sala</option>";
                         while($salas23 = mysql_fetch_assoc($salas22)){
                             echo "<option value='".$salas23['ID_sala']."'>".$salas23['Edificio']." ".$salas23['Nombre_sala']."</option>";
                         }
                         echo "</select><br>";
                         if($horario34 == "Sin Periodo"){
-                            echo "<select id='salas".($cuenta1-1).($cuenta2-1)."2' name='salas_id".($cuenta1-1)."[".($cuenta2-1)."][2]' style='display:none'>";
+                            echo "<select id='salas".($cuenta1-1).($cuenta2-1)."2' name='salas_id".($cuenta1-1)."[".($cuenta2-1)."][2]' style='display:none' required>";
                             echo "<option value='0' selected='selected'></option></select>";
                         } else{
-                            echo "<select id='salas".($cuenta1-1).($cuenta2-1)."2' name='salas_id".($cuenta1-1)."[".($cuenta2-1)."][2]'>";
+                            echo "<select id='salas".($cuenta1-1).($cuenta2-1)."2' name='salas_id".($cuenta1-1)."[".($cuenta2-1)."][2]' required>";
                             echo "<option value='' selected='selected'>Seleccione Sala</option>";
                             $asignacion31 = "SELECT `ID_sala_asignacion` FROM `asignacion_salas` WHERE `ID_periodo_asignacion` = " . $seleccionSeccionRamoPDI3['Horario_3'];
                             $asignacion32 = mysql_query($asignacion31) or die('Consulta fallida: '.mysql_error());
@@ -177,7 +177,7 @@
                         echo "</td>";
                         
                         echo "<td width='230px'>";
-                        echo "<select id='profe".$cuenta1.$cuenta2."' name='profe_id".($cuenta1-1)."[]'>";
+                        echo "<select id='profe".$cuenta1.$cuenta2."' name='profe_id".($cuenta1-1)."[]' required>";
                         echo "<option value='0'>Seleccione Profesor</option>";
                         echo "<option value='1'>NOMBRE DE PROFESOR 1</option>";
                         echo "<option value='2'>NOMBRE DE PROFESOR 2</option>";

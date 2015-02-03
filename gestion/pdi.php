@@ -61,7 +61,7 @@
 							$ID_depa1 = "SELECT `ID_depto` FROM `departamentos` ORDER BY `ID_depto` ASC";
 							$depa2 = mysql_query($depa1) or die('Consulta fallida: ' . mysql_error());
 							$ID_depa2 = mysql_query($ID_depa1) or die('Consulta fallida: ' . mysql_error());
-							echo "<select id='departamento_id' name='departamento_name_id'>\n";
+							echo "<select id='departamento_id' name='departamento_name_id' required autofocus>\n";
 							echo "<option value='0'>Seleccione el departamento.</option>\n";
 							while (($depa3 = mysql_fetch_array($depa2, MYSQL_ASSOC)) and ($ID_depa3 = mysql_fetch_array($ID_depa2, MYSQL_ASSOC))) {
 								foreach (array_combine($depa3,$ID_depa3) as $depa4=>$ID_depa4) {
@@ -78,7 +78,7 @@
 							$carrera2 = mysql_query($carrera1) or die('Consulta fallida: ' . mysql_error());
 							$ID_carrera2 = mysql_query($ID_carrera1) or die('Consulta fallida: ' . mysql_error());
 							echo "</select>\n";
-							echo "<select id='carrera_id' name='carrera_name_id' >\n";
+							echo "<select id='carrera_id' name='carrera_name_id' required>\n";
 							echo "<option value='0' >Seleccione la carrera.</option>\n";
 							while (($carrera3 = mysql_fetch_array($carrera2, MYSQL_ASSOC)) and ($ID_carrera3 = mysql_fetch_array($ID_carrera2, MYSQL_ASSOC))) {
 								foreach (array_combine($carrera3,$ID_carrera3) as $carrera4=>$ID_carrera4) {

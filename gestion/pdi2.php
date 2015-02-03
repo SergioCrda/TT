@@ -85,7 +85,7 @@
 							$ID_hora1 = "SELECT  `id_periodo` FROM  `periodos`";
 							$hora2 = mysql_query($hora1) or die('Consulta fallida: ' . mysql_error());
 							$ID_hora2 = mysql_query($ID_hora1) or die('Consulta fallida: ' . mysql_error());
-							echo "<select name='horario_dia_id".$j."[$i][0]' id='horario".$j.$i."0' onchange='desactivar1(horario".$j.$i."0,horario".$j.$i."1,horario".$j.$i."2)'>\n";
+							echo "<select name='horario_dia_id".$j."[$i][0]' id='horario".$j.$i."0' onchange='desactivar1(horario".$j.$i."0,horario".$j.$i."1,horario".$j.$i."2)' required>\n";
 							echo "<option value='-1'>Seleccione el horario</option>\n";
 							while (($hora3 = mysql_fetch_array($hora2, MYSQL_ASSOC)) and ($ID_hora3 = mysql_fetch_array($ID_hora2, MYSQL_ASSOC))) {
 								foreach (array_combine($hora3,$ID_hora3) as $hora4=>$ID_hora4) {
@@ -102,7 +102,7 @@
 							$ID_hora1 = "SELECT  `id_periodo` FROM  `periodos`";
 							$hora2 = mysql_query($hora1) or die('Consulta fallida: ' . mysql_error());
 							$ID_hora2 = mysql_query($ID_hora1) or die('Consulta fallida: ' . mysql_error());
-							echo "<select name='horario_dia_id".$j."[$i][1]' id='horario".$j.$i."1' onchange='desactivar2(horario".$j.$i."1,horario".$j.$i."2)' disabled>\n";
+							echo "<select name='horario_dia_id".$j."[$i][1]' id='horario".$j.$i."1' onchange='desactivar2(horario".$j.$i."1,horario".$j.$i."2)' disabled required>\n";
 							echo "<option value='-1'>Seleccione el horario</option>\n";
 							while (($hora3 = mysql_fetch_array($hora2, MYSQL_ASSOC)) and ($ID_hora3 = mysql_fetch_array($ID_hora2, MYSQL_ASSOC))) {
 								foreach (array_combine($hora3,$ID_hora3) as $hora4=>$ID_hora4) {
@@ -119,7 +119,7 @@
 							$ID_hora1 = "SELECT  `id_periodo` FROM  `periodos`";
 							$hora2 = mysql_query($hora1) or die('Consulta periodos: ' . mysql_error());
 							$ID_hora2 = mysql_query($ID_hora1) or die('Consulta fallida: ' . mysql_error());
-							echo "<select name='horario_dia_id".$j."[$i][2]' id='horario".$j.$i."2' disabled>\n";
+							echo "<select name='horario_dia_id".$j."[$i][2]' id='horario".$j.$i."2' disabled required>\n";
 							echo "<option value='-1'>Seleccione el horario (opcional)</option>\n";
 							while (($hora3 = mysql_fetch_array($hora2, MYSQL_ASSOC)) and ($ID_hora3 = mysql_fetch_array($ID_hora2, MYSQL_ASSOC))) {
 								foreach (array_combine($hora3,$ID_hora3) as $hora4=>$ID_hora4) {
