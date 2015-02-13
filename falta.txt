@@ -4,5 +4,5 @@ TO DO
 - validar profesores
 
 DOING
-- validar capacidad de sala con cantidad ingresada en la seccion
+- validar form para que se ingresen todos los datos
 - falta relacionar las salas de un PDF a asignacion_salas

@@ -7,6 +7,28 @@
 		<script src="../general/ayuda.js" type="text/javascript" language="JavaScript"></script>
 		<script src="../general/prototype.js" type="text/javascript" language="JavaScript"></script>
 		<script src="../general/ajax.js" type="text/javascript" language="JavaScript"></script>
+        <script type="text/javascript" language="JavaScript">
+            function checkSalas(opt1,opt2,opt3,inpt,inptSala) {
+                var sala1 = parseInt(opt1.options[opt1.selectedIndex].getAttribute("cap"));
+                var sala2 = parseInt(opt2.options[opt2.selectedIndex].getAttribute("cap"));
+                var sala3 = parseInt(opt3.options[opt3.selectedIndex].getAttribute("cap"));
+                var sala = parseInt(inptSala.value);
+                var cantEst = parseInt(inpt.value);
+                if(inpt.value== "" || inpt.value == null) {
+                    alert("Por favor, ingrese cantidad de Estudiantes");
+                } else {
+                    if(sala != 0) {
+                        if((sala1 < cantEst) || (sala2 < cantEst) || (sala3 < cantEst)) {
+                            alert("Por favor, ingrese cantidad de Estudiantes de acuerdo a la Capacidad de la Sala");
+                        }
+                    } else {
+                        if((sala1 < cantEst) || (sala2 < cantEst)) {
+                            alert("Por favor, ingrese cantidad de Estudiantes de acuerdo a la Capacidad de la Sala");
+                        }
+                    }
+                }
+            }
+        </script>
 	</head>
 	<body>
 		<div id="fecha">
@@ -113,9 +135,9 @@
                         } else {
                             echo "<td width='200px'>".$horario14."<br>".$horario24."<br>".$horario34."</td>";
                         }
-                        echo "<input type='hidden' name='horario".($cuenta1-1)."[".($cuenta2-1)."][0]' value='".$seleccionSeccionRamoPDI3['Horario_1']."'/>";
-                        echo "<input type='hidden' name='horario".($cuenta1-1)."[".($cuenta2-1)."][1]' value='".$seleccionSeccionRamoPDI3['Horario_2']."'/>";
-                        echo "<input type='hidden' name='horario".($cuenta1-1)."[".($cuenta2-1)."][2]' value='".$seleccionSeccionRamoPDI3['Horario_3']."'/>";
+                        echo "<input type='hidden' id='horario".($cuenta1-1).($cuenta2-1)."0' name='horario".($cuenta1-1)."[".($cuenta2-1)."][0]' value='".$seleccionSeccionRamoPDI3['Horario_1']."'/>";
+                        echo "<input type='hidden' id='horario".($cuenta1-1).($cuenta2-1)."1' name='horario".($cuenta1-1)."[".($cuenta2-1)."][1]' value='".$seleccionSeccionRamoPDI3['Horario_2']."'/>";
+                        echo "<input type='hidden' id='horario".($cuenta1-1).($cuenta2-1)."2' name='horario".($cuenta1-1)."[".($cuenta2-1)."][2]' value='".$seleccionSeccionRamoPDI3['Horario_3']."'/>";
                         
                         $asignacion11 = "SELECT `ID_sala_asignacion` FROM `asignacion_salas` WHERE `ID_periodo_asignacion` = " . $seleccionSeccionRamoPDI3['Horario_1'];
                         $asignacion12 = mysql_query($asignacion11) or die('Consulta fallida: '.mysql_error());
@@ -141,23 +163,23 @@
                             
                         echo "<td width='100px'>";
                         echo "<select id='salas".($cuenta1-1).($cuenta2-1)."0' name='salas_id".($cuenta1-1)."[".($cuenta2-1)."][0]' required>";
-                        echo "<option value='0'>Seleccione Sala</option>";
+                        echo "<option value='0' cap='0'>Seleccione Sala</option>";
                         while($salas13 = mysql_fetch_assoc($salas12)){
-                            echo "<option value='".$salas13['ID_sala']."'>".$salas13['Edificio']." ".$salas13['Nombre_sala']."</option>";
+                            echo "<option value='".$salas13['ID_sala']."' cap='".$salas13['Capacidad']."'>".$salas13['Edificio']." ".$salas13['Nombre_sala']." (".$salas13['Capacidad']." alumnos)</option>";
                         }
                         echo "</select><br>";
                         echo "<select id='salas".($cuenta1-1).($cuenta2-1)."1' name='salas_id".($cuenta1-1)."[".($cuenta2-1)."][1]' required>";
-                        echo "<option value='0'>Seleccione Sala</option>";
+                        echo "<option value='0' cap='0'>Seleccione Sala</option>";
                         while($salas23 = mysql_fetch_assoc($salas22)){
-                            echo "<option value='".$salas23['ID_sala']."'>".$salas23['Edificio']." ".$salas23['Nombre_sala']."</option>";
+                            echo "<option value='".$salas23['ID_sala']."' cap='".$salas23['Capacidad']."'>".$salas23['Edificio']." ".$salas23['Nombre_sala']." (".$salas23['Capacidad']." alumnos)</option>";
                         }
                         echo "</select><br>";
                         if($horario34 == "Sin Periodo"){
                             echo "<select id='salas".($cuenta1-1).($cuenta2-1)."2' name='salas_id".($cuenta1-1)."[".($cuenta2-1)."][2]' style='display:none' required>";
-                            echo "<option value='0' selected='selected'></option></select>";
+                            echo "<option value='0' cap='0' selected='selected'></option></select>";
                         } else{
                             echo "<select id='salas".($cuenta1-1).($cuenta2-1)."2' name='salas_id".($cuenta1-1)."[".($cuenta2-1)."][2]' required>";
-                            echo "<option value='' selected='selected'>Seleccione Sala</option>";
+                            echo "<option value='0' cap='0' selected='selected'>Seleccione Sala</option>";
                             $asignacion31 = "SELECT `ID_sala_asignacion` FROM `asignacion_salas` WHERE `ID_periodo_asignacion` = " . $seleccionSeccionRamoPDI3['Horario_3'];
                             $asignacion32 = mysql_query($asignacion31) or die('Consulta fallida: '.mysql_error());
                             $asignacion30 = mysql_num_rows($asignacion32);  
@@ -169,7 +191,7 @@
                                 $salas32 = mysql_query($salas31) or die('Consulta fallida: '.mysql_error());
                             }
                             while($salas33 = mysql_fetch_assoc($salas32)){
-                                echo "<option value='".$salas33['ID_sala']."'>".$salas33['Edificio']." ".$salas33['Nombre_sala']."</option>";
+                                echo "<option value='".$salas33['ID_sala']."' cap='".$salas33['Capacidad']."'>".$salas33['Edificio']." ".$salas33['Nombre_sala']." (".$salas33['Capacidad']." alumnos)</option>";
                             }
                             echo "</select>";
                         }
@@ -186,7 +208,7 @@
                         echo "</select>";
                         echo "</td>";
                         
-                        echo "<td width='200px'><input type='number' id='cantAlumnos".$cuenta1.$cuenta2."' name='cant_alumnos".($cuenta1-1)."[]' min='1' max='100'></td>";
+                        echo "<td width='200px'><input type='number' id='cantAlumnos".$cuenta1.$cuenta2."' name='cant_alumnos".($cuenta1-1)."[]' min='1' max='100' onblur='checkSalas(salas".($cuenta1-1).($cuenta2-1)."0,salas".($cuenta1-1).($cuenta2-1)."1,salas".($cuenta1-1).($cuenta2-1)."2,cantAlumnos".$cuenta1.$cuenta2.",horario".($cuenta1-1).($cuenta2-1)."2)'></td>";
                         
                         echo "</tr>";
                         $cuenta2++;
