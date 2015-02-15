@@ -58,11 +58,11 @@
 					}
 				}
 				if(x==sec.length && x==(cod.length-y)){
-					alert("Seleccione ramos y cantidad de secciones");
+					alert("Seleccione Ramos y Cantidad de Secciones");
 					return false;
 				}else{
 					if((cod.length-y)<x){
-						alert("Seleccione cantidad de secciones");
+						alert("Seleccione Cantidad de Secciones de todos los Ramos");
 						return false;
 					}
 				}

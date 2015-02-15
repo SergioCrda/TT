@@ -20,15 +20,15 @@
 				 var dep=document.getElementById("departamento_id").value;
 				 var car=document.getElementById("carrera_id").value;
 				 if (dep=='0' && car=='0'){
-				   alert('Seleccione departamento y carrera');
+				   alert('Seleccione Departamento y Carrera');
 				   return false;
 				 }else{
 					if(dep!='0' && car=='0'){
-						alert('Seleccione carrera');
+						alert('Seleccione Carrera');
 						return false;
 					}
 					if(dep=='0' && car!='0'){
-						alert('Seleccione departamento');
+						alert('Seleccione Departamento');
 						return false;
 					}else{
 						return true;

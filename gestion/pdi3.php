@@ -77,7 +77,7 @@
                 $ID_ramo_PDI = $fila3['ID_ramos_PDI'];
                 //inserta las secciones de un ramo
                 for($j = 0; $j < count($hora_seccion[$i]); $j++){
-                    if($hora_seccion[$i][$j][2]==""){
+                    if($hora_seccion[$i][$j][2]==-1){
                         $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDI`(`Numero_seccion`, `Ramos_PDI_id_Ramos_PDI`, `Horario_1`, `Horario_2`, `Horario_3`) VALUES (".($j+1).", '".$ID_ramo_PDI."', ".$hora_seccion[$i][$j][0].", ".$hora_seccion[$i][$j][1].", 0)";
                     } else {
                         $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDI`(`Numero_seccion`, `Ramos_PDI_id_Ramos_PDI`, `Horario_1`, `Horario_2`, `Horario_3`) VALUES (".($j+1).", '".$ID_ramo_PDI."', ".$hora_seccion[$i][$j][0].", ".$hora_seccion[$i][$j][1].", ".$hora_seccion[$i][$j][2].")";
