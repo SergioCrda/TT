@@ -88,25 +88,21 @@
 						// Conectando, seleccionando la base de datos
 						$link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
 						mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');	
-						$departamento = $_POST['departamento_name_id'];
-						$depa1 = "SELECT `Nombre_depto` FROM `departamentos` WHERE `ID_depto` = $departamento ";
+
+						$depa1 = "SELECT * FROM `departamentos` WHERE `ID_depto` = ".$_POST['departamento_name_id'];
 						$depa2 = mysql_query($depa1) or die('Consulta fallida: ' . mysql_error());
 						while ($depa3 = mysql_fetch_array($depa2, MYSQL_ASSOC)){
-							foreach ($depa3 as $depa4) {
-								echo "$depa4";
-							}
+							echo $depa3['Nombre_depto'];
+                            $ID_depto = $depa3['ID_depto'];
 						}
 					?>
 				</td>
 				<td>
 					<?php
-						$carrera = $_POST['carrera_name_id'];
-						$carre1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = $carrera ";
+						$carre1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = ".$_POST['carrera_name_id'];
 						$carre2 = mysql_query($carre1) or die('Consulta fallida: ' . mysql_error());
 						while ($carre3 = mysql_fetch_array($carre2, MYSQL_ASSOC)){
-							foreach ($carre3 as $carre4) {
-								echo "$carre4";
-							}
+                            echo $carre3['Nombre_carrera'];
 						}
 					?>
 				</td>
@@ -126,25 +122,19 @@
 					<td>Secciones</td>
 				</tr>
 				<?php
-                    $consultaID_depto1 = "SELECT `ID_depto` FROM `departamentos` WHERE `Nombre_depto`='$depa4'";
+                    $consultaID_depto1 = "SELECT `ID_depto` FROM `departamentos` WHERE `ID_depto`=".$ID_depto;
                     $consultaID_depto2 = mysql_query($consultaID_depto1) or die('Consulta fallida: ' . mysql_error());
-                    $fila1 = mysql_fetch_assoc($consultaID_depto2);
-                    $ID_depto = $fila1['ID_depto'];
+                    $consultaID_depto3 = mysql_fetch_assoc($consultaID_depto2);
 
-
-					$ramo1 = "SELECT `Codigo_ramo` FROM `ramos` WHERE `departamentos_ID_depto`='$ID_depto' ORDER BY `ID_ramo` ASC";
-					$ID1   = "SELECT `Nombre_ramo` FROM `ramos` WHERE `departamentos_ID_depto`='$ID_depto' ORDER BY `ID_ramo` ASC";
+					$ramo1 = "SELECT * FROM `ramos` WHERE `departamentos_ID_depto`='".$consultaID_depto3['ID_depto']."' ORDER BY `ID_ramo` ASC";
 					$ramo2 = mysql_query($ramo1) or die('Consulta fallida: ' . mysql_error());
-					$ID2 = mysql_query($ID1) or die('Consulta fallida: ' . mysql_error());
-					while (($ramo3 = mysql_fetch_array($ramo2, MYSQL_ASSOC)) and ($ID3 = mysql_fetch_array($ID2, MYSQL_ASSOC))) {
-						foreach (array_combine($ramo3,$ID3) as $col_codramo=>$col_nomramo) {
-							echo "<tr class='centro'>\n";
-							echo "<td><input type='checkbox' id='codigosRamo' name='codigoRamo[]' value='$col_codramo'/></td>\n";
-							echo "<td>$col_codramo</td>\n";
-							echo "<td><input type='hidden' id='ramos' name='ramo[]' value='$col_nomramo' disabled/>$col_nomramo</td>\n";
-							echo "<td><input type='number' id='secciones' name='seccion[]' min='1' max='10' disabled/></td>\n";
-							echo "</tr>\n";
-						}
+					while ($ramo3 = mysql_fetch_array($ramo2, MYSQL_ASSOC)) {
+                        echo "<tr class='centro'>";
+                        echo "<td><input type='checkbox' id='codigosRamo' name='codigoRamo[]' value='".$ramo3['Codigo_ramo']."'/></td>";
+                        echo "<td>".$ramo3['Codigo_ramo']."</td>\n";
+                        echo "<td><input type='hidden' id='ramos' name='ramo[]' value='".$ramo3['Nombre_ramo']."' disabled/>".$ramo3['Nombre_ramo']."</td>";
+                        echo "<td><input type='number' id='secciones' name='seccion[]' min='1' max='10' disabled/></td>";
+                        echo "</tr>";
 					}
 				?>
 			</table>

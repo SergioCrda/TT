@@ -67,8 +67,8 @@
 		<h4>Seleccione Horario de las siguientes asignaturas</h4>
 		<form name="PDI" method="post" action="pdi1.php" onsubmit="return validarForm(this)">
 		    <?php
-				echo "<input type='hidden' id='departa' name='depar' value='$departamento'/>\n\t\t\t";
-				echo "<input type='hidden' id='carrera' name='carre' value='$carrera'/>\n";
+				echo "<input type='hidden' id='departa' name='depar' value='".$departamento."'/>";
+				echo "<input type='hidden' id='carrera' name='carre' value='".$carrera."'/>";
 			?>
 			<table align="center" width="80%" border="1" cellpadding="3" cellspacing="0" class="pequena">			
 				<tr class="titulo_fila">
@@ -81,63 +81,53 @@
 						echo "<tr class=centro>";
 						echo "<td>";
 						echo "[".$cod_ramo[$j]."]<br>".$ramo[$j];
-                        echo "<input type='hidden' id='codigosRamo' name='codigoRamo[]' value='$cod_ramo[$j]'/>\n";
-                        echo "<input type='hidden' id='ramos' name='ramo[]' value='$ramo[$j]'/>\n";
+                        echo "<input type='hidden' id='codigosRamo' name='codigoRamo[]' value='".$cod_ramo[$j]."'/>\n";
+                        echo "<input type='hidden' id='ramos' name='ramo[]' value='".$ramo[$j]."'/>\n";
 						echo "</td>";
 						echo "<td>";
-						echo $seccion[$j]."<input type='hidden' id='secciones' name='seccion[]' value='$seccion[$j]'/>\n";
+						echo $seccion[$j]."<input type='hidden' id='secciones' name='seccion[]' value='".$seccion[$j]."'/>\n";
 						echo "</td>";
 						echo "<td>";
 						for($i = 0; $i < $seccion[$j]; $i++){
 							echo "Secci&oacute;n ".($i+1).": ";
 							$link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
-							mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');	
-							$hora1 = "SELECT `periodo` FROM  `periodos` ";
-							$ID_hora1 = "SELECT  `id_periodo` FROM  `periodos`";
-							$hora2 = mysql_query($hora1) or die('Consulta fallida: ' . mysql_error());
-							$ID_hora2 = mysql_query($ID_hora1) or die('Consulta fallida: ' . mysql_error());
-							echo "<select name='horario_dia_id".$j."[$i][0]' id='horario".$j.$i."0' class='hora' onchange='desactivar1(horario".$j.$i."0,horario".$j.$i."1,horario".$j.$i."2)' required>\n";
-							echo "<option value='-1'>Seleccione el horario</option>\n";
-							while (($hora3 = mysql_fetch_array($hora2, MYSQL_ASSOC)) and ($ID_hora3 = mysql_fetch_array($ID_hora2, MYSQL_ASSOC))) {
-								foreach (array_combine($hora3,$ID_hora3) as $hora4=>$ID_hora4) {
-                                    if($ID_hora4 != 0){
-									   echo "<option value='$ID_hora4'>$hora4</option>\n";
-                                    }
-								}
-							}
-							echo "</select>\n";
+							mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
 
-							$link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
-							mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');	
-							$hora1 = "SELECT `periodo` FROM  `periodos` ";
-							$ID_hora1 = "SELECT  `id_periodo` FROM  `periodos`";
-							$hora2 = mysql_query($hora1) or die('Consulta fallida: ' . mysql_error());
-							$ID_hora2 = mysql_query($ID_hora1) or die('Consulta fallida: ' . mysql_error());
-							echo "<select name='horario_dia_id".$j."[$i][1]' id='horario".$j.$i."1' class='hora' onchange='desactivar2(horario".$j.$i."1,horario".$j.$i."2)' disabled required>\n";
-							echo "<option value='-1'>Seleccione el horario</option>\n";
-							while (($hora3 = mysql_fetch_array($hora2, MYSQL_ASSOC)) and ($ID_hora3 = mysql_fetch_array($ID_hora2, MYSQL_ASSOC))) {
-								foreach (array_combine($hora3,$ID_hora3) as $hora4=>$ID_hora4) {
-                                    if($ID_hora4 != 0){
-									   echo "<option value='$ID_hora4'>$hora4</option>\n";
-                                    }
-								}
-							}
-							echo "</select>\n";
+							$hora11 = "SELECT * FROM  `periodos` ";
+							$hora12 = mysql_query($hora11) or die('Consulta fallida: ' . mysql_error());
 
-							$link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
-							mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');	
-							$hora1 = "SELECT `periodo` FROM  `periodos` ";
-							$ID_hora1 = "SELECT  `id_periodo` FROM  `periodos`";
-							$hora2 = mysql_query($hora1) or die('Consulta periodos: ' . mysql_error());
-							$ID_hora2 = mysql_query($ID_hora1) or die('Consulta fallida: ' . mysql_error());
-							echo "<select name='horario_dia_id".$j."[$i][2]' id='horario".$j.$i."2' disabled required>\n";
-							echo "<option value='-1'>Seleccione el horario (opcional)</option>\n";
-							while (($hora3 = mysql_fetch_array($hora2, MYSQL_ASSOC)) and ($ID_hora3 = mysql_fetch_array($ID_hora2, MYSQL_ASSOC))) {
-								foreach (array_combine($hora3,$ID_hora3) as $hora4=>$ID_hora4) {
-									   echo "<option value='$ID_hora4'>$hora4</option>\n";
-								}
+							echo "<select name='horario_dia_id".$j."[".$i."][0]' id='horario".$j.$i."0' class='hora' onchange='desactivar1(horario".$j.$i."0,horario".$j.$i."1,horario".$j.$i."2)' required>";
+							echo "<option value='-1'>Seleccione el horario</option>";
+							while ($hora13 = mysql_fetch_array($hora12, MYSQL_ASSOC)) {
+                                if($hora13['ID_periodo'] != 0){
+                                   echo "<option value='".$hora13['ID_periodo']."'>".$hora13['Periodo']."</option>";
+                                }
 							}
-							echo "</select><br>\n";
+							echo "</select>";
+
+							$hora21 = "SELECT * FROM  `periodos` ";
+							$hora22 = mysql_query($hora21) or die('Consulta fallida: ' . mysql_error());
+
+							echo "<select name='horario_dia_id".$j."[".$i."][1]' id='horario".$j.$i."1' class='hora' onchange='desactivar2(horario".$j.$i."1,horario".$j.$i."2)' disabled required>";
+							echo "<option value='-1'>Seleccione el horario</option>";
+							while ($hora23 = mysql_fetch_array($hora22, MYSQL_ASSOC)) {
+                                if($hora23['ID_periodo'] != 0){
+                                   echo "<option value='".$hora23['ID_periodo']."'>".$hora23['Periodo']."</option>";
+                                }
+							}
+							echo "</select>";
+
+							$hora31 = "SELECT * FROM  `periodos` ";
+							$hora32 = mysql_query($hora31) or die('Consulta fallida: ' . mysql_error());
+
+							echo "<select name='horario_dia_id".$j."[".$i."][2]' id='horario".$j.$i."2' disabled required>";
+							echo "<option value='-1'>Seleccione el horario (opcional)</option>";
+							while ($hora33 = mysql_fetch_array($hora32, MYSQL_ASSOC)) {
+                                if($hora33['ID_periodo'] != 0){
+                                   echo "<option value='".$hora33['ID_periodo']."'>".$hora33['Periodo']."</option>";
+                                }
+							}
+							echo "</select><br>";
 						}
 						echo "</td>";
 						echo "</tr>";

@@ -38,43 +38,42 @@
             //obtiene el ID_depto
             $consultaID_depto1 = "SELECT `ID_depto` FROM `departamentos` WHERE `Nombre_depto` = '".$departamento."'";
             $consultaID_depto2 = mysql_query($consultaID_depto1) or die('Consulta fallida: ' . mysql_error());
-            $filaDepto = mysql_fetch_assoc($consultaID_depto2);
-            $ID_depto = $filaDepto['ID_depto'];
+            $consultaID_depto3 = mysql_fetch_assoc($consultaID_depto2);
             
             //obtiene el ID_carrera
             $consultaID_carrera1 = "SELECT `ID_carrera` FROM `carreras` WHERE `Nombre_carrera` = '".$carrera."'";
             $consultaID_carrera2 = mysql_query($consultaID_carrera1) or die('Consulta fallida: ' . mysql_error());
-            $filaCarrera = mysql_fetch_assoc($consultaID_carrera2);
-            $ID_carrera = $filaCarrera['ID_carrera'];
+            $consultaID_carrera3 = mysql_fetch_assoc($consultaID_carrera2);
 
             //inserta datos en PDI
             $fechaHora = date('Y-m-j H:i:s');
-            $nuevaPDI1 = "INSERT INTO `PDI`(`Estado_PDI`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDI`,`carreras_ID_carrera`,`departamentos_ID_depto`) VALUES (1,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$ID_carrera."','".$ID_depto."')";
+            $nuevaPDI1 = "INSERT INTO `PDI`(`Estado_PDI`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDI`,`carreras_ID_carrera`,`departamentos_ID_depto`) VALUES (1,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$consultaID_carrera3['ID_carrera']."','".$consultaID_depto3['ID_depto']."')";
             $nuevaPDI2 = mysql_query($nuevaPDI1) or die('Consulta fallida: ' . mysql_error());
             
             //obtiene el ID_PDI
-            $conocePDI = "SELECT `ID_PDI` FROM `PDI` WHERE `Nombre_docente` = 'NOMBRE_PRUEBA' AND `ID_profesor` = 1 AND `ID_escuela` = 1 AND `Fecha_PDI` = '".$fechaHora."' AND `carreras_ID_carrera` = '".$ID_carrera."' AND `departamentos_ID_depto` = '".$ID_depto."' ";
-            $consultaPDI = mysql_query($conocePDI) or die('Consulta fallida: ' . mysql_error());
-            $fila1 = mysql_fetch_assoc($consultaPDI);
-            $ID_PDI = $fila1['ID_PDI'];
+            $conocePDI1 = "SELECT `ID_PDI` FROM `PDI` WHERE `Nombre_docente` = 'NOMBRE_PRUEBA' AND `ID_profesor` = 1 AND `ID_escuela` = 1 AND `Fecha_PDI` = '".$fechaHora."' AND `carreras_ID_carrera` = '".$consultaID_carrera3['ID_carrera']."' AND `departamentos_ID_depto` = '".$consultaID_depto3['ID_depto']."' ";
+            $conocePDI2 = mysql_query($conocePDI1) or die('Consulta fallida: ' . mysql_error());
+            $conocePDI3 = mysql_fetch_assoc($conocePDI2);
+            $ID_PDI = $conocePDI3['ID_PDI'];
         
             //inserta los ramos en PDI
             for($i = 0; $i < count($ramo); $i++){
                 //obtiene el ID_ramo
-                $conoceIDRAMO = "SELECT `ID_ramo` FROM `ramos` WHERE `Nombre_ramo` = '".$ramo[$i]."' AND `Codigo_ramo`= '".$cod_ramo[$i]."'";
-                $consultaRAMO = mysql_query($conoceIDRAMO) or die('Consulta fallida: ' . mysql_error());
-                $fila2 = mysql_fetch_assoc($consultaRAMO);
-                $ID_ramo = $fila2['ID_ramo'];
+                $conoceIDRAMO1 = "SELECT `ID_ramo` FROM `ramos` WHERE `Nombre_ramo` = '".$ramo[$i]."' AND `Codigo_ramo`= '".$cod_ramo[$i]."'";
+                $conoceIDRAMO2 = mysql_query($conoceIDRAMO1) or die('Consulta fallida: ' . mysql_error());
+                $conoceIDRAMO3 = mysql_fetch_assoc($conoceIDRAMO2);
+                $ID_ramo = $conoceIDRAMO3['ID_ramo'];
                 
                 //inserta los ramos
                 $nuevoRamo1 = "INSERT INTO `ramos_PDI`(`ID_ramo`, `Cantidad_secciones`, `PDI_ID_PDI`) VALUES (".$ID_ramo.",".$seccion[$i].",".$ID_PDI.")";
                 $nuevoRamo2 = mysql_query($nuevoRamo1) or die('Consulta fallida: ' . mysql_error());
                 
                 //obtiene el ID_ramo_PDI
-                $conoceIDRAMOPDI = "SELECT `ID_ramos_PDI` FROM `ramos_PDI` WHERE `Cantidad_secciones` = '".$seccion[$i]."' AND `ID_ramo` = '".$ID_ramo."' AND `PDI_ID_PDI` = '".$ID_PDI."'";
-                $consultaRAMOPDI = mysql_query($conoceIDRAMOPDI) or die('Consulta fallida: ' . mysql_error());
-                $fila3 = mysql_fetch_assoc($consultaRAMOPDI);
-                $ID_ramo_PDI = $fila3['ID_ramos_PDI'];
+                $conoceIDRAMOPDI1 = "SELECT `ID_ramos_PDI` FROM `ramos_PDI` WHERE `Cantidad_secciones` = '".$seccion[$i]."' AND `ID_ramo` = '".$ID_ramo."' AND `PDI_ID_PDI` = '".$ID_PDI."'";
+                $conoceIDRAMOPDI2 = mysql_query($conoceIDRAMOPDI1) or die('Consulta fallida: ' . mysql_error());
+                $conoceIDRAMOPDI3 = mysql_fetch_assoc($conoceIDRAMOPDI2);
+                $ID_ramo_PDI = $conoceIDRAMOPDI3['ID_ramos_PDI'];
+
                 //inserta las secciones de un ramo
                 for($j = 0; $j < count($hora_seccion[$i]); $j++){
                     if($hora_seccion[$i][$j][2]==-1){
