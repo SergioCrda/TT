@@ -99,10 +99,11 @@
 				</td>
 				<td>
 					<?php
-						$carre1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = ".$_POST['carrera_name_id'];
+						$carre1 = "SELECT * FROM `carreras` WHERE `ID_carrera` = ".$_POST['carrera_name_id'];
 						$carre2 = mysql_query($carre1) or die('Consulta fallida: ' . mysql_error());
 						while ($carre3 = mysql_fetch_array($carre2, MYSQL_ASSOC)){
                             echo $carre3['Nombre_carrera'];
+                            $ID_carrera =  $carre3['ID_carrera'];
 						}
 					?>
 				</td>
@@ -111,8 +112,10 @@
 		<br/>
 		<form name="PDI1" method="post" action="pdi2.php" onSubmit="return validarForm()">
 			<?php
-				echo "<input type='hidden' id='departa' name='depar' value='$depa4'/>\n\t\t\t";
-				echo "<input type='hidden' id='carrera' name='carre' value='$carre4'/>\n";
+				echo "<input type='hidden' id='departa' name='depar' value='".$ID_depto."'/>";
+				echo "<input type='hidden' id='carrera' name='carre' value='".$ID_carrera."'/>";
+				echo "<input type='hidden' id='estaRepetido' name='estaRepetido' value='".$_POST['estaRepetido']."'/>";
+				echo "<input type='hidden' id='PDIRepetido' name='PDIRepetido' value='".$_POST['PDIRepetido']."'/>";
 			?>
 			<table align="center" cellspacing="0" cellpadding="3" class="pequena" width="50%">
 				<tr class="titulo_fila">
@@ -122,13 +125,14 @@
 					<td>Secciones</td>
 				</tr>
 				<?php
+                    $repe = $_POST['repetido'];
                     $consultaID_depto1 = "SELECT `ID_depto` FROM `departamentos` WHERE `ID_depto`=".$ID_depto;
                     $consultaID_depto2 = mysql_query($consultaID_depto1) or die('Consulta fallida: ' . mysql_error());
                     $consultaID_depto3 = mysql_fetch_assoc($consultaID_depto2);
 
 					$ramo1 = "SELECT * FROM `ramos` WHERE `departamentos_ID_depto`='".$consultaID_depto3['ID_depto']."' ORDER BY `ID_ramo` ASC";
 					$ramo2 = mysql_query($ramo1) or die('Consulta fallida: ' . mysql_error());
-					while ($ramo3 = mysql_fetch_array($ramo2, MYSQL_ASSOC)) {
+					while ($ramo3 = mysql_fetch_array($ramo2)) {
                         echo "<tr class='centro'>";
                         echo "<td><input type='checkbox' id='codigosRamo' name='codigoRamo[]' value='".$ramo3['Codigo_ramo']."'/></td>";
                         echo "<td>".$ramo3['Codigo_ramo']."</td>\n";

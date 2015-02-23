@@ -20,6 +20,8 @@
 			$cod_ramo = $_POST['codigoRamo'];
 			$ramo = $_POST['ramo'];
 			$seccion = $_POST['seccion'];
+            $repetido = $_POST['estaRepetido'];
+			$PDIRepetido = $_POST['PDIRepetido'];
             for($i = 0; $i < count($ramo); $i++){
                 $hora_seccion[$i] = $_POST['horario_dia_id'.$i];
             }
@@ -34,25 +36,21 @@
             //conexion a base de datos
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
-            
-            //obtiene el ID_depto
-            $consultaID_depto1 = "SELECT `ID_depto` FROM `departamentos` WHERE `Nombre_depto` = '".$departamento."'";
-            $consultaID_depto2 = mysql_query($consultaID_depto1) or die('Consulta fallida: ' . mysql_error());
-            $consultaID_depto3 = mysql_fetch_assoc($consultaID_depto2);
-            
-            //obtiene el ID_carrera
-            $consultaID_carrera1 = "SELECT `ID_carrera` FROM `carreras` WHERE `Nombre_carrera` = '".$carrera."'";
-            $consultaID_carrera2 = mysql_query($consultaID_carrera1) or die('Consulta fallida: ' . mysql_error());
-            $consultaID_carrera3 = mysql_fetch_assoc($consultaID_carrera2);
+
+            if($repetido == "1"){
+                //actualiza estado PDI
+                $cancelarPDI1 = "UPDATE `PDI` SET `Estado_PDI`= 7 WHERE `ID_PDI`= ".$PDIRepetido;
+                $cancelarPDI2 = mysql_query($cancelarPDI1) or die('Consulta fallida $cancelarPDI1: ' . mysql_error());
+            }
 
             //inserta datos en PDI
             $fechaHora = date('Y-m-j H:i:s');
-            $nuevaPDI1 = "INSERT INTO `PDI`(`Estado_PDI`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDI`,`carreras_ID_carrera`,`departamentos_ID_depto`) VALUES (1,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$consultaID_carrera3['ID_carrera']."','".$consultaID_depto3['ID_depto']."')";
-            $nuevaPDI2 = mysql_query($nuevaPDI1) or die('Consulta fallida: ' . mysql_error());
+            $nuevaPDI1 = "INSERT INTO `PDI`(`Estado_PDI`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDI`,`carreras_ID_carrera`,`departamentos_ID_depto`) VALUES (1,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$carrera."','".$departamento."')";
+            $nuevaPDI2 = mysql_query($nuevaPDI1) or die('Consulta fallida $nuevaPDI2: ' . mysql_error());
             
             //obtiene el ID_PDI
-            $conocePDI1 = "SELECT `ID_PDI` FROM `PDI` WHERE `Nombre_docente` = 'NOMBRE_PRUEBA' AND `ID_profesor` = 1 AND `ID_escuela` = 1 AND `Fecha_PDI` = '".$fechaHora."' AND `carreras_ID_carrera` = '".$consultaID_carrera3['ID_carrera']."' AND `departamentos_ID_depto` = '".$consultaID_depto3['ID_depto']."' ";
-            $conocePDI2 = mysql_query($conocePDI1) or die('Consulta fallida: ' . mysql_error());
+            $conocePDI1 = "SELECT `ID_PDI` FROM `PDI` WHERE `Nombre_docente` = 'NOMBRE_PRUEBA' AND `ID_profesor` = 1 AND `ID_escuela` = 1 AND `Fecha_PDI` = '".$fechaHora."' AND `carreras_ID_carrera` = '".$carrera."' AND `departamentos_ID_depto` = '".$departamento."'";
+            $conocePDI2 = mysql_query($conocePDI1) or die('Consulta fallida $conocePDI2: ' . mysql_error());
             $conocePDI3 = mysql_fetch_assoc($conocePDI2);
             $ID_PDI = $conocePDI3['ID_PDI'];
         
@@ -60,17 +58,17 @@
             for($i = 0; $i < count($ramo); $i++){
                 //obtiene el ID_ramo
                 $conoceIDRAMO1 = "SELECT `ID_ramo` FROM `ramos` WHERE `Nombre_ramo` = '".$ramo[$i]."' AND `Codigo_ramo`= '".$cod_ramo[$i]."'";
-                $conoceIDRAMO2 = mysql_query($conoceIDRAMO1) or die('Consulta fallida: ' . mysql_error());
+                $conoceIDRAMO2 = mysql_query($conoceIDRAMO1) or die('Consulta fallida $conoceIDRAMO2: ' . mysql_error());
                 $conoceIDRAMO3 = mysql_fetch_assoc($conoceIDRAMO2);
                 $ID_ramo = $conoceIDRAMO3['ID_ramo'];
                 
                 //inserta los ramos
                 $nuevoRamo1 = "INSERT INTO `ramos_PDI`(`ID_ramo`, `Cantidad_secciones`, `PDI_ID_PDI`) VALUES (".$ID_ramo.",".$seccion[$i].",".$ID_PDI.")";
-                $nuevoRamo2 = mysql_query($nuevoRamo1) or die('Consulta fallida: ' . mysql_error());
+                $nuevoRamo2 = mysql_query($nuevoRamo1) or die('Consulta fallida $nuevoRamo2: ' . mysql_error());
                 
                 //obtiene el ID_ramo_PDI
                 $conoceIDRAMOPDI1 = "SELECT `ID_ramos_PDI` FROM `ramos_PDI` WHERE `Cantidad_secciones` = '".$seccion[$i]."' AND `ID_ramo` = '".$ID_ramo."' AND `PDI_ID_PDI` = '".$ID_PDI."'";
-                $conoceIDRAMOPDI2 = mysql_query($conoceIDRAMOPDI1) or die('Consulta fallida: ' . mysql_error());
+                $conoceIDRAMOPDI2 = mysql_query($conoceIDRAMOPDI1) or die('Consulta fallida $conoceIDRAMOPDI2: ' . mysql_error());
                 $conoceIDRAMOPDI3 = mysql_fetch_assoc($conoceIDRAMOPDI2);
                 $ID_ramo_PDI = $conoceIDRAMOPDI3['ID_ramos_PDI'];
 
@@ -81,15 +79,31 @@
                     } else {
                         $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDI`(`Numero_seccion`, `Ramos_PDI_id_Ramos_PDI`, `Horario_1`, `Horario_2`, `Horario_3`) VALUES (".($j+1).", '".$ID_ramo_PDI."', ".$hora_seccion[$i][$j][0].", ".$hora_seccion[$i][$j][1].", ".$hora_seccion[$i][$j][2].")";
                     }
-                    $nuevaSeccion2 = mysql_query($nuevaSeccion1) or die('Consulta fallida: ' . mysql_error());
+                    $nuevaSeccion2 = mysql_query($nuevaSeccion1) or die('Consulta fallida $nuevaSeccion2: ' . mysql_error());
                 }
             }
+            //obtiene el ID_depto
+            $consultaID_depto1 = "SELECT * FROM `departamentos` WHERE `ID_depto` = ".$departamento;
+            $consultaID_depto2 = mysql_query($consultaID_depto1) or die('Consulta fallida $consultaID_depto2: ' . mysql_error());
+            $consultaID_depto3 = mysql_fetch_assoc($consultaID_depto2);
+            //$consultaID_depto3['Nombre_depto'];
+
+            //obtiene el ID_carrera
+            $consultaID_carrera1 = "SELECT * FROM `carreras` WHERE `ID_carrera` = ".$carrera;
+            $consultaID_carrera2 = mysql_query($consultaID_carrera1) or die('Consulta fallida $consultaID_carrera2: ' . mysql_error());
+            $consultaID_carrera3 = mysql_fetch_assoc($consultaID_carrera2);
+            //$consultaID_carrera3['Nombre_carrera'];
 		?>
 		<div>
 			<dd>
 				<strong>Estimado Director de Escuela:</strong></br></br>
-				Se ha realizado la siguiente <strong>Programaci&oacute;n Docente Inicial</strong> N&deg;<?php echo $ID_PDI; ?> <strong></strong> para la carrera de <strong><?php echo $carrera; ?></strong> 
-				al Departamento de <strong><?php echo $departamento; ?></strong>, en esta Programaci&oacute;n se solicitan las siguientes asignaturas: </br></br>
+				Se ha realizado la siguiente <strong>Programaci&oacute;n Docente Inicial</strong> N&deg;<?php echo $ID_PDI; ?> <strong></strong> para la carrera de <strong><?php echo $consultaID_carrera3['Nombre_carrera']; ?></strong>
+				al Departamento de <strong><?php echo $consultaID_depto3['Nombre_depto']; ?></strong><?php
+                    if($repetido == "1"){
+                        $PDICancelado = ' y se ha cancelado la Programaci&oacute;n Docente Inicial N&deg; '.$PDIRepetido;
+                        echo $PDICancelado;
+                    }
+                ?>, en esta Programaci&oacute;n se solicitan las siguientes asignaturas: </br></br>
 				<center><strong><ins>Listado de asignaturas</ins></strong></center></br>			
 				<table align="center" cellspacing="0" cellpadding="3" class="pequena" width="80%">
 					<tr class="titulo_fila">
@@ -113,7 +127,14 @@
 				- Si deseas agregar o cambiar asignaturas, puedes realizar nuevamente el proceso de Programaci&oacute;n Docente Inicial.</br>
 				Debes seleccionar la opci&oacute;n Inscripci&oacute;n de Ramos. Al realizarlo, la &uacute;ltima solicitud ser&aacute; la v&aacute;lida</br>
 				- Si deseas descargar un comprobante has clic 
-				<a href="comprobantePDI.php?depa=<?php echo $departamento; ?>&carre=<?php echo $carrera; ?>&numPDI=<?php echo $ID_PDI; ?>&data=<?php echo $data; ?>" target="_blank">aqu&iacute;.</a></br></br>
+                <?php
+                    $pdfArchivo = '<a href="comprobantePDI.php?depa='.$consultaID_depto3['Nombre_depto'].'&carre='.$consultaID_carrera3['Nombre_carrera'].'&numPDI='.$ID_PDI.'&data='.$data;
+                    if($repetido == "1"){
+                        $pdfArchivo = $pdfArchivo.'&repe='.$PDIRepetido;
+                    }
+                    $pdfArchivo = $pdfArchivo.' target="_blank">aqu&iacute;.</a></br></br>';
+                    echo $pdfArchivo;
+                ?>
 			</dd>
 		</div>
 	

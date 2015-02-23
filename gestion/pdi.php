@@ -39,6 +39,35 @@
                 var style2 = document.getElementById(detalle).style;
 		        style2.display = style2.display? "":"none";
             }
+            function validarCarreraDepto(){
+                var depto = document.PDI.departamento_name_id.selectedIndex;
+                var carre = document.PDI.carrera_name_id.selectedIndex;
+                var consulta =
+                    <?php
+                        $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
+                        mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
+
+                        $PDIConsulta1 = "SELECT * FROM `PDI` WHERE `ID_profesor` = '1'";
+                        $PDIConsulta2 = mysql_query($PDIConsulta1) or die('Consulta fallida: '.mysql_error());
+                        $i = 0;
+                        while($PDIConsulta3 = mysql_fetch_assoc($PDIConsulta2)) {
+                            $par[$i][0] = $PDIConsulta3['departamentos_ID_depto'];
+                            $par[$i][1] = $PDIConsulta3['carreras_ID_carrera'];
+                            $i++;
+                        }
+                        echo json_encode($par);
+                    ?>;
+                //console.log(consulta);
+                for(var i=0;i<consulta.length;i++) {
+                    //console.log(consulta[i][0]);
+                    //console.log(depto);
+                    if(parseInt(consulta[i][0]) == depto && parseInt(consulta[i][1]) == carre){
+                        //alert("son iguales");
+                    } else {
+                        //alert("no son iguales");
+                    }
+                }
+            }
 		</script>
 		<div id="fecha">
 			<?php echo date("d/m/Y"). "<br/>" . date("H:i");?>
@@ -46,7 +75,7 @@
 		<h3>Programaci&oacute;n Docente Inicial<br><small>Selecci&oacute;n de Departamento</small></h3>
 		<br />
 		<table align="center" width="75%" border="1" cellpadding="3" cellspacing="0" class="pequena">
-			<form name="PDI" method="post" action="pdi1.php" onSubmit="return validarForm()">			
+			<form name="PDI" method="post" id="PDI" action="pdi1.php" onSubmit="return validarForm();">
 				<tr class="titulo_fila">
 					<td>Departamento</td>
 					<td>Carrera</td>
@@ -63,12 +92,14 @@
 
                             echo "<select id='departamento_id' name='departamento_name_id' required autofocus>";
 							echo "<option value='0'>Seleccione el departamento.</option>";
-                            while($depa3 = mysql_fetch_array($depa2, MYSQL_ASSOC)) {
+                            while($depa3 = mysql_fetch_array($depa2)) {
                                 echo "<option value='".$depa3['ID_depto']."'>".$depa3['Nombre_depto']."</option>";
                             }
                             echo "</select>";
 						?>
 					</td>
+                    <input type="hidden" name="estaRepetido" id="estaRepetido" value="0">
+                    <input type="hidden" name="PDIRepetido" id="PDIRepetido" value="">
 					<td>
 						<?php 
 							$carre1 = "SELECT * FROM `carreras`";
@@ -76,14 +107,14 @@
 
 							echo "<select id='carrera_id' name='carrera_name_id' required>";
 							echo "<option value='0' >Seleccione la carrera.</option>";
-                            while($carre3 = mysql_fetch_array($carre2, MYSQL_ASSOC)) {
+                            while($carre3 = mysql_fetch_array($carre2)) {
                                 echo "<option value='".$carre3['ID_carrera']."'>".$carre3['Nombre_carrera']."</option>";
                             }
-							echo "</select>\n";
+							echo "</select>";
 						?>
 					</td>
 					<td>
-						<center><input type="submit" name="solicitar" formmethod="post" formaction="pdi1.php" value="Elegir Ramos"></center>
+						<center><input type="submit" name="solicitar" formmethod="post" formaction="pdi1.php" value="Elegir Ramos" onclick="validarCarreraDepto();"></center>
 					</td>
 				</tr>
 			</form>
@@ -103,33 +134,33 @@
                     $PDI1 = "SELECT * FROM `PDI` WHERE `ID_profesor` = '1'";
                     $PDI2 = mysql_query($PDI1) or die('Consulta fallida: '.mysql_error());
                     $cuenta = 0;
-                    while($fila = mysql_fetch_assoc($PDI2)){
+                    while($PDI3 = mysql_fetch_assoc($PDI2)){
                         $cuenta++;
                         if($cuenta == 1){
                             echo '<table align="center" width="90%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdiTabla"><tr class="titulo_fila"><td>Folio PDI</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado Actual</td></tr>';
                         }
 
-                        $carrera1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = ".$fila['carreras_ID_carrera'] ;
+                        $carrera1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = ".$PDI3['carreras_ID_carrera'] ;
                         $carrera2 = mysql_query($carrera1) or die('Consulta fallida: ' . mysql_error());
                         $carrera3 = mysql_fetch_assoc($carrera2);
 
-                        $depto1 = "SELECT `Nombre_depto` FROM `departamentos` WHERE `ID_depto` = ".$fila['departamentos_ID_depto'] ;
+                        $depto1 = "SELECT `Nombre_depto` FROM `departamentos` WHERE `ID_depto` = ".$PDI3['departamentos_ID_depto'] ;
                         $depto2 = mysql_query($depto1) or die('Consulta fallida: '.mysql_error());
                         $depto3 = mysql_fetch_assoc($depto2);
                         
-                        $estado01 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$fila['Estado_PDI'];
+                        $estado01 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$PDI3['Estado_PDI'];
                         $estado02 = mysql_query($estado01) or die('Consulta fallida: '.mysql_error());
                         $estado03 = mysql_fetch_assoc($estado02);
                         
                         echo '<tr class="centro">';
-                        echo '<td onClick=mostrar("detalle'.$cuenta.'")>'.$fila['ID_PDI'].' [<a href="#" class="no_linea">ver detalle</a>]</td>';
-                        echo '<td>'.$fila['Fecha_PDI'].'</td>';
+                        echo '<td onClick=mostrar("detalle'.$cuenta.'")>'.$PDI3['ID_PDI'].' [<a href="#" class="no_linea">ver detalle</a>]</td>';
+                        echo '<td>'.$PDI3['Fecha_PDI'].'</td>';
                         echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                         echo '<td>'.$depto3['Nombre_depto'].'</td>';
                         echo '<td>'.$estado03['Nombre'].'</td>';
                         echo '</tr>';
 
-                        $seleccionRamoPDI1 = "SELECT * FROM `ramos_PDI` WHERE `PDI_id_PDI` = ".$fila['ID_PDI'];
+                        $seleccionRamoPDI1 = "SELECT * FROM `ramos_PDI` WHERE `PDI_id_PDI` = ".$PDI3['ID_PDI'];
                         $seleccionRamoPDI2 = mysql_query($seleccionRamoPDI1) or die('Consulta fallida: '.mysql_error());
 
                         echo '<tr id="detalle'.$cuenta.'" style="display: none"><th colspan="6">';

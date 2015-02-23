@@ -187,7 +187,7 @@
                                     if($auxSala == 0){
                                         echo "<td>Sin Periodo</td>";
                                     } else {
-                                        echo "<td>".salaE3['Edificio']." ". $salaE3['Nombre_sala']."</td>";
+                                        echo "<td>".$salaE3['Edificio']." ". $salaE3['Nombre_sala']."</td>";
                                     }
                                     echo "</tr>";
                                 }

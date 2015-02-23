@@ -33,7 +33,6 @@
             }
             function validarForm(formulario) {
                 var horario = formulario.getElementsByClassName("hora");
-                console.log(horario);
                 for(var i = 0; i < horario.length; i++) {
                     if(horario[i].value == -1) {
                         alert("Ingrese todos los Periodos correspondientes");
@@ -69,6 +68,8 @@
 		    <?php
 				echo "<input type='hidden' id='departa' name='depar' value='".$departamento."'/>";
 				echo "<input type='hidden' id='carrera' name='carre' value='".$carrera."'/>";
+                echo "<input type='hidden' id='estaRepetido' name='estaRepetido' value='".$_POST['estaRepetido']."'/>";
+				echo "<input type='hidden' id='PDIRepetido' name='PDIRepetido' value='".$_POST['PDIRepetido']."'/>";
 			?>
 			<table align="center" width="80%" border="1" cellpadding="3" cellspacing="0" class="pequena">			
 				<tr class="titulo_fila">
