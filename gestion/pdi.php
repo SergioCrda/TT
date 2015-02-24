@@ -17,56 +17,71 @@
 			}
 			//funcion para validar los datos
 			function validarForm(){
-				 var dep=document.getElementById("departamento_id").value;
-				 var car=document.getElementById("carrera_id").value;
-				 if (dep=='0' && car=='0'){
-				   alert('Seleccione Departamento y Carrera');
-				   return false;
-				 }else{
-					if(dep!='0' && car=='0'){
+                var depLista = document.getElementById("departamento_id");
+                var depSelec = depLista.selectedIndex;
+                var opcDepto = depLista.options[depSelec];
+                var texDepto = opcDepto.text;
+                var valDepto = opcDepto.value;
+
+                var carLista = document.getElementById("carrera_id");
+                var carSelec = carLista.selectedIndex;
+                var opcCarre = carLista.options[carSelec];
+                var texCarre = opcCarre.text;
+                var valCarre = opcCarre.value;
+
+
+                if (valDepto=='0' && valCarre=='0'){
+                    alert('Seleccione Departamento y Carrera');
+                    return false;
+                }else{
+                    if(valDepto!='0' && valCarre=='0'){
 						alert('Seleccione Carrera');
 						return false;
 					}
-					if(dep=='0' && car!='0'){
+					if(valDepto=='0' && valCarre!='0'){
 						alert('Seleccione Departamento');
 						return false;
 					}else{
-						return true;
+						//codigo para validar que no este repetido la seleccion depto-carrera
+                        var consulta =
+                        <?php
+                            $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
+                            mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
+
+                            $PDIConsulta1 = "SELECT * FROM `PDI` WHERE `ID_profesor` = '1'";
+                            $PDIConsulta2 = mysql_query($PDIConsulta1) or die('Consulta fallida: '.mysql_error());
+                            $i = 0;
+                            while($PDIConsulta3 = mysql_fetch_assoc($PDIConsulta2)) {
+                                $par[$i][0] = $PDIConsulta3['departamentos_ID_depto'];
+                                $par[$i][1] = $PDIConsulta3['carreras_ID_carrera'];
+                                $par[$i][2] = $PDIConsulta3['ID_PDI'];
+                                $i++;
+                            }
+                            echo json_encode($par);
+                        ?>;
+                        for(var i=0;i<consulta.length;i++) {
+                            if(consulta[i][0] == valDepto && consulta[i][1] == valCarre){
+                                var modificar = confirm("Se va crear una Programaci\u00f3n Docente Inicial para el departamento "+texDepto+" y la carrera "+texCarre+". Ya ha creado una anteriormente para esta selecci\u00f3n. \u00bfDesea eliminar la solicitud anterior y crear una nueva\u003f");
+                                if(modificar){
+                                    console.log(modificar);
+                                    var repetido = document.getElementById("estaRepetido");
+                                    var PDIrepet = document.getElementById("PDIRepetido");
+                                    repetido.value = "1";
+                                    PDIrepet.value = consulta[i][2];
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return true;
+                            }
+                        }
 					}
-				 }
-			}
+                }
+            }
             function mostrar(detalle) {
                 var style2 = document.getElementById(detalle).style;
 		        style2.display = style2.display? "":"none";
-            }
-            function validarCarreraDepto(){
-                var depto = document.PDI.departamento_name_id.selectedIndex;
-                var carre = document.PDI.carrera_name_id.selectedIndex;
-                var consulta =
-                    <?php
-                        $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
-                        mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
-
-                        $PDIConsulta1 = "SELECT * FROM `PDI` WHERE `ID_profesor` = '1'";
-                        $PDIConsulta2 = mysql_query($PDIConsulta1) or die('Consulta fallida: '.mysql_error());
-                        $i = 0;
-                        while($PDIConsulta3 = mysql_fetch_assoc($PDIConsulta2)) {
-                            $par[$i][0] = $PDIConsulta3['departamentos_ID_depto'];
-                            $par[$i][1] = $PDIConsulta3['carreras_ID_carrera'];
-                            $i++;
-                        }
-                        echo json_encode($par);
-                    ?>;
-                //console.log(consulta);
-                for(var i=0;i<consulta.length;i++) {
-                    //console.log(consulta[i][0]);
-                    //console.log(depto);
-                    if(parseInt(consulta[i][0]) == depto && parseInt(consulta[i][1]) == carre){
-                        //alert("son iguales");
-                    } else {
-                        //alert("no son iguales");
-                    }
-                }
             }
 		</script>
 		<div id="fecha">
@@ -114,7 +129,7 @@
 						?>
 					</td>
 					<td>
-						<center><input type="submit" name="solicitar" formmethod="post" formaction="pdi1.php" value="Elegir Ramos" onclick="validarCarreraDepto();"></center>
+						<center><input type="submit" name="solicitar" formmethod="post" formaction="pdi1.php" value="Elegir Ramos"></center>
 					</td>
 				</tr>
 			</form>
