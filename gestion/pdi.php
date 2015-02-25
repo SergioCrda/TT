@@ -48,7 +48,7 @@
                             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
                             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
 
-                            $PDIConsulta1 = "SELECT * FROM `PDI` WHERE `ID_profesor` = '1'";
+                            $PDIConsulta1 = "SELECT * FROM `PDI` WHERE `ID_profesor` = '1' AND `Estado_PDI` <> 7";
                             $PDIConsulta2 = mysql_query($PDIConsulta1) or die('Consulta fallida: '.mysql_error());
                             $i = 0;
                             while($PDIConsulta3 = mysql_fetch_assoc($PDIConsulta2)) {
@@ -59,11 +59,11 @@
                             }
                             echo json_encode($par);
                         ?>;
+                        console.log(consulta);
                         for(var i=0;i<consulta.length;i++) {
                             if(consulta[i][0] == valDepto && consulta[i][1] == valCarre){
-                                var modificar = confirm("Se va crear una Programaci\u00f3n Docente Inicial para el departamento "+texDepto+" y la carrera "+texCarre+". Ya ha creado una anteriormente para esta selecci\u00f3n. \u00bfDesea eliminar la solicitud anterior y crear una nueva\u003f");
+                                var modificar = confirm("Se va crear una Programaci\u00f3n Docente Inicial para departamento "+texDepto+" y carrera "+texCarre+", se sobreescribir\u00e1 PDI N\u00ba "+consulta[i][2]+". \u00bfDesea eliminar la solicitud anterior y crear una nueva\u003f");
                                 if(modificar){
-                                    console.log(modificar);
                                     var repetido = document.getElementById("estaRepetido");
                                     var PDIrepet = document.getElementById("PDIRepetido");
                                     repetido.value = "1";
@@ -72,8 +72,6 @@
                                 } else {
                                     return false;
                                 }
-                            } else {
-                                return true;
                             }
                         }
 					}
@@ -152,7 +150,7 @@
                     while($PDI3 = mysql_fetch_assoc($PDI2)){
                         $cuenta++;
                         if($cuenta == 1){
-                            echo '<table align="center" width="90%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdiTabla"><tr class="titulo_fila"><td>Folio PDI</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado Actual</td></tr>';
+                            echo '<table align="center" width="90%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdiTabla"><tr class="titulo_fila"><td>Folio PDI</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado Actual</td><td>PDI Cancelado</td></tr>';
                         }
 
                         $carrera1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = ".$PDI3['carreras_ID_carrera'] ;
@@ -173,6 +171,11 @@
                         echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                         echo '<td>'.$depto3['Nombre_depto'].'</td>';
                         echo '<td>'.$estado03['Nombre'].'</td>';
+                        if($PDI3['PDICancelado']!=null) {
+                            echo '<td>'.$PDI3['PDICancelado'].'</td>';
+                        } else {
+                            echo '<td>No</td>';
+                        }
                         echo '</tr>';
 
                         $seleccionRamoPDI1 = "SELECT * FROM `ramos_PDI` WHERE `PDI_id_PDI` = ".$PDI3['ID_PDI'];

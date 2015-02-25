@@ -45,7 +45,11 @@
 
             //inserta datos en PDI
             $fechaHora = date('Y-m-j H:i:s');
-            $nuevaPDI1 = "INSERT INTO `PDI`(`Estado_PDI`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDI`,`carreras_ID_carrera`,`departamentos_ID_depto`) VALUES (1,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$carrera."','".$departamento."')";
+            if($repetido == "1"){
+                $nuevaPDI1 = "INSERT INTO `PDI`(`Estado_PDI`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDI`,`carreras_ID_carrera`,`departamentos_ID_depto`, `PDICancelado`) VALUES (1,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$carrera."','".$departamento."',".$PDIRepetido.")";
+            } else {
+                $nuevaPDI1 = "INSERT INTO `PDI`(`Estado_PDI`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDI`,`carreras_ID_carrera`,`departamentos_ID_depto`) VALUES (1,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$carrera."','".$departamento."')";
+            }
             $nuevaPDI2 = mysql_query($nuevaPDI1) or die('Consulta fallida $nuevaPDI2: ' . mysql_error());
             
             //obtiene el ID_PDI
