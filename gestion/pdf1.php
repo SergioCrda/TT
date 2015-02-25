@@ -86,12 +86,12 @@
                 echo '<table align="center" width="75%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdfTabla" name="pdfRamos">';
                 echo '<tr class="titulo_fila"><td>Folio</td><td>Fecha</td><td>Nombre Docente</td><td>Escuela</td><td>Departamento</td><td>Carrera</td><td>Estado</td></tr>';
                 echo "<tr class='centro'>";
-                echo "<td>".$seleccionPDI3['ID_PDI']."<input type='hidden' id='idPDI' name='id_pdi' value='$seleccionPDI3['ID_PDI']'/></td>";
-                echo "<td>".$seleccionPDI3['Fecha_PDI']."<input type='hidden' id='fechaPDI' name='fecha_pdi' value='$seleccionPDI3['Fecha_PDI']'/></td>";
-                echo "<td>".$seleccionPDI3['Nombre_docente']."<input type='hidden' id='nombreDocente' name='nombre_docente' value='$seleccionPDI3['Nombre_docente']'/></td>";
-                echo "<td>".$seleccionPDI3['ID_escuela']."<input type='hidden' id='IDEscuela' name='ID_Escuela' value='$seleccionPDI3['ID_escuela']'/></td>";
-                echo "<td>".$departamento3['Nombre_depto']."<input type='hidden' id='depa' name='depto' value='$departamento3['Nombre_depto']'/></td>";
-                echo "<td>".$carrera3['Nombre_carrera']."<input type='hidden' id='carre' name='carrera' value='$carrera3['Nombre_carrera']'/></td>";
+                echo "<td>".$seleccionPDI3['ID_PDI']."<input type='hidden' id='idPDI' name='id_pdi' value='".$seleccionPDI3['ID_PDI']."'/></td>";
+                echo "<td>".$seleccionPDI3['Fecha_PDI']."<input type='hidden' id='fechaPDI' name='fecha_pdi' value='".$seleccionPDI3['Fecha_PDI']."'/></td>";
+                echo "<td>".$seleccionPDI3['Nombre_docente']."<input type='hidden' id='nombreDocente' name='nombre_docente' value='".$seleccionPDI3['Nombre_docente']."'/></td>";
+                echo "<td>".$seleccionPDI3['ID_escuela']."<input type='hidden' id='IDEscuela' name='ID_Escuela' value='".$seleccionPDI3['ID_escuela']."'/></td>";
+                echo "<td>".$departamento3['Nombre_depto']."<input type='hidden' id='depa' name='depto' value='".$departamento3['Nombre_depto']."'/></td>";
+                echo "<td>".$carrera3['Nombre_carrera']."<input type='hidden' id='carre' name='carrera' value='".$carrera3['Nombre_carrera']."'/></td>";
                 echo "<td>".$estado03['Nombre']."</td>";
                 echo "</tr>";
                 echo "<tr>";
@@ -113,7 +113,7 @@
                     echo "<td width='80px'>".$cuenta1."</td>";
                     echo "<td width='150px'>".$ramo3['Codigo_ramo']."<input type='hidden' id='codramo' name='codramos[]' value='".$ramo3['Codigo_ramo']."'/></td>";
                     echo "<td width='400px'>".$ramo3['Nombre_ramo']."<input type='hidden' id='nomramo' name='ramos[]' value='".$ramo3['Nombre_ramo']."'/></td>";
-                    echo "<td>".$seleccionRamoPDI3['Cantidad_secciones'];."<input type='hidden' id='cantidadSecciones' name='cantidad_secciones[]' value='".$seleccionRamoPDI3['Cantidad_secciones'];."'/></td>";
+                    echo "<td>".$seleccionRamoPDI3['Cantidad_secciones']."<input type='hidden' id='cantidadSecciones' name='cantidad_secciones[]' value='".$seleccionRamoPDI3['Cantidad_secciones']."'/></td>";
                     echo "</tr>";
                     echo "<tr>";
                     echo "<th colspan='4'>";

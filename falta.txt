@@ -5,4 +5,5 @@ TO DO
 
 DOING
 - falta relacionar las salas de un PDF a asignacion_salas
-- sobreescribir una PDI/PDF cuando se crea para la misma carrera-departamento
+- en el sobreescribir PDI guardar el PDI que se canceló
+- en el sobreescribir PDF

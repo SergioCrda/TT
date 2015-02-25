@@ -51,22 +51,22 @@
 
             //obtiene el ID_depto
             $consultaID_depto1 = "SELECT `ID_depto` FROM `departamentos` WHERE `Nombre_depto` = '".$depto."'";
-            $consultaID_depto2 = mysql_query($consultaID_depto1) or die('Consulta fallida: ' . mysql_error());
+            $consultaID_depto2 = mysql_query($consultaID_depto1) or die('Consulta fallida $consultaID_depto2: ' . mysql_error());
             $consultaID_depto3 = mysql_fetch_assoc($consultaID_depto2);
 
             //obtiene el ID_carrera
             $consultaID_carrera1 = "SELECT `ID_carrera` FROM `carreras` WHERE `Nombre_carrera` = '".$carrera."'";
-            $consultaID_carrera2 = mysql_query($consultaID_carrera1) or die('Consulta fallida: ' . mysql_error());
+            $consultaID_carrera2 = mysql_query($consultaID_carrera1) or die('Consulta fallida $consultaID_carrera2: ' . mysql_error());
             $consultaID_carrera3 = mysql_fetch_assoc($consultaID_carrera2);
 
             //inserta datos en PDF
             $fechaHora = date('Y-m-j H:i:s');
             $nuevaPDF1 = "INSERT INTO `PDF`(`Estado_PDF`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDF`,`carreras_ID_carrera`,`departamentos_ID_depto`,`ID_PDI`) VALUES (12,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$consultaID_carrera3['ID_carrera']."','".$consultaID_depto3['ID_depto']."','".$idPDI."')";
-            $nuevaPDF2 = mysql_query($nuevaPDF1) or die('Consulta fallida: ' . mysql_error());
+            $nuevaPDF2 = mysql_query($nuevaPDF1) or die('Consulta fallida $nuevaPDF2 $nuevaPDF2: ' . mysql_error());
 
             //obtiene el ID_PDF
             $conocePDF1 = "SELECT `ID_PDF` FROM `PDF` WHERE `Nombre_docente` = 'NOMBRE_PRUEBA' AND `ID_profesor` = 1 AND `ID_escuela` = 1 AND `Fecha_PDF` = '".$fechaHora."' AND `carreras_ID_carrera` = '".$consultaID_carrera3['ID_carrera']."' AND `departamentos_ID_depto` = '".$consultaID_depto3['ID_depto']."' ";
-            $conocePDF2 = mysql_query($conocePDF1) or die('Consulta fallida: ' . mysql_error());
+            $conocePDF2 = mysql_query($conocePDF1) or die('Consulta fallida $conocePDF2: ' . mysql_error());
             $conocePDF3 = mysql_fetch_assoc($conocePDF2);
             $ID_PDF = $conocePDF3['ID_PDF'];
 
@@ -74,17 +74,17 @@
             for($i = 0; $i < count($ramos); $i++){
                 //obtiene el ID_ramo
                 $conoceIDRAMO1 = "SELECT `ID_ramo` FROM `ramos` WHERE `Nombre_ramo` = '".$ramos[$i]."'";
-                $conoceIDRAMO2 = mysql_query($conoceIDRAMO1) or die('Consulta fallida: ' . mysql_error());
+                $conoceIDRAMO2 = mysql_query($conoceIDRAMO1) or die('Consulta fallida $conoceIDRAMO2: ' . mysql_error());
                 $conoceIDRAMO3 = mysql_fetch_assoc($conoceIDRAMO2);
                 $ID_ramo = $conoceIDRAMO3['ID_ramo'];
 
                 //inserta los ramos
                 $nuevoRamo1 = "INSERT INTO `ramos_PDF`(`ID_ramo`, `Cantidad_secciones`, `PDF_ID_PDF`) VALUES (".$ID_ramo.",".$cantidadSecciones[$i].",".$ID_PDF.")";
-                $nuevoRamo2 = mysql_query($nuevoRamo1) or die('Consulta fallida: ' . mysql_error());
+                $nuevoRamo2 = mysql_query($nuevoRamo1) or die('Consulta fallida $nuevoRamo2: ' . mysql_error());
 
                 //obtiene el ID_ramo_PDI
                 $conoceIDRAMOPDF1 = "SELECT `ID_ramos_PDF` FROM `ramos_PDF` WHERE `Cantidad_secciones` = '".$cantidadSecciones[$i]."' AND `ID_ramo` = '".$ID_ramo."' AND `PDF_ID_PDF` = '".$ID_PDF."'";
-                $conoceIDRAMOPDF2 = mysql_query($conoceIDRAMOPDF1) or die('Consulta fallida: ' . mysql_error());
+                $conoceIDRAMOPDF2 = mysql_query($conoceIDRAMOPDF1) or die('Consulta fallida $conoceIDRAMOPDF2: ' . mysql_error());
                 $conoceIDRAMOPDF3 = mysql_fetch_assoc($conoceIDRAMOPDF2);
                 $ID_ramo_PDF = $conoceIDRAMOPDF3['ID_ramos_PDF'];
 
@@ -97,13 +97,14 @@
                         $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDF`(`Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Sala_1`, `Sala_2`, `Sala_3`, `Nombre_docente`, `Cantidad_alumnos`) 
                                         VALUES (".($j+1).", '".$ID_ramo_PDF."', ".$horario[$i][$j][0].", ".$horario[$i][$j][1].", ".$horario[$i][$j][2].", ".$sala[$i][$j][0].", ".$sala[$i][$j][1].", ".$sala[$i][$j][2].", ".$profe[$i][$j].", ".$alumnos[$i][$j].")";
                     }
-                    $nuevaSeccion2 = mysql_query($nuevaSeccion1) or die('Consulta fallida: ' . mysql_error());
+                    $nuevaSeccion2 = mysql_query($nuevaSeccion1) or die('Consulta fallida $nuevaSeccion2: ' . mysql_error());
                 }
             }
             
             //actualiza estado PDI 
-            $actualizarPDI1 = "UPDATE `PDI` SET `Estado_PDI`= 5 WHERE `ID_PDI`= ".$idPDI;
-            $actualizarPDI2 = mysql_query($actualizarPDI1) or die('Consulta fallida: ' . mysql_error());
+            $actualizarPDI1 = "UPDATE `PDI` SET `Estado_PDI`= 5 WHERE `ID_PDI`= '".$idPDI."'";
+print_r($actualizarPDI1);
+            $actualizarPDI2 = mysql_query($actualizarPDI1) or die('Consulta fallida $actualizarPDI2: ' . mysql_error());
         ?>
         <div>
 			<dd>
@@ -134,11 +135,11 @@
                                 echo "<tr><td class='titulo_fila media' colspan='4'>Secci&oacute;n N&uacute;mero ".$noSeccion[$i][$j]."</td></tr>";
                                 for($k = 0; $k < 3; $k++) {
                                     $horarioE1 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = ".$horario[$i][$j][$k];
-                                    $horarioE2 = mysql_query($horarioE1) or die('Consulta fallida: '.mysql_error());
+                                    $horarioE2 = mysql_query($horarioE1) or die('Consulta fallida $horarioE2: '.mysql_error());
                                     $horarioE3 = mysql_fetch_assoc($horarioE2);
 
                                     $salaE1 = "SELECT * FROM `salas` WHERE `ID_sala` = ".$sala[$i][$j][$k];
-                                    $salaE2 = mysql_query($salaE1) or die('Consulta fallida: '.mysql_error());
+                                    $salaE2 = mysql_query($salaE1) or die('Consulta fallida $salaE2: '.mysql_error());
                                     $salaE3 = mysql_fetch_assoc($salaE2);
 
                                     echo "<tr>";
