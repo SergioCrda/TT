@@ -5,5 +5,3 @@ TO DO
 
 DOING
 - falta relacionar las salas de un PDF a asignacion_salas
-- en el sobreescribir PDF (aparezca igual la opción pero recordando que sobreescribirá)
-- comprobante para PDI y PDF en modificación
