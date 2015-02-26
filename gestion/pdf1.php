@@ -64,6 +64,8 @@
                 $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
                 mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
 
+                echo "<input type='hidden' id='pdf_old' name='pdf_old' value='".$_GET['pdf_old']."'/>";
+
                 $idpdi = $_GET['id_pdi'];
                 $seleccionPDI1 = "SELECT * FROM `PDI` WHERE `ID_PDI` = " . $idpdi;
                 $seleccionPDI2 = mysql_query($seleccionPDI1) or die('Consulta fallida: '.mysql_error());

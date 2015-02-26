@@ -112,10 +112,16 @@
 	$pdf->SetX(70);
 	$pdf->SetFont('Arial','B',11);
 	$pdf->Cell(200,10,$_GET['depa'],0,0,'L');
+    if($_GET['repe'] != "") {
+        $pdf->Ln(5);
+        $pdf->SetX(30);
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(200,10, utf8_decode('y se ha cancelado la Programación Docente Inicial Nº '.$_GET['repe']),0,0,'L');
+    }
 	$pdf->Ln(5);
 	$pdf->SetX(30);
 	$pdf->SetFont('Arial','',11);
-	$pdf->Cell(200,10, utf8_decode('en esta Programación se solicitan las siguientes asignaturas: '),0,0,'L');
+	$pdf->Cell(200,10, utf8_decode('esta solicitud contiene las siguientes asignaturas: '),0,0,'L');
 	$pdf->Ln(15);
 	
 	//titulo 2

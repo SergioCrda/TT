@@ -112,10 +112,16 @@
 	$pdf->SetX(70);
 	$pdf->SetFont('Arial','B',11);
 	$pdf->Cell(200,10,$_GET['depa'],0,0,'L');
+    if($_GET['pdf_old'] != "") {
+        $pdf->Ln(5);
+        $pdf->SetX(30);
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(200,10, utf8_decode('y se ha cancelado la Programación Docente Final Nº '.$_GET['pdf_old']),0,0,'L');
+    }
 	$pdf->Ln(5);
 	$pdf->SetX(30);
 	$pdf->SetFont('Arial','',11);
-	$pdf->Cell(200,10, utf8_decode('en esta Programación se solicitan las siguientes asignaturas: '),0,0,'L');
+	$pdf->Cell(200,10, utf8_decode('esta solicitud contiene las siguientes asignaturas: '),0,0,'L');
 	$pdf->Ln(15);
 	
 	//titulo 2
@@ -194,45 +200,45 @@
             }
             
             $pdf->SetX(30);
-            $pdf->Cell(30,5, utf8_decode('Horario 1'),1,0,'C',true);
-            $pdf->SetX(60);
-            $pdf->Cell(50,5, $horario04,1,0,'C',false);
+            $pdf->Cell(25,5, utf8_decode('Horario 1'),1,0,'L',true);
+            $pdf->SetX(55);
+            $pdf->Cell(55,5, $horario04,1,0,'C',false);
             $pdf->SetX(110);
-            $pdf->Cell(30,5, utf8_decode('Sala 1'),1,0,'C',true);
-            $pdf->SetX(140);
-            $pdf->Cell(40,5, $sala042." ".$sala041 ,1,0,'C',false);
+            $pdf->Cell(25,5, utf8_decode('Sala 1'),1,0,'L',true);
+            $pdf->SetX(135);
+            $pdf->Cell(45,5, $sala042." ".$sala041 ,1,0,'C',false);
             $pdf->Ln(5);
             
             $pdf->SetX(30);
-            $pdf->Cell(30,5, utf8_decode('Horario 2'),1,0,'C',true);
-            $pdf->SetX(60);
-            $pdf->Cell(50,5, $horario14,1,0,'C',false);
+            $pdf->Cell(25,5, utf8_decode('Horario 2'),1,0,'L',true);
+            $pdf->SetX(55);
+            $pdf->Cell(55,5, $horario14,1,0,'C',false);
             $pdf->SetX(110);
-            $pdf->Cell(30,5, utf8_decode('Sala 1'),1,0,'C',true);
-            $pdf->SetX(140);
-            $pdf->Cell(40,5, $sala142." ".$sala141 ,1,0,'C',false);
+            $pdf->Cell(25,5, utf8_decode('Sala 2'),1,0,'L',true);
+            $pdf->SetX(135);
+            $pdf->Cell(45,5, $sala142." ".$sala141 ,1,0,'C',false);
             $pdf->Ln(5);
             
             $pdf->SetX(30);
-            $pdf->Cell(30,5, utf8_decode('Horario 3'),1,0,'C',true);
-            $pdf->SetX(60);
-            $pdf->Cell(50,5, $horario24,1,0,'C',false);
+            $pdf->Cell(25,5, utf8_decode('Horario 3'),1,0,'L',true);
+            $pdf->SetX(55);
+            $pdf->Cell(55,5, $horario24,1,0,'C',false);
             $pdf->SetX(110);
-            $pdf->Cell(30,5, utf8_decode('Sala 1'),1,0,'C',true);
-            $pdf->SetX(140);
-            $pdf->Cell(40,5, $sala242." ".$sala241 ,1,0,'C',false);
+            $pdf->Cell(25,5, utf8_decode('Sala 3'),1,0,'L',true);
+            $pdf->SetX(135);
+            $pdf->Cell(45,5, $sala242." ".$sala241 ,1,0,'C',false);
             $pdf->Ln(5);
             
             $pdf->SetX(30);
-            $pdf->Cell(30,5,'Profesor',1,0,'C',true);
-            $pdf->SetX(60);
-            $pdf->Cell(120,5,$data[5][$i][$j],1,0,'C',false);
+            $pdf->Cell(45,5,'Profesor',1,0,'L',true);
+            $pdf->SetX(75);
+            $pdf->Cell(105,5,$data[5][$i][$j],1,0,'C',false);
             $pdf->Ln(5);
             
             $pdf->SetX(30);
-            $pdf->Cell(50,5,"Cantidad de Alumnos",1,0,"C",true);
-            $pdf->SetX(80);
-            $pdf->Cell(100,5,$data[6][$i][$j],1,0,'C',false);
+            $pdf->Cell(45,5,"Cantidad de Alumnos",1,0,"L",true);
+            $pdf->SetX(75);
+            $pdf->Cell(105,5,$data[6][$i][$j],1,0,'C',false);
             $pdf->Ln(5);
         }
         $pdf->Ln(5);

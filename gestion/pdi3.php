@@ -107,7 +107,7 @@
                         $PDICancelado = ' y se ha cancelado la Programaci&oacute;n Docente Inicial N&deg; '.$PDIRepetido;
                         echo $PDICancelado;
                     }
-                ?>, en esta Programaci&oacute;n se solicitan las siguientes asignaturas: </br></br>
+                ?>, esta solicitud contiene las siguientes asignaturas: </br></br>
 				<center><strong><ins>Listado de asignaturas</ins></strong></center></br>			
 				<table align="center" cellspacing="0" cellpadding="3" class="pequena" width="80%">
 					<tr class="titulo_fila">
@@ -136,7 +136,7 @@
                     if($repetido == "1"){
                         $pdfArchivo = $pdfArchivo.'&repe='.$PDIRepetido;
                     }
-                    $pdfArchivo = $pdfArchivo.' target="_blank">aqu&iacute;.</a></br></br>';
+                    $pdfArchivo = $pdfArchivo.'" target="_blank">aqu&iacute;.</a></br></br>';
                     echo $pdfArchivo;
                 ?>
 			</dd>

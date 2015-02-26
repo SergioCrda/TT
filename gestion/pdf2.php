@@ -14,6 +14,7 @@
 		<h3>Programaci&oacute;n Docente Inicial<br><small>Selecci&oacute;n de docente por secci&oacute;n</small></h3>
 		<?php
 			$idPDI = $_POST['id_pdi'];
+			$pdf_old = $_POST['pdf_old'];
 			$fechaPDI = $_POST['fecha_pdi'];
 			$nombreDocente = $_POST['nombre_docente'];
 			$IDEscuela = $_POST['ID_Escuela'];
@@ -61,8 +62,18 @@
 
             //inserta datos en PDF
             $fechaHora = date('Y-m-j H:i:s');
-            $nuevaPDF1 = "INSERT INTO `PDF`(`Estado_PDF`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDF`,`carreras_ID_carrera`,`departamentos_ID_depto`,`ID_PDI`) VALUES (12,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$consultaID_carrera3['ID_carrera']."','".$consultaID_depto3['ID_depto']."','".$idPDI."')";
+            if($pdf_old == "") {
+                $nuevaPDF1 = "INSERT INTO `PDF`(`Estado_PDF`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDF`,`carreras_ID_carrera`,`departamentos_ID_depto`,`ID_PDI`) VALUES (12,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$consultaID_carrera3['ID_carrera']."','".$consultaID_depto3['ID_depto']."','".$idPDI."')";
+            } else {
+                $nuevaPDF1 = "INSERT INTO `PDF`(`Estado_PDF`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDF`,`carreras_ID_carrera`,`departamentos_ID_depto`,`ID_PDI`,`PDFCancelado`) VALUES (12,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$consultaID_carrera3['ID_carrera']."','".$consultaID_depto3['ID_depto']."','".$idPDI."','".$pdf_old."')";
+            }
             $nuevaPDF2 = mysql_query($nuevaPDF1) or die('Consulta fallida $nuevaPDF2 $nuevaPDF2: ' . mysql_error());
+
+            //actualiza estado PDF
+            if($pdf_old != "") {
+                $actualizarPDI1 = "UPDATE `PDF` SET `Estado_PDF`= 17 WHERE `ID_PDF`= '".$pdf_old."'";
+                $actualizarPDI2 = mysql_query($actualizarPDI1) or die('Consulta fallida $actualizarPDI2: ' . mysql_error());
+            }
 
             //obtiene el ID_PDF
             $conocePDF1 = "SELECT `ID_PDF` FROM `PDF` WHERE `Nombre_docente` = 'NOMBRE_PRUEBA' AND `ID_profesor` = 1 AND `ID_escuela` = 1 AND `Fecha_PDF` = '".$fechaHora."' AND `carreras_ID_carrera` = '".$consultaID_carrera3['ID_carrera']."' AND `departamentos_ID_depto` = '".$consultaID_depto3['ID_depto']."' ";
@@ -103,14 +114,18 @@
             
             //actualiza estado PDI 
             $actualizarPDI1 = "UPDATE `PDI` SET `Estado_PDI`= 5 WHERE `ID_PDI`= '".$idPDI."'";
-print_r($actualizarPDI1);
             $actualizarPDI2 = mysql_query($actualizarPDI1) or die('Consulta fallida $actualizarPDI2: ' . mysql_error());
         ?>
         <div>
 			<dd>
 				<strong>Estimado Director de Escuela:</strong></br></br>
 				Se ha realizado la siguiente <strong>Programaci&oacute;n Docente Final</strong> N&deg;<?php echo $ID_PDF; ?> <strong></strong> para la carrera de <strong><?php echo $carrera; ?></strong> 
-				al Departamento de <strong><?php echo $depto; ?></strong>, en esta Programaci&oacute;n se solicitan las siguientes asignaturas: </br></br>
+				al Departamento de <strong><?php echo $depto; ?></strong><?php
+                    if($pdf_old != "") {
+                        $PDFCancelado = ' y se ha cancelado la Programaci&oacute;n Docente Final N&deg; '.$pdf_old;
+                        echo $PDFCancelado;
+                    }
+                ?>, esta solicitud contiene las siguientes asignaturas: </br></br>
 				<center><strong><ins>Listado de asignaturas</ins></strong></center></br>			
 				<table align="center" border="1" cellspacing="0" cellpadding="3" class="pequena" width="80%">
 					<?php
@@ -176,7 +191,14 @@ print_r($actualizarPDI1);
 				- Si deseas agregar o cambiar asignaturas, puedes realizar nuevamente el proceso de Programaci&oacute;n Docente Final.</br>
 				Debes seleccionar la opci&oacute;n Inscripci&oacute;n de Ramos. Al realizarlo, la &uacute;ltima solicitud ser&aacute; la v&aacute;lida</br>
 				- Si deseas descargar un comprobante has clic 
-				<a href="comprobantePDF.php?depa=<?php echo $depto; ?>&carre=<?php echo $carrera; ?>&numPDF=<?php echo $ID_PDF; ?>&data=<?php echo $data; ?>" target="_blank">aqu&iacute;.</a></br></br>
+                <?php
+                    $pdfArchivo = '<a href="comprobantePDF.php?depa='.$depto.'&carre='.$carrera.'&numPDF='.$ID_PDF.'&data='.$data;
+                    if($pdf_old != "") {
+                        $pdfArchivo = $pdfArchivo.'&pdf_old='.$pdf_old;
+                    }
+                    $pdfArchivo = $pdfArchivo.'" target="_blank">aqu&iacute;.</a></br></br>';
+                    echo $pdfArchivo;
+                ?>
 			</dd>
 		</div>
 	</body>
