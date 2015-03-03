@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost:8889
--- Tiempo de generación: 19-01-2015 a las 22:32:57
+-- Tiempo de generación: 03-03-2015 a las 11:52:00
 -- Versión del servidor: 5.5.34
 -- Versión de PHP: 5.5.10
 
@@ -246,18 +246,20 @@ CREATE TABLE `estados_pdi_pdf` (
 INSERT INTO `estados_pdi_pdf` (`ID_estado`, `Proceso`, `Nombre`) VALUES
 (0, 'PDI', 'No Creado'),
 (1, 'PDI', 'Revisión Decanato'),
-(2, 'PDI', 'Revision VRAC'),
+(2, 'PDI', 'Revisión VRAC'),
 (3, 'PDI', 'Revisión DEA'),
 (4, 'PDI', 'PDI Aprobado'),
 (5, 'PDI', 'En Proceso PDF'),
 (6, 'PDI', 'Cerrado'),
+(7, 'PDI', 'Cancelado por Nuevo PDI'),
 (10, 'PDF', 'No Creado'),
 (11, 'PDF', 'Asignación de Académicos'),
 (12, 'PDF', 'Revisión Decanato'),
-(13, 'PDF', 'Revision VRAC'),
+(13, 'PDF', 'Revisión VRAC'),
 (14, 'PDF', 'Revisión DEA'),
 (15, 'PDF', 'PDF Aprobado'),
-(16, 'PDF', 'Cerrado');
+(16, 'PDF', 'Cerrado'),
+(17, 'PDF', 'Cancelado por Nuevo PDF');
 
 -- --------------------------------------------------------
 
@@ -275,14 +277,14 @@ CREATE TABLE `PDF` (
   `carreras_ID_carrera` int(11) NOT NULL,
   `departamentos_ID_depto` int(11) NOT NULL,
   `ID_PDI` int(11) NOT NULL,
+  `PDFCancelado` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID_PDF`,`departamentos_ID_depto`,`carreras_ID_carrera`,`Estado_PDF`,`ID_PDI`),
   UNIQUE KEY `ID_PDF` (`ID_PDF`),
   KEY `fk_PDF_carreras1_idx` (`carreras_ID_carrera`),
   KEY `fk_PDF_departamentos1_idx` (`departamentos_ID_depto`),
   KEY `fk_PDF_ID_PDI_idx` (`ID_PDI`),
   KEY `fk_Estado_PDF_estados_pdi_pdf_idx` (`Estado_PDF`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
@@ -297,14 +299,15 @@ CREATE TABLE `PDI` (
   `ID_profesor` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `ID_escuela` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `Fecha_PDI` datetime NOT NULL,
-  `carreras_ID_carrera` int(11) NOT NULL,
   `departamentos_ID_depto` int(11) NOT NULL,
+  `carreras_ID_carrera` int(11) NOT NULL,
+  `PDICancelado` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID_PDI`,`departamentos_ID_depto`,`carreras_ID_carrera`,`Estado_PDI`),
   UNIQUE KEY `ID_PDI` (`ID_PDI`),
   KEY `fk_PDI_carreras1_idx` (`carreras_ID_carrera`),
   KEY `fk_PDI_departamentos1_idx` (`departamentos_ID_depto`),
   KEY `fk_Estado_PDI_estados_pdi_pdf_idx` (`Estado_PDI`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=42 ;
 
 -- --------------------------------------------------------
 
@@ -3578,8 +3581,7 @@ CREATE TABLE `ramos_PDF` (
   `PDF_id_PDF` int(11) NOT NULL,
   PRIMARY KEY (`ID_ramos_PDF`,`PDF_id_PDF`),
   KEY `fk_Ramos_PDF_PDF_idx` (`PDF_id_PDF`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=82 ;
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
@@ -3594,8 +3596,7 @@ CREATE TABLE `ramos_PDI` (
   `PDI_id_PDI` int(11) NOT NULL,
   PRIMARY KEY (`ID_ramos_PDI`,`PDI_id_PDI`),
   KEY `fk_Ramos_PDI_PDI_idx` (`PDI_id_PDI`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=52 ;
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=90 ;
 
 -- --------------------------------------------------------
 
@@ -3605,8 +3606,9 @@ CREATE TABLE `ramos_PDI` (
 
 CREATE TABLE `salas` (
   `ID_sala` int(11) NOT NULL AUTO_INCREMENT,
-  `Nombre_sala` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `Edificio` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `Nombre_sala` varchar(45) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `Capacidad` int(11) NOT NULL,
   PRIMARY KEY (`ID_sala`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
 
@@ -3614,23 +3616,23 @@ CREATE TABLE `salas` (
 -- Volcado de datos para la tabla `salas`
 --
 
-INSERT INTO `salas` (`ID_sala`, `Nombre_sala`, `Edificio`) VALUES
-(0, 'Sin Sala', 'Sin Edificio'),
-(1, '101', 'M1'),
-(2, '102', 'M1'),
-(3, '103', 'M1'),
-(4, '201', 'M1'),
-(5, '202', 'M1'),
-(6, '203', 'M1'),
-(7, '301', 'M1'),
-(8, '302', 'M1'),
-(9, '303', 'M1'),
-(10, '201', 'M2'),
-(11, '202', 'M2'),
-(12, '203', 'M2'),
-(13, '204', 'M2'),
-(14, '301', 'M2'),
-(15, '302', 'M2');
+INSERT INTO `salas` (`ID_sala`, `Edificio`, `Nombre_sala`, `Capacidad`) VALUES
+(0, 'Sin Edificio', 'Sin Sala', 0),
+(1, 'M1', '101', 10),
+(2, 'M1', '102', 10),
+(3, 'M1', '103', 10),
+(4, 'M1', '201', 10),
+(5, 'M1', '202', 20),
+(6, 'M1', '203', 20),
+(7, 'M1', '301', 20),
+(8, 'M1', '302', 30),
+(9, 'M1', '303', 30),
+(10, 'M2', '201', 40),
+(11, 'M2', '202', 40),
+(12, 'M2', '203', 50),
+(13, 'M2', '204', 50),
+(14, 'M2', '301', 100),
+(15, 'M2', '302', 80);
 
 -- --------------------------------------------------------
 
@@ -3658,7 +3660,7 @@ CREATE TABLE `seccion_ramo_PDF` (
   KEY `fk_Sala2_ID_sala_idx` (`Sala_2`),
   KEY `fk_Sala3_ID_sala_idx` (`Sala_3`),
   KEY `fk_Seccion_Ramo_PDF_Ramos_PDF1_idx` (`Ramos_PDF_id_Ramos_PDF`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 -- --------------------------------------------------------
 
@@ -3678,8 +3680,7 @@ CREATE TABLE `seccion_ramo_PDI` (
   KEY `fk_Horario2_ID_periodo_idx` (`Horario_2`),
   KEY `fk_Horario3_ID_periodo_idx` (`Horario_3`),
   KEY `fk_Horario1_ID_periodo_idx` (`Horario_1`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=35 ;
 
 --
 -- Restricciones para tablas volcadas
@@ -3698,19 +3699,18 @@ ALTER TABLE `asignacion_salas`
 -- Filtros para la tabla `PDF`
 --
 ALTER TABLE `PDF`
+  ADD CONSTRAINT `fk_Estado_PDF_estados_pdi_pdf_idx` FOREIGN KEY (`Estado_PDF`) REFERENCES `estados_pdi_pdf` (`ID_estado`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_PDF_carreras1` FOREIGN KEY (`carreras_ID_carrera`) REFERENCES `carreras` (`ID_carrera`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_PDF_departamentos1` FOREIGN KEY (`departamentos_ID_depto`) REFERENCES `departamentos` (`ID_depto`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_PDF_ID_PDI_idx` FOREIGN KEY (`ID_PDI`) REFERENCES `PDI` (`ID_PDI`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Estado_PDF_estados_pdi_pdf_idx` FOREIGN KEY (`Estado_PDF`) REFERENCES `estados_pdi_pdf` (`ID_estado`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
+  ADD CONSTRAINT `fk_PDF_ID_PDI_idx` FOREIGN KEY (`ID_PDI`) REFERENCES `PDI` (`ID_PDI`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `PDI`
 --
 ALTER TABLE `PDI`
+  ADD CONSTRAINT `fk_Estado_PDI_estados_pdi_pdf_idx` FOREIGN KEY (`Estado_PDI`) REFERENCES `estados_pdi_pdf` (`ID_estado`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_PDI_carreras1` FOREIGN KEY (`carreras_ID_carrera`) REFERENCES `carreras` (`ID_carrera`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_PDI_departamentos1` FOREIGN KEY (`departamentos_ID_depto`) REFERENCES `departamentos` (`ID_depto`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Estado_PDI_estados_pdi_pdf_idx` FOREIGN KEY (`Estado_PDI`) REFERENCES `estados_pdi_pdf` (`ID_estado`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_PDI_departamentos1` FOREIGN KEY (`departamentos_ID_depto`) REFERENCES `departamentos` (`ID_depto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `ramos`
