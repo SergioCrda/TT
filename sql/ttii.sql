@@ -21,17 +21,20 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `asignacion_salas` (
-  `ID_asignacion` int(11) NOT NULL AUTO_INCREMENT,
-  `ID_sala_asignacion` int(11) NOT NULL,
-  `ID_periodo_asignacion` int(11) NOT NULL,
-  `ID_ramos_asignacion` int(11) NOT NULL,
+  `ID_asignacion` int(11) NOT NULL,
   `ID_PDF_asignacion` int(11) NOT NULL,
+  `ID_ramos_asignacion` int(11) NOT NULL,
+  `ID_seccion_asignacion` int(11) NOT NULL,
+  `ID_profe_asignacion` int(11) NOT NULL,
+  `ID_periodo_asignacion` int(11) NOT NULL,
+  `ID_sala_asignacion` int(11) NOT NULL,
   PRIMARY KEY (`ID_asignacion`),
-  KEY `ID_periodo_asignacion` (`ID_periodo_asignacion`),
   KEY `ID_PDF_asignacion` (`ID_PDF_asignacion`),
-  KEY `ID_sala_asignacion` (`ID_sala_asignacion`),
-  KEY `ID_rama_asignacion` (`ID_ramos_asignacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `ID_ramo_asignacion` (`ID_ramos_asignacion`),
+  KEY `ID_seccion_asignacion` (`ID_seccion_asignacion`),
+  KEY `ID_periodo_asignacion` (`ID_periodo_asignacion`),
+  KEY `ID_sala_asignacion` (`ID_sala_asignacion`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -277,7 +280,7 @@ CREATE TABLE `PDF` (
   `carreras_ID_carrera` int(11) NOT NULL,
   `departamentos_ID_depto` int(11) NOT NULL,
   `ID_PDI` int(11) NOT NULL,
-  `PDFCancelado` int(11) DEFAULT NULL,
+  `PDF_cancelado` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID_PDF`,`departamentos_ID_depto`,`carreras_ID_carrera`,`Estado_PDF`,`ID_PDI`),
   UNIQUE KEY `ID_PDF` (`ID_PDF`),
   KEY `fk_PDF_carreras1_idx` (`carreras_ID_carrera`),
@@ -301,7 +304,7 @@ CREATE TABLE `PDI` (
   `Fecha_PDI` datetime NOT NULL,
   `departamentos_ID_depto` int(11) NOT NULL,
   `carreras_ID_carrera` int(11) NOT NULL,
-  `PDICancelado` int(11) DEFAULT NULL,
+  `PDI_cancelado` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID_PDI`,`departamentos_ID_depto`,`carreras_ID_carrera`,`Estado_PDI`),
   UNIQUE KEY `ID_PDI` (`ID_PDI`),
   KEY `fk_PDI_carreras1_idx` (`carreras_ID_carrera`),
@@ -3690,10 +3693,11 @@ CREATE TABLE `seccion_ramo_PDI` (
 -- Filtros para la tabla `asignacion_salas`
 --
 ALTER TABLE `asignacion_salas`
-  ADD CONSTRAINT `asignacion_salas_ibfk_1` FOREIGN KEY (`ID_sala_asignacion`) REFERENCES `salas` (`ID_sala`),
-  ADD CONSTRAINT `asignacion_salas_ibfk_2` FOREIGN KEY (`ID_periodo_asignacion`) REFERENCES `periodos` (`ID_periodo`),
-  ADD CONSTRAINT `asignacion_salas_ibfk_3` FOREIGN KEY (`ID_ramos_asignacion`) REFERENCES `ramos` (`ID_ramo`),
-  ADD CONSTRAINT `asignacion_salas_ibfk_4` FOREIGN KEY (`ID_PDF_asignacion`) REFERENCES `PDF` (`ID_PDF`);
+  ADD CONSTRAINT `asignacion_salas_ibfk_1` FOREIGN KEY (`ID_PDF_asignacion`) REFERENCES `PDF` (`ID_PDF`),
+  ADD CONSTRAINT `asignacion_salas_ibfk_2` FOREIGN KEY (`ID_ramos_asignacion`) REFERENCES `ramos` (`ID_ramo`),
+  ADD CONSTRAINT `asignacion_salas_ibfk_3` FOREIGN KEY (`ID_seccion_asignacion`) REFERENCES `seccion_ramo_PDI` (`ID_seccion_ramo_PDI`),
+  ADD CONSTRAINT `asignacion_salas_ibfk_4` FOREIGN KEY (`ID_periodo_asignacion`) REFERENCES `periodos` (`ID_periodo`),
+  ADD CONSTRAINT `asignacion_salas_ibfk_5` FOREIGN KEY (`ID_sala_asignacion`) REFERENCES `salas` (`ID_sala`);
 
 --
 -- Filtros para la tabla `PDF`

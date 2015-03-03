@@ -40,9 +40,9 @@
             }
             $data = array($codramos, $ramos, $cantidadSecciones, $noSeccion, $horario, $profe, $alumnos, $sala);
             function array_envia($array) {
-				$tmp = serialize($array); 
-				$tmp = urlencode($tmp); 
-				return $tmp; 
+				$tmp = serialize($array);
+				$tmp = urlencode($tmp);
+				return $tmp;
 			}
 			$data = array_envia($data);
 
@@ -65,7 +65,7 @@
             if($pdf_old == "") {
                 $nuevaPDF1 = "INSERT INTO `PDF`(`Estado_PDF`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDF`,`carreras_ID_carrera`,`departamentos_ID_depto`,`ID_PDI`) VALUES (12,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$consultaID_carrera3['ID_carrera']."','".$consultaID_depto3['ID_depto']."','".$idPDI."')";
             } else {
-                $nuevaPDF1 = "INSERT INTO `PDF`(`Estado_PDF`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDF`,`carreras_ID_carrera`,`departamentos_ID_depto`,`ID_PDI`,`PDFCancelado`) VALUES (12,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$consultaID_carrera3['ID_carrera']."','".$consultaID_depto3['ID_depto']."','".$idPDI."','".$pdf_old."')";
+                $nuevaPDF1 = "INSERT INTO `PDF`(`Estado_PDF`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDF`,`carreras_ID_carrera`,`departamentos_ID_depto`,`ID_PDI`,`PDF_cancelado`) VALUES (12,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$consultaID_carrera3['ID_carrera']."','".$consultaID_depto3['ID_depto']."','".$idPDI."','".$pdf_old."')";
             }
             $nuevaPDF2 = mysql_query($nuevaPDF1) or die('Consulta fallida $nuevaPDF2 $nuevaPDF2: ' . mysql_error());
 
@@ -102,31 +102,31 @@
                 //inserta las secciones de un ramo
                 for($j = 0; $j < count($horario[$i]); $j++){
                     if($horario[$i][$j][2]==""){
-                        $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDF`(`Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Sala_1`, `Sala_2`, `Sala_3`, `Nombre_docente`, `Cantidad_alumnos`) 
+                        $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDF`(`Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Sala_1`, `Sala_2`, `Sala_3`, `Nombre_docente`, `Cantidad_alumnos`)
                                         VALUES (".($j+1).", '".$ID_ramo_PDF."', ".$horario[$i][$j][0].", ".$horario[$i][$j][1].", 0, ".$sala[$i][$j][0].", ".$sala[$i][$j][1].", 0, " .$profe[$i][$j].", ".$alumnos[$i][$j].")";
                     } else {
-                        $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDF`(`Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Sala_1`, `Sala_2`, `Sala_3`, `Nombre_docente`, `Cantidad_alumnos`) 
+                        $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDF`(`Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Sala_1`, `Sala_2`, `Sala_3`, `Nombre_docente`, `Cantidad_alumnos`)
                                         VALUES (".($j+1).", '".$ID_ramo_PDF."', ".$horario[$i][$j][0].", ".$horario[$i][$j][1].", ".$horario[$i][$j][2].", ".$sala[$i][$j][0].", ".$sala[$i][$j][1].", ".$sala[$i][$j][2].", ".$profe[$i][$j].", ".$alumnos[$i][$j].")";
                     }
                     $nuevaSeccion2 = mysql_query($nuevaSeccion1) or die('Consulta fallida $nuevaSeccion2: ' . mysql_error());
                 }
             }
-            
-            //actualiza estado PDI 
+
+            //actualiza estado PDI
             $actualizarPDI1 = "UPDATE `PDI` SET `Estado_PDI`= 5 WHERE `ID_PDI`= '".$idPDI."'";
             $actualizarPDI2 = mysql_query($actualizarPDI1) or die('Consulta fallida $actualizarPDI2: ' . mysql_error());
         ?>
         <div>
 			<dd>
 				<strong>Estimado Director de Escuela:</strong></br></br>
-				Se ha realizado la siguiente <strong>Programaci&oacute;n Docente Final</strong> N&deg;<?php echo $ID_PDF; ?> <strong></strong> para la carrera de <strong><?php echo $carrera; ?></strong> 
+				Se ha realizado la siguiente <strong>Programaci&oacute;n Docente Final</strong> N&deg;<?php echo $ID_PDF; ?> <strong></strong> para la carrera de <strong><?php echo $carrera; ?></strong>
 				al Departamento de <strong><?php echo $depto; ?></strong><?php
                     if($pdf_old != "") {
-                        $PDFCancelado = ' y se ha cancelado la Programaci&oacute;n Docente Final N&deg; '.$pdf_old;
-                        echo $PDFCancelado;
+                        $PDF_cancelado = ' y se ha cancelado la Programaci&oacute;n Docente Final N&deg; '.$pdf_old;
+                        echo $PDF_cancelado;
                     }
                 ?>, esta solicitud contiene las siguientes asignaturas: </br></br>
-				<center><strong><ins>Listado de asignaturas</ins></strong></center></br>			
+				<center><strong><ins>Listado de asignaturas</ins></strong></center></br>
 				<table align="center" border="1" cellspacing="0" cellpadding="3" class="pequena" width="80%">
 					<?php
 						$max1 = count($ramos);
@@ -179,7 +179,7 @@
                                 echo "</table>";
                                 echo "<br>";
                             }
-                            
+
                             echo "<br>";
                             echo "</th>";
                             echo "</tr>";
@@ -190,7 +190,7 @@
 				Recuerda:</br></br>
 				- Si deseas agregar o cambiar asignaturas, puedes realizar nuevamente el proceso de Programaci&oacute;n Docente Final.</br>
 				Debes seleccionar la opci&oacute;n Inscripci&oacute;n de Ramos. Al realizarlo, la &uacute;ltima solicitud ser&aacute; la v&aacute;lida</br>
-				- Si deseas descargar un comprobante has clic 
+				- Si deseas descargar un comprobante has clic
                 <?php
                     $pdfArchivo = '<a href="comprobantePDF.php?depa='.$depto.'&carre='.$carrera.'&numPDF='.$ID_PDF.'&data='.$data;
                     if($pdf_old != "") {

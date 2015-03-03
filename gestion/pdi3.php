@@ -46,7 +46,7 @@
             //inserta datos en PDI
             $fechaHora = date('Y-m-j H:i:s');
             if($repetido == "1"){
-                $nuevaPDI1 = "INSERT INTO `PDI`(`Estado_PDI`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDI`,`carreras_ID_carrera`,`departamentos_ID_depto`, `PDICancelado`) VALUES (1,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$carrera."','".$departamento."',".$PDIRepetido.")";
+                $nuevaPDI1 = "INSERT INTO `PDI`(`Estado_PDI`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDI`,`carreras_ID_carrera`,`departamentos_ID_depto`, `PDI_cancelado`) VALUES (1,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$carrera."','".$departamento."',".$PDIRepetido.")";
             } else {
                 $nuevaPDI1 = "INSERT INTO `PDI`(`Estado_PDI`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDI`,`carreras_ID_carrera`,`departamentos_ID_depto`) VALUES (1,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$carrera."','".$departamento."')";
             }
@@ -104,8 +104,8 @@
 				Se ha realizado la siguiente <strong>Programaci&oacute;n Docente Inicial</strong> N&deg;<?php echo $ID_PDI; ?> <strong></strong> para la carrera de <strong><?php echo $consultaID_carrera3['Nombre_carrera']; ?></strong>
 				al Departamento de <strong><?php echo $consultaID_depto3['Nombre_depto']; ?></strong><?php
                     if($repetido == "1"){
-                        $PDICancelado = ' y se ha cancelado la Programaci&oacute;n Docente Inicial N&deg; '.$PDIRepetido;
-                        echo $PDICancelado;
+                        $PDI_cancelado = ' y se ha cancelado la Programaci&oacute;n Docente Inicial N&deg; '.$PDIRepetido;
+                        echo $PDI_cancelado;
                     }
                 ?>, esta solicitud contiene las siguientes asignaturas: </br></br>
 				<center><strong><ins>Listado de asignaturas</ins></strong></center></br>			

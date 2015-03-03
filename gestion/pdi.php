@@ -171,8 +171,8 @@
                         echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                         echo '<td>'.$depto3['Nombre_depto'].'</td>';
                         echo '<td>'.$estado03['Nombre'].'</td>';
-                        if($PDI3['PDICancelado']!=null) {
-                            echo '<td>'.$PDI3['PDICancelado'].'</td>';
+                        if($PDI3['PDI_cancelado']!=null) {
+                            echo '<td>'.$PDI3['PDI_cancelado'].'</td>';
                         } else {
                             echo '<td>No</td>';
                         }
