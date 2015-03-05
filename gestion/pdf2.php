@@ -129,25 +129,29 @@
                     }
                     if($sala[$i][$j][2] != 0 && $horario[$i][$j][2] != 0){
                         if($colAgregarSala1 != 1 || $colAgregarSala2 != 1 || $colAgregarSala3 != 1){
-                            echo "<br> hay que reversar :( ";
+                            //echo "<br> hay que reversar :( ";
+
+                            //determinar las salas que están con su mismo numero de PDF y dejarlas en null
+                            //borrar el PDF creado, los ramos del PDF y las secciones de los ramos del PDF
                             $reversar = true;
                             echo $reversar;
                         }
                     } else {
                         if($colAgregarSala1 != 1 || $colAgregarSala2 != 1){
-                            echo "<br> hay que reversar :( ";
+                            //echo "<br> hay que reversar :( ";
                             $reversar = true;
                             echo $reversar;
                         }
                     }
                 }
             }
+            echo "<div><dd>";
+            echo "<strong>Estimado Director de Escuela:</strong></br></br>";
             if($reversar == false){
                 //actualiza estado PDI
                 $actualizarPDI1 = "UPDATE `PDI` SET `Estado_PDI`= 5 WHERE `ID_PDI`= '".$idPDI."'";
                 $actualizarPDI2 = mysql_query($actualizarPDI1) or die('Consulta fallida $actualizarPDI2: ' . mysql_error());
-                echo "<div><dd>";
-                echo "<strong>Estimado Director de Escuela:</strong></br></br>";
+
                 echo "Se ha realizado la siguiente <strong>Programaci&oacute;n Docente Final</strong> N&deg;".$ID_PDF;
                 echo " para la carrera de <strong>".$carrera."</strong>";
                 echo " al Departamento de <strong>".$depto."</strong>";
@@ -225,10 +229,16 @@
                 }
                 $pdfArchivo = $pdfArchivo.'" target="_blank">aqu&iacute;.</a></br></br>';
                 echo $pdfArchivo;
-                echo "</dd></div>";
-            } else {
 
+            } else {
+                //hay que reversar
+
+                //mensaje al usuario
+                echo "Ha ocurrido un error al realizar la solicitud, esta pudo fallar por los siguientes motivos:<br>";
+                echo "<ul><li>Las Salas indicadas ya han sido seleccionadas, favor intente nuevamente</li>";
+                echo "<li>La Base de Datos est&aacute; abajo, favor contacte al Administrador de Base de Datos</li></ul>";
             }
+            echo "</dd></div>";
         ?>
 	</body>
 </html>
