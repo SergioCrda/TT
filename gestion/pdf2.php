@@ -45,7 +45,7 @@
 				return $tmp;
 			}
 			$data = array_envia($data);
-
+            $reversar = false;
             //conexion a base de datos
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
@@ -116,107 +116,119 @@
 
                     $agregarSala11 = "UPDATE `asignacion_salas` SET `ID_PDF_asignacion` = ".$ID_PDF.", `ID_ramos_asignacion`= ".$ID_ramo_PDF.", `ID_seccion_asignacion` = ".$seccionRamoPDI3['ID_seccion_ramo_PDF']." WHERE `ID_sala_asignacion` = ".$sala[$i][$j][0]." AND `ID_periodo_asignacion` = ".$horario[$i][$j][0]." AND `ID_PDF_asignacion` IS NULL AND `ID_ramos_asignacion` IS NULL AND `ID_seccion_asignacion` IS NULL";
                     $agregarSala12 = mysql_query($agregarSala11) or die('Consulta fallida $agregarSala12: ' . mysql_error());
+                    $colAgregarSala1 = mysql_affected_rows();
 
                     $agregarSala21 = "UPDATE `asignacion_salas` SET `ID_PDF_asignacion` = ".$ID_PDF.", `ID_ramos_asignacion`= ".$ID_ramo_PDF.", `ID_seccion_asignacion` = ".$seccionRamoPDI3['ID_seccion_ramo_PDF']." WHERE `ID_sala_asignacion` = ".$sala[$i][$j][1]." AND `ID_periodo_asignacion` = ".$horario[$i][$j][1]." AND `ID_PDF_asignacion` IS NULL AND `ID_ramos_asignacion` IS NULL AND `ID_seccion_asignacion` IS NULL";
                     $agregarSala22 = mysql_query($agregarSala21) or die('Consulta fallida $agregarSala22: ' . mysql_error());
+                    $colAgregarSala2 = mysql_affected_rows();
 
                     if($sala[$i][$j][2] != 0 && $horario[$i][$j][2] != 0){
                         $agregarSala31 = "UPDATE `asignacion_salas` SET `ID_PDF_asignacion` = ".$ID_PDF.", `ID_ramos_asignacion`= ".$ID_ramo_PDF.", `ID_seccion_asignacion` = ".$seccionRamoPDI3['ID_seccion_ramo_PDF']." WHERE `ID_sala_asignacion` = ".$sala[$i][$j][2]." AND `ID_periodo_asignacion` = ".$horario[$i][$j][2]." AND `ID_PDF_asignacion` IS NULL AND `ID_ramos_asignacion` IS NULL AND `ID_seccion_asignacion` IS NULL";
                         $agregarSala32 = mysql_query($agregarSala31) or die('Consulta fallida $agregarSala32: ' . mysql_error());
+                        $colAgregarSala3 = mysql_affected_rows();
                     }
-
-
+                    if($sala[$i][$j][2] != 0 && $horario[$i][$j][2] != 0){
+                        if($colAgregarSala1 != 1 || $colAgregarSala2 != 1 || $colAgregarSala3 != 1){
+                            echo "<br> hay que reversar :( ";
+                            $reversar = true;
+                            echo $reversar;
+                        }
+                    } else {
+                        if($colAgregarSala1 != 1 || $colAgregarSala2 != 1){
+                            echo "<br> hay que reversar :( ";
+                            $reversar = true;
+                            echo $reversar;
+                        }
+                    }
                 }
             }
+            if($reversar == false){
+                //actualiza estado PDI
+                $actualizarPDI1 = "UPDATE `PDI` SET `Estado_PDI`= 5 WHERE `ID_PDI`= '".$idPDI."'";
+                $actualizarPDI2 = mysql_query($actualizarPDI1) or die('Consulta fallida $actualizarPDI2: ' . mysql_error());
+                echo "<div><dd>";
+                echo "<strong>Estimado Director de Escuela:</strong></br></br>";
+                echo "Se ha realizado la siguiente <strong>Programaci&oacute;n Docente Final</strong> N&deg;".$ID_PDF;
+                echo " para la carrera de <strong>".$carrera."</strong>";
+                echo " al Departamento de <strong>".$depto."</strong>";
+                if($pdf_old != "") {
+                    $PDF_cancelado = ' y se ha cancelado la Programaci&oacute;n Docente Final N&deg; '.$pdf_old;
+                    echo $PDF_cancelado;
+                }
+                echo ", esta solicitud contiene las siguientes asignaturas: </br></br>";
+                echo "<center><strong><ins>Listado de asignaturas</ins></strong></center></br>";
+                echo "<table align='center' border='1' cellspacing='0' cellpadding='3' class='pequena' width='80%'>";
+                $max1 = count($ramos);
+                for($i = 0; $i < $max1; $i++){
+                    echo "<tr class='titulo_fila'>";
+                    echo "<td>C&oacute;digo</td>";
+                    echo "<td>Nombre Ramo</td>";
+                    echo "<td>Cantiadad de Secciones</td>";
+                    echo "</tr>";
+                    echo "<tr class='centro'>";
+                    echo "<td>".$codramos[$i]."</td>";
+                    echo "<td>".$ramos[$i]."</td>";
+                    echo "<td>".$cantidadSecciones[$i]."</td>";
+                    echo "</tr>";
+                    echo "<tr>";
+                    echo "<th colspan='3'>";
+                    echo "<br>";
+                    $max2 = $cantidadSecciones[$i];
+                    for($j = 0; $j < $max2; $j++){
+                        echo "<table align='center' border='1' cellspacing='0' cellpadding='3' width='700px' class='media'>";
+                        echo "<tr><td class='titulo_fila media' colspan='4'>Secci&oacute;n N&uacute;mero ".$noSeccion[$i][$j]."</td></tr>";
+                        for($k = 0; $k < 3; $k++) {
+                            $horarioE1 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = ".$horario[$i][$j][$k];
+                            $horarioE2 = mysql_query($horarioE1) or die('Consulta fallida $horarioE2: '.mysql_error());
+                            $horarioE3 = mysql_fetch_assoc($horarioE2);
 
-            //actualiza estado PDI
-            $actualizarPDI1 = "UPDATE `PDI` SET `Estado_PDI`= 5 WHERE `ID_PDI`= '".$idPDI."'";
-            $actualizarPDI2 = mysql_query($actualizarPDI1) or die('Consulta fallida $actualizarPDI2: ' . mysql_error());
-        ?>
-        <div>
-			<dd>
-				<strong>Estimado Director de Escuela:</strong></br></br>
-				Se ha realizado la siguiente <strong>Programaci&oacute;n Docente Final</strong> N&deg;<?php echo $ID_PDF; ?> <strong></strong> para la carrera de <strong><?php echo $carrera; ?></strong>
-				al Departamento de <strong><?php echo $depto; ?></strong><?php
-                    if($pdf_old != "") {
-                        $PDF_cancelado = ' y se ha cancelado la Programaci&oacute;n Docente Final N&deg; '.$pdf_old;
-                        echo $PDF_cancelado;
-                    }
-                ?>, esta solicitud contiene las siguientes asignaturas: </br></br>
-				<center><strong><ins>Listado de asignaturas</ins></strong></center></br>
-				<table align="center" border="1" cellspacing="0" cellpadding="3" class="pequena" width="80%">
-					<?php
-						$max1 = count($ramos);
-						for($i = 0; $i < $max1; $i++){
-                            echo "<tr class='titulo_fila'>";
-                            echo "<td>C&oacute;digo</td>";
-                            echo "<td>Nombre Ramo</td>";
-                            echo "<td>Cantiadad de Secciones</td>";
-                            echo "</tr>";
-                            echo "<tr class='centro'>";
-							echo "<td>".$codramos[$i]."</td>";
-							echo "<td>".$ramos[$i]."</td>";
-							echo "<td>".$cantidadSecciones[$i]."</td>";
-							echo "</tr>";
+                            $salaE1 = "SELECT * FROM `salas` WHERE `ID_sala` = ".$sala[$i][$j][$k];
+                            $salaE2 = mysql_query($salaE1) or die('Consulta fallida $salaE2: '.mysql_error());
+                            $salaE3 = mysql_fetch_assoc($salaE2);
+
                             echo "<tr>";
-							echo "<th colspan='3'>";
-                            echo "<br>";
-                            $max2 = $cantidadSecciones[$i];
-                            for($j = 0; $j < $max2; $j++){
-                                echo "<table align='center' border='1' cellspacing='0' cellpadding='3' width='700px' class='media'>";
-                                echo "<tr><td class='titulo_fila media' colspan='4'>Secci&oacute;n N&uacute;mero ".$noSeccion[$i][$j]."</td></tr>";
-                                for($k = 0; $k < 3; $k++) {
-                                    $horarioE1 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = ".$horario[$i][$j][$k];
-                                    $horarioE2 = mysql_query($horarioE1) or die('Consulta fallida $horarioE2: '.mysql_error());
-                                    $horarioE3 = mysql_fetch_assoc($horarioE2);
-
-                                    $salaE1 = "SELECT * FROM `salas` WHERE `ID_sala` = ".$sala[$i][$j][$k];
-                                    $salaE2 = mysql_query($salaE1) or die('Consulta fallida $salaE2: '.mysql_error());
-                                    $salaE3 = mysql_fetch_assoc($salaE2);
-
-                                    echo "<tr>";
-                                    echo "<td class='titulo_fila' width='35%'>Horario ".($k+1)."</td>";
-                                    echo "<td>".$horarioE3['Periodo']."</td>";
-                                    echo "<td class='titulo_fila' width='25%'>Sala ".($k+1)."</td>";
-                                    if($sala[$i][$j][$k] == 0){
-                                        echo "<td>Sin Periodo</td>";
-                                    } else {
-                                        echo "<td>".$salaE3['Edificio']." ".$salaE3['Nombre_sala']."</td>";
-                                    }
-                                    echo "</tr>";
-                                }
-                                echo "<tr>";
-                                echo "<td class='titulo_fila'>Profesor</td>";
-                                echo "<td colspan='3'>".$profe[$i][$j]."</td>";
-                                echo "</tr>";
-                                echo "<tr>";
-                                echo "<td class='titulo_fila'>Cantidad de Estudiantes</td>";
-                                echo "<td colspan='3'>".$alumnos[$i][$j]."</td>";
-                                echo "</tr>";
-                                echo "</table>";
-                                echo "<br>";
+                            echo "<td class='titulo_fila' width='35%'>Horario ".($k+1)."</td>";
+                            echo "<td>".$horarioE3['Periodo']."</td>";
+                            echo "<td class='titulo_fila' width='25%'>Sala ".($k+1)."</td>";
+                            if($sala[$i][$j][$k] == 0){
+                                echo "<td>Sin Periodo</td>";
+                            } else {
+                                echo "<td>".$salaE3['Edificio']." ".$salaE3['Nombre_sala']."</td>";
                             }
-
-                            echo "<br>";
-                            echo "</th>";
                             echo "</tr>";
-						}
-					?>
-				</table>
-				</br></br>
-				Recuerda:</br></br>
-				- Si deseas agregar o cambiar asignaturas, puedes realizar nuevamente el proceso de Programaci&oacute;n Docente Final.</br>
-				Debes seleccionar la opci&oacute;n Inscripci&oacute;n de Ramos. Al realizarlo, la &uacute;ltima solicitud ser&aacute; la v&aacute;lida</br>
-				- Si deseas descargar un comprobante has clic
-                <?php
-                    $pdfArchivo = '<a href="comprobantePDF.php?depa='.$depto.'&carre='.$carrera.'&numPDF='.$ID_PDF.'&data='.$data;
-                    if($pdf_old != "") {
-                        $pdfArchivo = $pdfArchivo.'&pdf_old='.$pdf_old;
+                        }
+                        echo "<tr>";
+                        echo "<td class='titulo_fila'>Profesor</td>";
+                        echo "<td colspan='3'>".$profe[$i][$j]."</td>";
+                        echo "</tr>";
+                        echo "<tr>";
+                        echo "<td class='titulo_fila'>Cantidad de Estudiantes</td>";
+                        echo "<td colspan='3'>".$alumnos[$i][$j]."</td>";
+                        echo "</tr>";
+                        echo "</table>";
+                        echo "<br>";
                     }
-                    $pdfArchivo = $pdfArchivo.'" target="_blank">aqu&iacute;.</a></br></br>';
-                    echo $pdfArchivo;
-                ?>
-			</dd>
-		</div>
+
+                    echo "<br>";
+                    echo "</th>";
+                    echo "</tr>";
+                }
+                echo "</table>";
+                echo "</br></br>";
+                echo "Recuerda:</br></br>";
+                echo "- Si deseas agregar o cambiar asignaturas, puedes realizar nuevamente el proceso de Programaci&oacute;n Docente Final.</br>";
+                echo "Debes seleccionar la opci&oacute;n Inscripci&oacute;n de Ramos. Al realizarlo, la &uacute;ltima solicitud ser&aacute; la v&aacute;lida</br>";
+                echo "- Si deseas descargar un comprobante has clic ";
+                $pdfArchivo = '<a href="comprobantePDF.php?depa='.$depto.'&carre='.$carrera.'&numPDF='.$ID_PDF.'&data='.$data;
+                if($pdf_old != "") {
+                    $pdfArchivo = $pdfArchivo.'&pdf_old='.$pdf_old;
+                }
+                $pdfArchivo = $pdfArchivo.'" target="_blank">aqu&iacute;.</a></br></br>';
+                echo $pdfArchivo;
+                echo "</dd></div>";
+            } else {
+
+            }
+        ?>
 	</body>
 </html>

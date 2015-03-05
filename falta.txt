@@ -5,3 +5,4 @@ TO DO
 
 DOING
 - falta relacionar las salas de un PDF a asignacion_salas
+- imprimir excel para VRAC
