@@ -50,6 +50,10 @@
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
 
+            //comienzo de transaccion
+            $start1 = "START TRANSACTION;";
+            $start2 = mysql_query($start1) or die('Consulta fallida $start2: '.mysql_error());
+
             //obtiene el ID_depto
             $consultaID_depto1 = "SELECT `ID_depto` FROM `departamentos` WHERE `Nombre_depto` = '".$depto."'";
             $consultaID_depto2 = mysql_query($consultaID_depto1) or die('Consulta fallida $consultaID_depto2: ' . mysql_error());
@@ -129,18 +133,11 @@
                     }
                     if($sala[$i][$j][2] != 0 && $horario[$i][$j][2] != 0){
                         if($colAgregarSala1 != 1 || $colAgregarSala2 != 1 || $colAgregarSala3 != 1){
-                            //echo "<br> hay que reversar :( ";
-
-                            //determinar las salas que están con su mismo numero de PDF y dejarlas en null
-                            //borrar el PDF creado, los ramos del PDF y las secciones de los ramos del PDF
                             $reversar = true;
-                            echo $reversar;
                         }
                     } else {
                         if($colAgregarSala1 != 1 || $colAgregarSala2 != 1){
-                            //echo "<br> hay que reversar :( ";
                             $reversar = true;
-                            echo $reversar;
                         }
                     }
                 }
@@ -230,8 +227,14 @@
                 $pdfArchivo = $pdfArchivo.'" target="_blank">aqu&iacute;.</a></br></br>';
                 echo $pdfArchivo;
 
+                //confirmar guardado
+                $commit1 = "COMMIT;";
+                $commit2 = mysql_query($commit1) or die('Consulta fallida $commit2: '.mysql_error());
+
             } else {
-                //hay que reversar
+                //hay que reversar, borra el PDF creado, los ramos del PDF y las secciones de los ramos del PDF y las salas asignadas
+                $rollback1 = "ROLLBACK;";
+                $rollback2 = mysql_query($rollback1) or die('Consulta fallida $rollback2: '.mysql_error());
 
                 //mensaje al usuario
                 echo "Ha ocurrido un error al realizar la solicitud, esta pudo fallar por los siguientes motivos:<br>";

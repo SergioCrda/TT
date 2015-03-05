@@ -4,5 +4,6 @@ TO DO
 - validar profesores
 
 DOING
-- falta relacionar las salas de un PDF a asignacion_salas
-- imprimir excel para VRAC
+- al cancelar un PDF, liberar las salas (update)
+- imprimir excel para VRAC ()
+- validar con commit, rollback las transacciones
