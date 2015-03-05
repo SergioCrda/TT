@@ -102,13 +102,30 @@
                 //inserta las secciones de un ramo
                 for($j = 0; $j < count($horario[$i]); $j++){
                     if($horario[$i][$j][2]==""){
-                        $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDF`(`Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Sala_1`, `Sala_2`, `Sala_3`, `Nombre_docente`, `Cantidad_alumnos`)
+                        $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDF` (`Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Sala_1`, `Sala_2`, `Sala_3`, `Nombre_docente`, `Cantidad_alumnos`)
                                         VALUES (".($j+1).", '".$ID_ramo_PDF."', ".$horario[$i][$j][0].", ".$horario[$i][$j][1].", 0, ".$sala[$i][$j][0].", ".$sala[$i][$j][1].", 0, " .$profe[$i][$j].", ".$alumnos[$i][$j].")";
                     } else {
                         $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDF`(`Numero_seccion`, `Ramos_PDF_id_Ramos_PDF`, `Horario_1`, `Horario_2`, `Horario_3`, `Sala_1`, `Sala_2`, `Sala_3`, `Nombre_docente`, `Cantidad_alumnos`)
                                         VALUES (".($j+1).", '".$ID_ramo_PDF."', ".$horario[$i][$j][0].", ".$horario[$i][$j][1].", ".$horario[$i][$j][2].", ".$sala[$i][$j][0].", ".$sala[$i][$j][1].", ".$sala[$i][$j][2].", ".$profe[$i][$j].", ".$alumnos[$i][$j].")";
                     }
                     $nuevaSeccion2 = mysql_query($nuevaSeccion1) or die('Consulta fallida $nuevaSeccion2: ' . mysql_error());
+
+                    $seccionRamoPDI1 = "SELECT * FROM `seccion_ramo_PDF` WHERE `Numero_seccion` = ".($j+1)." AND `Ramos_PDF_id_Ramos_PDF` = ".$ID_ramo_PDF;
+                    $seccionRamoPDI2 = mysql_query($seccionRamoPDI1) or die('Consulta fallida $seccionRamoPDI2: ' . mysql_error());
+                    $seccionRamoPDI3 = mysql_fetch_assoc($seccionRamoPDI2);
+
+                    $agregarSala11 = "UPDATE `asignacion_salas` SET `ID_PDF_asignacion` = ".$ID_PDF.", `ID_ramos_asignacion`= ".$ID_ramo_PDF.", `ID_seccion_asignacion` = ".$seccionRamoPDI3['ID_seccion_ramo_PDF']." WHERE `ID_sala_asignacion` = ".$sala[$i][$j][0]." AND `ID_periodo_asignacion` = ".$horario[$i][$j][0]." AND `ID_PDF_asignacion` IS NULL AND `ID_ramos_asignacion` IS NULL AND `ID_seccion_asignacion` IS NULL";
+                    $agregarSala12 = mysql_query($agregarSala11) or die('Consulta fallida $agregarSala12: ' . mysql_error());
+
+                    $agregarSala21 = "UPDATE `asignacion_salas` SET `ID_PDF_asignacion` = ".$ID_PDF.", `ID_ramos_asignacion`= ".$ID_ramo_PDF.", `ID_seccion_asignacion` = ".$seccionRamoPDI3['ID_seccion_ramo_PDF']." WHERE `ID_sala_asignacion` = ".$sala[$i][$j][1]." AND `ID_periodo_asignacion` = ".$horario[$i][$j][1]." AND `ID_PDF_asignacion` IS NULL AND `ID_ramos_asignacion` IS NULL AND `ID_seccion_asignacion` IS NULL";
+                    $agregarSala22 = mysql_query($agregarSala21) or die('Consulta fallida $agregarSala22: ' . mysql_error());
+
+                    if($sala[$i][$j][2] != 0 && $horario[$i][$j][2] != 0){
+                        $agregarSala31 = "UPDATE `asignacion_salas` SET `ID_PDF_asignacion` = ".$ID_PDF.", `ID_ramos_asignacion`= ".$ID_ramo_PDF.", `ID_seccion_asignacion` = ".$seccionRamoPDI3['ID_seccion_ramo_PDF']." WHERE `ID_sala_asignacion` = ".$sala[$i][$j][2]." AND `ID_periodo_asignacion` = ".$horario[$i][$j][2]." AND `ID_PDF_asignacion` IS NULL AND `ID_ramos_asignacion` IS NULL AND `ID_seccion_asignacion` IS NULL";
+                        $agregarSala32 = mysql_query($agregarSala31) or die('Consulta fallida $agregarSala32: ' . mysql_error());
+                    }
+
+
                 }
             }
 
