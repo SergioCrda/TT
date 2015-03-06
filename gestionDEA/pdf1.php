@@ -20,6 +20,10 @@
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
 
+            //comienzo de transaccion
+            $start1 = "START TRANSACTION;";
+            $start2 = mysql_query($start1) or die('Consulta fallida $start2: '.mysql_error());
+
             $actualizarPDF1 = "UPDATE `PDF` SET `Estado_PDF`='".$estadoCambiar."' WHERE `ID_PDF`=".$idpdf;
             $actualizarPDF2 = mysql_query($actualizarPDF1) or die('Consulta fallida: ' . mysql_error());
 
@@ -45,6 +49,10 @@
             $departamento2 = mysql_query($departamento1) or die('Consulta fallida: '.mysql_error());
             $departamento3 = mysql_fetch_assoc($departamento2);
             $departamento4 = $departamento3['Nombre_depto'];
+
+            //confirmar guardado
+            $commit1 = "COMMIT;";
+            $commit2 = mysql_query($commit1) or die('Consulta fallida $commit2: '.mysql_error());
         ?>
         
          <div>

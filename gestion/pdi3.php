@@ -37,6 +37,10 @@
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
 
+            //comienzo de transaccion
+            $start1 = "START TRANSACTION;";
+            $start2 = mysql_query($start1) or die('Consulta fallida $start2: '.mysql_error());
+
             if($repetido == "1"){
                 //actualiza estado PDI
                 $cancelarPDI1 = "UPDATE `PDI` SET `Estado_PDI`= 7 WHERE `ID_PDI`= ".$PDIRepetido;
@@ -97,6 +101,10 @@
             $consultaID_carrera2 = mysql_query($consultaID_carrera1) or die('Consulta fallida $consultaID_carrera2: ' . mysql_error());
             $consultaID_carrera3 = mysql_fetch_assoc($consultaID_carrera2);
             //$consultaID_carrera3['Nombre_carrera'];
+
+            //confirmar guardado
+            $commit1 = "COMMIT;";
+            $commit2 = mysql_query($commit1) or die('Consulta fallida $commit2: '.mysql_error());
 		?>
 		<div>
 			<dd>
