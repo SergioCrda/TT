@@ -6,4 +6,4 @@ TO DO
 DOING
 - al cancelar un PDF, liberar las salas (update)
 - imprimir excel para VRAC ()
-- validar con commit, rollback las transacciones
+- validar con rollback las transacciones para casos de error.
