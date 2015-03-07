@@ -51,9 +51,10 @@
 		<?php
             $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
             mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
+
             $PDF1 = "SELECT * FROM `PDF` WHERE `ID_profesor` = '1' AND (`Estado_PDF` = 16 OR `Estado_PDF` = 12 OR `Estado_PDF` = 13 OR `Estado_PDF` = 14 OR `Estado_PDF` = 15)";
-            
             $PDF2 = mysql_query($PDF1) or die('Consulta fallida: '.mysql_error());
+
             $cuenta = 0;
             while($fila = mysql_fetch_assoc($PDF2)){
                 $cuenta++;
@@ -191,6 +192,12 @@
                 echo '</table>';
             }
         ?>
+        <br>
+        <div>
+            <center>
+        Descargar archivo con la asignaci&oacute;n de salas en <a href="salasXLS.php">XSL</a> &oacute; <a href="salasXLSX.php">XSLX</a>
+            </center>
+        </div>
         <br>
 		<div class="cita" style="width:75%">
 			<b>Te solicitamos recordar que <small>[<a href="javascript:ver_oculta('msg')" class="no_linea">ver</a>]</small></b>
