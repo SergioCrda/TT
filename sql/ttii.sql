@@ -171,7 +171,7 @@ INSERT INTO `asignacion_salas` (`ID_asignacion`, `ID_PDF_asignacion`, `ID_ramos_
 (128, NULL, NULL, NULL, 0, 5, 12),
 (129, NULL, NULL, NULL, 0, 5, 13),
 (130, NULL, NULL, NULL, 0, 5, 14),
-(131 NULL, NULL, NULL, 0, 5, 15),
+(131, NULL, NULL, NULL, 0, 5, 15),
 (132, NULL, NULL, NULL, 0, 5, 16),
 (133, NULL, NULL, NULL, 0, 5, 17),
 (134, NULL, NULL, NULL, 0, 5, 18),
