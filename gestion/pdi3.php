@@ -32,7 +32,7 @@
 				return $tmp; 
 			}
 			$data = array_envia($data);
-            
+            $reversar = false;
             //conexion a base de datos
             $link = mysqli_connect('localhost', 'dbttii', 'dbttii', "ttii");
             if (mysqli_connect_errno()) echo "Falla al conectar con MySQL: " . mysqli_connect_error();
@@ -44,6 +44,7 @@
                 //actualiza estado PDI
                 $cancelarPDI1 = "UPDATE `PDI` SET `Estado_PDI`= 7 WHERE `ID_PDI`= ".$PDIRepetido;
                 $cancelarPDI2 = mysqli_query($link, $cancelarPDI1) or die('Consulta fallida $cancelarPDI1: ' . mysqli_error($link));
+                if($cancelarPDI2 === FALSE) $reversar = true;
             }
 
             //inserta datos en PDI
@@ -54,7 +55,8 @@
                 $nuevaPDI1 = "INSERT INTO `PDI`(`Estado_PDI`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDI`,`carreras_ID_carrera`,`departamentos_ID_depto`) VALUES (1,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$carrera."','".$departamento."')";
             }
             $nuevaPDI2 = mysqli_query($link, $nuevaPDI1) or die('Consulta fallida $nuevaPDI2: ' . mysqli_error($link));
-            
+            if($nuevaPDI2 === FALSE) $reversar = true;
+
             //obtiene el ID_PDI
             $conocePDI1 = "SELECT `ID_PDI` FROM `PDI` WHERE `Nombre_docente` = 'NOMBRE_PRUEBA' AND `ID_profesor` = 1 AND `ID_escuela` = 1 AND `Fecha_PDI` = '".$fechaHora."' AND `carreras_ID_carrera` = '".$carrera."' AND `departamentos_ID_depto` = '".$departamento."'";
             $conocePDI2 = mysqli_query($link, $conocePDI1) or die('Consulta fallida $conocePDI2: ' . mysqli_error($link));
@@ -72,6 +74,7 @@
                 //inserta los ramos
                 $nuevoRamo1 = "INSERT INTO `ramos_PDI`(`ID_ramo`, `Cantidad_secciones`, `PDI_ID_PDI`) VALUES (".$ID_ramo.",".$seccion[$i].",".$ID_PDI.")";
                 $nuevoRamo2 = mysqli_query($link, $nuevoRamo1) or die('Consulta fallida $nuevoRamo2: ' . mysqli_error($link));
+                if($nuevoRamo2 === FALSE) $reversar = true;
                 
                 //obtiene el ID_ramo_PDI
                 $conoceIDRAMOPDI1 = "SELECT `ID_ramos_PDI` FROM `ramos_PDI` WHERE `Cantidad_secciones` = '".$seccion[$i]."' AND `ID_ramo` = '".$ID_ramo."' AND `PDI_ID_PDI` = '".$ID_PDI."'";
@@ -87,6 +90,7 @@
                         $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDI`(`Numero_seccion`, `Ramos_PDI_id_Ramos_PDI`, `Horario_1`, `Horario_2`, `Horario_3`) VALUES (".($j+1).", '".$ID_ramo_PDI."', ".$hora_seccion[$i][$j][0].", ".$hora_seccion[$i][$j][1].", ".$hora_seccion[$i][$j][2].")";
                     }
                     $nuevaSeccion2 = mysqli_query($link, $nuevaSeccion1) or die('Consulta fallida $nuevaSeccion2: ' . mysqli_error($link));
+                    if($nuevaSeccion2 === FALSE) $reversar = true;
                 }
             }
             //obtiene el ID_depto
@@ -101,54 +105,57 @@
             $consultaID_carrera3 = mysqli_fetch_assoc($consultaID_carrera2);
             //$consultaID_carrera3['Nombre_carrera'];
 
-            //confirmar guardado
-            mysqli_commit($link);
+            echo "<div><dd>";
+            echo "<strong>Estimado Director de Escuela:</strong></br></br>";
+            if($reversar === false) {
+                echo "Se ha realizado la siguiente <strong>Programaci&oacute;n Docente Inicial</strong> N&deg;".$ID_PDI;
+                echo " para la carrera de <strong>".$consultaID_carrera3['Nombre_carrera']."</strong>";
+                if($repetido == "1"){
+                    $PDI_cancelado = ' y se ha cancelado la Programaci&oacute;n Docente Inicial N&deg; '.$PDIRepetido;
+                    echo $PDI_cancelado;
+                }
+                echo ", esta solicitud contiene las siguientes asignaturas: </br></br>";
+                echo "<center><strong><ins>Listado de asignaturas</ins></strong></center></br>";
+                echo "<table align='center' cellspacing='0' cellpadding='3' class='pequena' width='80%'>";
+                echo "<tr class='titulo_fila'>";
+                echo "<td>C&oacute;digo</td>";
+                echo "<td>Nombre Ramo</td>";
+                echo "<td>Secciones</td>";
+                echo "</tr>";
+                $max = count($ramo);
+                for($i = 0; $i < $max; $i++){
+                    echo "<tr class='centro'>\n";
+                    echo "<td>".$cod_ramo[$i]."</td>";
+                    echo "<td>".$ramo[$i]."</td>\n";
+                    echo "<td>".$seccion[$i]."</td>";
+                    echo "</tr>";
+                }
+                echo "</table>";
+                echo "</br></br>";
+                echo "Recuerda:</br></br>";
+                echo "- Si deseas agregar o cambiar asignaturas, puedes realizar nuevamente el proceso de Programaci&oacute;n Docente Inicial.</br>";
+                echo "Debes seleccionar la opci&oacute;n Inscripci&oacute;n de Ramos. Al realizarlo, la &uacute;ltima solicitud ser&aacute; la v&aacute;lida</br>";
+                echo "- Si deseas descargar un comprobante has clic ";
+                $pdfArchivo = '<a href="comprobantePDI.php?depa='.$consultaID_depto3['Nombre_depto'].'&carre='.$consultaID_carrera3['Nombre_carrera'].'&numPDI='.$ID_PDI.'&data='.$data;
+                if($repetido == "1"){
+                    $pdfArchivo = $pdfArchivo.'&repe='.$PDIRepetido;
+                }
+                $pdfArchivo = $pdfArchivo.'" target="_blank">aqu&iacute;.</a></br></br>';
+                echo $pdfArchivo;
 
+                //confirmar guardado
+                mysqli_commit($link);
+            } else {
+                //hay que reversar, borra el PDF creado, los ramos del PDF y las secciones de los ramos del PDF y las salas asignadas
+                mysqli_rollback($link);
+
+                //mensaje al usuario
+                echo "Ha ocurrido un error al realizar la solicitud, esta pudo fallar por los siguientes motivos:<br>";
+                echo "<ul><li>Las Salas indicadas ya han sido seleccionadas, favor intente nuevamente</li>";
+                echo "<li>La Base de Datos est&aacute; abajo, favor contacte al Administrador de Base de Datos</li></ul>";
+            }
+            echo "</dd></div>";
             mysqli_close($link);
 		?>
-		<div>
-			<dd>
-				<strong>Estimado Director de Escuela:</strong></br></br>
-				Se ha realizado la siguiente <strong>Programaci&oacute;n Docente Inicial</strong> N&deg;<?php echo $ID_PDI; ?> <strong></strong> para la carrera de <strong><?php echo $consultaID_carrera3['Nombre_carrera']; ?></strong>
-				al Departamento de <strong><?php echo $consultaID_depto3['Nombre_depto']; ?></strong><?php
-                    if($repetido == "1"){
-                        $PDI_cancelado = ' y se ha cancelado la Programaci&oacute;n Docente Inicial N&deg; '.$PDIRepetido;
-                        echo $PDI_cancelado;
-                    }
-                ?>, esta solicitud contiene las siguientes asignaturas: </br></br>
-				<center><strong><ins>Listado de asignaturas</ins></strong></center></br>			
-				<table align="center" cellspacing="0" cellpadding="3" class="pequena" width="80%">
-					<tr class="titulo_fila">
-						<td>C&oacute;digo</td>
-						<td>Nombre Ramo</td>
-						<td>Secciones</td>
-					</tr>
-					<?php
-						$max = count($ramo);
-						for($i = 0; $i < $max; $i++){
-							echo "<tr class='centro'>\n";
-							echo "<td>".$cod_ramo[$i]."</td>";
-							echo "<td>".$ramo[$i]."</td>\n";
-							echo "<td>".$seccion[$i]."</td>";
-							echo "</tr>";
-						}
-					?>
-				</table>
-				</br></br>
-				Recuerda:</br></br>
-				- Si deseas agregar o cambiar asignaturas, puedes realizar nuevamente el proceso de Programaci&oacute;n Docente Inicial.</br>
-				Debes seleccionar la opci&oacute;n Inscripci&oacute;n de Ramos. Al realizarlo, la &uacute;ltima solicitud ser&aacute; la v&aacute;lida</br>
-				- Si deseas descargar un comprobante has clic 
-                <?php
-                    $pdfArchivo = '<a href="comprobantePDI.php?depa='.$consultaID_depto3['Nombre_depto'].'&carre='.$consultaID_carrera3['Nombre_carrera'].'&numPDI='.$ID_PDI.'&data='.$data;
-                    if($repetido == "1"){
-                        $pdfArchivo = $pdfArchivo.'&repe='.$PDIRepetido;
-                    }
-                    $pdfArchivo = $pdfArchivo.'" target="_blank">aqu&iacute;.</a></br></br>';
-                    echo $pdfArchivo;
-                ?>
-			</dd>
-		</div>
-	
 	</body>
 </html>
