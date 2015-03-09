@@ -101,7 +101,7 @@
     if (mysqli_connect_errno()) echo "Falla al conectar con MySQL: " . mysqli_connect_error();
 
     $estado01 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$_GET['estado'];
-    $estado02 = mysqli_query($estado01) or die('Consulta fallida: '.mysqli_error($link));
+    $estado02 = mysqli_query($link, $estado01) or die('Consulta fallida: '.mysqli_error($link));
     $estado03 = mysqli_fetch_assoc($estado02);
     $estado04 = $estado03['Nombre'];
 
@@ -180,7 +180,7 @@
 	$pdf->Ln(5);
 
 
-	
+	mysqli_close($link);
 	
 	$pdf->Output();
 ?>

@@ -49,7 +49,7 @@
             if (mysqli_connect_errno()) echo "Falla al conectar con MySQL: " . mysqli_connect_error();
 
             $PDI1 = "SELECT * FROM `PDI` WHERE `ID_profesor` = '1' AND (`Estado_PDI` = 6 OR `Estado_PDI` = 1 OR `Estado_PDI` = 2 OR `Estado_PDI` = 3 OR `Estado_PDI` = 4)";
-            $PDI2 = mysqli_query($PDI1) or die('Consulta fallida $PDI2: '. mysqli_error($link));
+            $PDI2 = mysqli_query($link, $PDI1) or die('Consulta fallida $PDI2: '. mysqli_error($link));
 
             $cuenta = 0;
             while($fila = mysqli_fetch_assoc($PDI2)){
@@ -169,6 +169,7 @@
             } else {
                 echo '</table>';
             }
+            mysqli_close($link);
         ?>
         <br>
 		<div class="cita" style="width:75%">

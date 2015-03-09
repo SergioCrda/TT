@@ -86,12 +86,12 @@
 				<td>
 					<?php
 						// Conectando, seleccionando la base de datos
-						$link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
-						mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');	
+						$link = mysqli_connect('localhost', 'dbttii', 'dbttii', "ttii");
+                        if (mysqli_connect_errno()) echo "Falla al conectar con MySQL: " . mysqli_connect_error();
 
 						$depa1 = "SELECT * FROM `departamentos` WHERE `ID_depto` = ".$_POST['departamento_name_id'];
-						$depa2 = mysql_query($depa1) or die('Consulta fallida: ' . mysql_error());
-						while ($depa3 = mysql_fetch_array($depa2, MYSQL_ASSOC)){
+						$depa2 = mysqli_query($link, $depa1) or die('Consulta fallida $depa2: ' . mysqli_error($link));
+						while ($depa3 = mysqli_fetch_array($depa2)){
 							echo $depa3['Nombre_depto'];
                             $ID_depto = $depa3['ID_depto'];
 						}
@@ -100,8 +100,8 @@
 				<td>
 					<?php
 						$carre1 = "SELECT * FROM `carreras` WHERE `ID_carrera` = ".$_POST['carrera_name_id'];
-						$carre2 = mysql_query($carre1) or die('Consulta fallida: ' . mysql_error());
-						while ($carre3 = mysql_fetch_array($carre2, MYSQL_ASSOC)){
+						$carre2 = mysqli_query($link, $carre1) or die('Consulta fallida $carre2: ' . mysqli_error($link));
+						while ($carre3 = mysqli_fetch_array($carre2)){
                             echo $carre3['Nombre_carrera'];
                             $ID_carrera =  $carre3['ID_carrera'];
 						}
@@ -127,12 +127,12 @@
 				<?php
                     $repe = $_POST['repetido'];
                     $consultaID_depto1 = "SELECT `ID_depto` FROM `departamentos` WHERE `ID_depto`=".$ID_depto;
-                    $consultaID_depto2 = mysql_query($consultaID_depto1) or die('Consulta fallida: ' . mysql_error());
-                    $consultaID_depto3 = mysql_fetch_assoc($consultaID_depto2);
+                    $consultaID_depto2 = mysqli_query($link, $consultaID_depto1) or die('Consulta fallida $consultaID_depto2: ' . mysqli_error($link));
+                    $consultaID_depto3 = mysqli_fetch_assoc($consultaID_depto2);
 
 					$ramo1 = "SELECT * FROM `ramos` WHERE `departamentos_ID_depto`='".$consultaID_depto3['ID_depto']."' ORDER BY `ID_ramo` ASC";
-					$ramo2 = mysql_query($ramo1) or die('Consulta fallida: ' . mysql_error());
-					while ($ramo3 = mysql_fetch_array($ramo2)) {
+					$ramo2 = mysqli_query($link, $ramo1) or die('Consulta fallida $ramo2: ' . mysqli_error($link));
+					while ($ramo3 = mysqli_fetch_array($ramo2)) {
                         echo "<tr class='centro'>";
                         echo "<td><input type='checkbox' id='codigosRamo' name='codigoRamo[]' value='".$ramo3['Codigo_ramo']."'/></td>";
                         echo "<td>".$ramo3['Codigo_ramo']."</td>\n";
@@ -140,6 +140,7 @@
                         echo "<td><input type='number' id='secciones' name='seccion[]' min='1' max='10' disabled/></td>";
                         echo "</tr>";
 					}
+                    mysqli_close($link);
 				?>
 			</table>
 			<center><br/><input type="submit" name="solicitar" formmethod="post" formaction="pdi2.php" value="Seleccionar periodos de secciones" ></center>

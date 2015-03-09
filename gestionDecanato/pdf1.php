@@ -17,19 +17,18 @@
             $estadoCambiar = $_GET['estado'];
             $idpdf = $_GET['id_pdf'];
 
-            $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
-            mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
+            $link = mysqli_connect('localhost', 'dbttii', 'dbttii', "ttii");
+            if (mysqli_connect_errno()) echo "Falla al conectar con MySQL: " . mysqli_connect_error();
 
-            //comienzo de transaccion
-            $start1 = "START TRANSACTION;";
-            $start2 = mysql_query($start1) or die('Consulta fallida $start2: '.mysql_error());
+            //desactivar autocommit
+            mysqli_autocommit($link, FALSE);
 
             $actualizarPDF1 = "UPDATE `PDF` SET `Estado_PDF`=".$estadoCambiar." WHERE `ID_PDF`=".$idpdf;
-            $actualizarPDF2 = mysql_query($actualizarPDF1) or die('Consulta fallida: ' . mysql_error());
+            $actualizarPDF2 = mysqli_query($link, $actualizarPDF1) or die('Consulta fallida $actualizarPDF2: ' . mysqli_error($link));
 
             $seleccionPDF1 = "SELECT * FROM `PDF` WHERE `ID_PDF` = " . $idpdf;
-            $seleccionPDF2 = mysql_query($seleccionPDF1) or die('Consulta fallida: '.mysql_error());
-            $seleccionPDF3 = mysql_fetch_assoc($seleccionPDF2);
+            $seleccionPDF2 = mysqli_query($link, $seleccionPDF1) or die('Consulta fallida $seleccionPDF2: '.mysqli_error($link));
+            $seleccionPDF3 = mysqli_fetch_assoc($seleccionPDF2);
 
             $ID_PDF = $seleccionPDF3['ID_PDF'];
             $estado = $seleccionPDF3['Estado_PDF'];
@@ -40,19 +39,18 @@
 
             $carreras_ID_carrera = $seleccionPDF3['carreras_ID_carrera'];
             $carrera1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = " . $carreras_ID_carrera;
-            $carrera2 = mysql_query($carrera1) or die('Consulta fallida: '.mysql_error());
-            $carrera3 = mysql_fetch_assoc($carrera2);
+            $carrera2 = mysqli_query($link, $carrera1) or die('Consulta fallida $carrera2: '.mysqli_error($link));
+            $carrera3 = mysqli_fetch_assoc($carrera2);
             $carrera4 = $carrera3['Nombre_carrera'];
 
             $departamentos_ID_depto = $seleccionPDF3['departamentos_ID_depto'];
             $departamento1 = "SELECT `Nombre_depto` FROM `departamentos` WHERE `ID_depto` = " . $departamentos_ID_depto;
-            $departamento2 = mysql_query($departamento1) or die('Consulta fallida: '.mysql_error());
-            $departamento3 = mysql_fetch_assoc($departamento2);
+            $departamento2 = mysqli_query($link, $departamento1) or die('Consulta fallida $departamento2: '.mysqli_error($link));
+            $departamento3 = mysqli_fetch_assoc($departamento2);
             $departamento4 = $departamento3['Nombre_depto'];
 
             //confirmar guardado
-            $commit1 = "COMMIT;";
-            $commit2 = mysql_query($commit1) or die('Consulta fallida $commit2: '.mysql_error());
+            mysqli_commit($link);
         ?>
         
          <div>
@@ -68,12 +66,12 @@
 					</tr>
 					<?php
                         $seleccionRamoPDF1 = "SELECT * FROM `ramos_PDF` WHERE `PDF_id_PDF` = ".$idpdf;
-                        $seleccionRamoPDF2 = mysql_query($seleccionRamoPDF1) or die('Consulta fallida: '.mysql_error());
+                        $seleccionRamoPDF2 = mysqli_query($link, $seleccionRamoPDF1) or die('Consulta fallida $seleccionRamoPDF2: '.mysqli_error($link));
                         $cuenta1=0;
-                        while($seleccionRamoPDF3 = mysql_fetch_assoc($seleccionRamoPDF2)){
+                        while($seleccionRamoPDF3 = mysqli_fetch_assoc($seleccionRamoPDF2)){
                             $codramo1 = "SELECT * FROM `ramos` WHERE `ID_ramo` = " . $seleccionRamoPDF3['ID_ramo'];
-                            $codramo2 = mysql_query($codramo1) or die('Consulta fallida: '.mysql_error());
-                            $codramo3 = mysql_fetch_assoc($codramo2);
+                            $codramo2 = mysqli_query($link, $codramo1) or die('Consulta fallida $codramo2: '.mysqli_error($link));
+                            $codramo3 = mysqli_fetch_assoc($codramo2);
                             $codramo = $codramo3['Codigo_ramo'];
                             $nomramo = $codramo3['Nombre_ramo'];
                             $canramo = $seleccionRamoPDF3['Cantidad_secciones'];
@@ -87,9 +85,10 @@
 							echo "</tr>";
                             
                             $IDSeccionRamoPDF1 = "SELECT * FROM `seccion_ramo_PDF` WHERE `Ramos_PDF_id_Ramos_PDF` = " .$seleccionRamoPDF3['ID_ramos_PDF'];
+                            $IDSeccionRamoPDF2 = mysqli_query($link, $IDSeccionRamoPDF1) or die('Consulta fallida $IDSeccionRamoPDF2: '.mysqli_error($link));
+
                             $cuenta2 = 0;
-                            $IDSeccionRamoPDF2 = mysql_query($IDSeccionRamoPDF1) or die('Consulta fallida: '.mysql_error());
-                            while($IDSeccionRamoPDF3 = mysql_fetch_assoc($IDSeccionRamoPDF2)){
+                            while($IDSeccionRamoPDF3 = mysqli_fetch_assoc($IDSeccionRamoPDF2)){
                                 $noSeccion[$cuenta1][$cuenta2]  = $IDSeccionRamoPDF3['Numero_seccion'];
                                 $horario[$cuenta1][$cuenta2][0] = $IDSeccionRamoPDF3['Horario_1'];
                                 $horario[$cuenta1][$cuenta2][1] = $IDSeccionRamoPDF3['Horario_2'];
@@ -110,6 +109,8 @@
                             return $tmp; 
                         }
                         $data = array_envia($data);
+
+                        mysqli_close($link);
 					?>
 				</table>
 				</br></br>

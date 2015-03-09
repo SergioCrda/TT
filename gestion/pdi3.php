@@ -34,17 +34,16 @@
 			$data = array_envia($data);
             
             //conexion a base de datos
-            $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
-            mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
+            $link = mysqli_connect('localhost', 'dbttii', 'dbttii', "ttii");
+            if (mysqli_connect_errno()) echo "Falla al conectar con MySQL: " . mysqli_connect_error();
 
-            //comienzo de transaccion
-            $start1 = "START TRANSACTION;";
-            $start2 = mysql_query($start1) or die('Consulta fallida $start2: '.mysql_error());
+            //desactivar autocommit
+            mysqli_autocommit($link, FALSE);
 
             if($repetido == "1"){
                 //actualiza estado PDI
                 $cancelarPDI1 = "UPDATE `PDI` SET `Estado_PDI`= 7 WHERE `ID_PDI`= ".$PDIRepetido;
-                $cancelarPDI2 = mysql_query($cancelarPDI1) or die('Consulta fallida $cancelarPDI1: ' . mysql_error());
+                $cancelarPDI2 = mysqli_query($link, $cancelarPDI1) or die('Consulta fallida $cancelarPDI1: ' . mysqli_error($link));
             }
 
             //inserta datos en PDI
@@ -54,30 +53,30 @@
             } else {
                 $nuevaPDI1 = "INSERT INTO `PDI`(`Estado_PDI`,`Nombre_docente`,`ID_profesor`,`ID_escuela`,`Fecha_PDI`,`carreras_ID_carrera`,`departamentos_ID_depto`) VALUES (1,'NOMBRE_PRUEBA',1,1,'".$fechaHora."','".$carrera."','".$departamento."')";
             }
-            $nuevaPDI2 = mysql_query($nuevaPDI1) or die('Consulta fallida $nuevaPDI2: ' . mysql_error());
+            $nuevaPDI2 = mysqli_query($link, $nuevaPDI1) or die('Consulta fallida $nuevaPDI2: ' . mysqli_error($link));
             
             //obtiene el ID_PDI
             $conocePDI1 = "SELECT `ID_PDI` FROM `PDI` WHERE `Nombre_docente` = 'NOMBRE_PRUEBA' AND `ID_profesor` = 1 AND `ID_escuela` = 1 AND `Fecha_PDI` = '".$fechaHora."' AND `carreras_ID_carrera` = '".$carrera."' AND `departamentos_ID_depto` = '".$departamento."'";
-            $conocePDI2 = mysql_query($conocePDI1) or die('Consulta fallida $conocePDI2: ' . mysql_error());
-            $conocePDI3 = mysql_fetch_assoc($conocePDI2);
+            $conocePDI2 = mysqli_query($link, $conocePDI1) or die('Consulta fallida $conocePDI2: ' . mysqli_error($link));
+            $conocePDI3 = mysqli_fetch_assoc($conocePDI2);
             $ID_PDI = $conocePDI3['ID_PDI'];
         
             //inserta los ramos en PDI
             for($i = 0; $i < count($ramo); $i++){
                 //obtiene el ID_ramo
                 $conoceIDRAMO1 = "SELECT `ID_ramo` FROM `ramos` WHERE `Nombre_ramo` = '".$ramo[$i]."' AND `Codigo_ramo`= '".$cod_ramo[$i]."'";
-                $conoceIDRAMO2 = mysql_query($conoceIDRAMO1) or die('Consulta fallida $conoceIDRAMO2: ' . mysql_error());
-                $conoceIDRAMO3 = mysql_fetch_assoc($conoceIDRAMO2);
+                $conoceIDRAMO2 = mysqli_query($link, $conoceIDRAMO1) or die('Consulta fallida $conoceIDRAMO2: ' . mysqli_error($link));
+                $conoceIDRAMO3 = mysqli_fetch_assoc($conoceIDRAMO2);
                 $ID_ramo = $conoceIDRAMO3['ID_ramo'];
                 
                 //inserta los ramos
                 $nuevoRamo1 = "INSERT INTO `ramos_PDI`(`ID_ramo`, `Cantidad_secciones`, `PDI_ID_PDI`) VALUES (".$ID_ramo.",".$seccion[$i].",".$ID_PDI.")";
-                $nuevoRamo2 = mysql_query($nuevoRamo1) or die('Consulta fallida $nuevoRamo2: ' . mysql_error());
+                $nuevoRamo2 = mysqli_query($link, $nuevoRamo1) or die('Consulta fallida $nuevoRamo2: ' . mysqli_error($link));
                 
                 //obtiene el ID_ramo_PDI
                 $conoceIDRAMOPDI1 = "SELECT `ID_ramos_PDI` FROM `ramos_PDI` WHERE `Cantidad_secciones` = '".$seccion[$i]."' AND `ID_ramo` = '".$ID_ramo."' AND `PDI_ID_PDI` = '".$ID_PDI."'";
-                $conoceIDRAMOPDI2 = mysql_query($conoceIDRAMOPDI1) or die('Consulta fallida $conoceIDRAMOPDI2: ' . mysql_error());
-                $conoceIDRAMOPDI3 = mysql_fetch_assoc($conoceIDRAMOPDI2);
+                $conoceIDRAMOPDI2 = mysqli_query($link, $conoceIDRAMOPDI1) or die('Consulta fallida $conoceIDRAMOPDI2: ' . mysqli_error($link));
+                $conoceIDRAMOPDI3 = mysqli_fetch_assoc($conoceIDRAMOPDI2);
                 $ID_ramo_PDI = $conoceIDRAMOPDI3['ID_ramos_PDI'];
 
                 //inserta las secciones de un ramo
@@ -87,24 +86,25 @@
                     } else {
                         $nuevaSeccion1 = "INSERT INTO `seccion_ramo_PDI`(`Numero_seccion`, `Ramos_PDI_id_Ramos_PDI`, `Horario_1`, `Horario_2`, `Horario_3`) VALUES (".($j+1).", '".$ID_ramo_PDI."', ".$hora_seccion[$i][$j][0].", ".$hora_seccion[$i][$j][1].", ".$hora_seccion[$i][$j][2].")";
                     }
-                    $nuevaSeccion2 = mysql_query($nuevaSeccion1) or die('Consulta fallida $nuevaSeccion2: ' . mysql_error());
+                    $nuevaSeccion2 = mysqli_query($link, $nuevaSeccion1) or die('Consulta fallida $nuevaSeccion2: ' . mysqli_error($link));
                 }
             }
             //obtiene el ID_depto
             $consultaID_depto1 = "SELECT * FROM `departamentos` WHERE `ID_depto` = ".$departamento;
-            $consultaID_depto2 = mysql_query($consultaID_depto1) or die('Consulta fallida $consultaID_depto2: ' . mysql_error());
-            $consultaID_depto3 = mysql_fetch_assoc($consultaID_depto2);
+            $consultaID_depto2 = mysqli_query($link, $consultaID_depto1) or die('Consulta fallida $consultaID_depto2: ' . mysqli_error($link));
+            $consultaID_depto3 = mysqli_fetch_assoc($consultaID_depto2);
             //$consultaID_depto3['Nombre_depto'];
 
             //obtiene el ID_carrera
             $consultaID_carrera1 = "SELECT * FROM `carreras` WHERE `ID_carrera` = ".$carrera;
-            $consultaID_carrera2 = mysql_query($consultaID_carrera1) or die('Consulta fallida $consultaID_carrera2: ' . mysql_error());
-            $consultaID_carrera3 = mysql_fetch_assoc($consultaID_carrera2);
+            $consultaID_carrera2 = mysqli_query($link, $consultaID_carrera1) or die('Consulta fallida $consultaID_carrera2: ' . mysqli_error($link));
+            $consultaID_carrera3 = mysqli_fetch_assoc($consultaID_carrera2);
             //$consultaID_carrera3['Nombre_carrera'];
 
             //confirmar guardado
-            $commit1 = "COMMIT;";
-            $commit2 = mysql_query($commit1) or die('Consulta fallida $commit2: '.mysql_error());
+            mysqli_commit($link);
+
+            mysqli_close($link);
 		?>
 		<div>
 			<dd>

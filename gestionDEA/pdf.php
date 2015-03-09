@@ -49,7 +49,7 @@
             if (mysqli_connect_errno()) echo "Falla al conectar con MySQL: " . mysqli_connect_error();
 
             $PDF1 = "SELECT * FROM `PDF` WHERE `ID_profesor` = '1' AND (`Estado_PDF` = 16 OR `Estado_PDF` = 12 OR `Estado_PDF` = 13 OR `Estado_PDF` = 14 OR `Estado_PDF` = 15)";
-            $PDF2 = mysqli_query($PDF1) or die('Consulta fallida: '.mysqli_error($link));
+            $PDF2 = mysqli_query($link, $PDF1) or die('Consulta fallida: '.mysqli_error($link));
 
             $cuenta = 0;
             while($fila = mysqli_fetch_assoc($PDF2)){
@@ -58,10 +58,10 @@
                     echo '<table align="center" width="90%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdfTabla"><tr class="titulo_fila"><td>Folio</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado Actual</td><td>Estado</td><td>Cambiar Estado</td></tr>';
                 }
                 $carrera1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = ".$fila['carreras_ID_carrera'] ;
-                $carrera2 = mysqli_query($carrera1) or die('Consulta fallida $carrera2: ' . mysqli_error($link));
+                $carrera2 = mysqli_query($link, $carrera1) or die('Consulta fallida $carrera2: ' . mysqli_error($link));
                 $carrera3 = mysqli_fetch_assoc($carrera2);
                 $depto1 = "SELECT `Nombre_depto` FROM `departamentos` WHERE `ID_depto` = ".$fila['departamentos_ID_depto'] ;
-                $depto2 = mysqli_query($depto1) or die('Consulta fallida $depto2: '.mysqli_error($link));
+                $depto2 = mysqli_query($link, $depto1) or die('Consulta fallida $depto2: '.mysqli_error($link));
                 $depto3 = mysqli_fetch_assoc($depto2);
                 echo '<tr class="centro">';
                 echo '<td onClick=mostrar("detalle'.$cuenta.'")>'.$fila['ID_PDF'].' [<a href="#" class="no_linea">ver detalle</a>]</td>';
@@ -70,7 +70,7 @@
                 echo '<td>'.$depto3['Nombre_depto'].'</td>';
                 
                 $estado01 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$fila['Estado_PDF'];
-                $estado02 = mysqli_query($estado01) or die('Consulta fallida $estado02: '.mysqli_error($link));
+                $estado02 = mysqli_query($link, $estado01) or die('Consulta fallida $estado02: '.mysqli_error($link));
                 $estado03 = mysqli_fetch_assoc($estado02);
                 $estado04 = $estado03['Nombre'];
                 
@@ -93,7 +93,7 @@
                 echo '</tr>';
                 
                 $seleccionRamoPDF1 = "SELECT * FROM `ramos_PDF` WHERE `PDF_id_PDF` = ".$fila['ID_PDF'];
-                $seleccionRamoPDF2 = mysqli_query($seleccionRamoPDF1) or die('Consulta fallida $seleccionRamoPDF2: '.mysqli_error($link));
+                $seleccionRamoPDF2 = mysqli_query($link, $seleccionRamoPDF1) or die('Consulta fallida $seleccionRamoPDF2: '.mysqli_error($link));
                 
                 echo '<tr id="detalle'.$cuenta.'" style="display: none"><th colspan="7">';
                 $cuenta1 = 0;
@@ -105,7 +105,7 @@
                     echo "<td width='80px'>" .$cuenta1. "</td>";
                     
                     $codramo1 = "SELECT * FROM `ramos` WHERE `ID_ramo` = " . $seleccionRamoPDF3['ID_ramo'];
-                    $codramo2 = mysqli_query($codramo1) or die('Consulta fallida $codramo2: '.mysqli_error($link));
+                    $codramo2 = mysqli_query($link, $codramo1) or die('Consulta fallida $codramo2: '.mysqli_error($link));
                     $codramo3 = mysqli_fetch_assoc($codramo2);
                     $codramo = $codramo3['Codigo_ramo'];
                     $nomramo = $codramo3['Nombre_ramo'];
@@ -121,7 +121,7 @@
                     echo "<br>";
                     $ramoPDF  = $seleccionRamoPDF3['ID_ramos_PDF'];
                     $seleccionSeccionRamoPDF1 = "SELECT * FROM `seccion_ramo_PDF` WHERE `Ramos_PDF_id_Ramos_PDF`= " . $ramoPDF;
-                    $seleccionSeccionRamoPDF2 = mysqli_query($seleccionSeccionRamoPDF1) or die('Consulta fallida $seleccionSeccionRamoPDF2: '.mysqli_error($link));
+                    $seleccionSeccionRamoPDF2 = mysqli_query($link, $seleccionSeccionRamoPDF1) or die('Consulta fallida $seleccionSeccionRamoPDF2: '.mysqli_error($link));
                     while($seleccionSeccionRamoPDF3 = mysqli_fetch_assoc($seleccionSeccionRamoPDF2)){
                         echo "<table align='center' border='1' cellspacing='0' cellpadding='3' width='700px' class='media'>";
                         echo "<tr><td class='titulo_fila media' colspan='4'>Secci&oacute;n N&uacute;mero ".$seleccionSeccionRamoPDF3['Numero_seccion']."</td></tr>";
@@ -136,7 +136,7 @@
                                 $auxHorario = $seleccionSeccionRamoPDF3['Horario_3'];
                             }
                             $horarioE1 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = ". $auxHorario;
-                            $horarioE2 = mysqli_query($horarioE1) or die('Consulta fallida $horarioE2: '.mysqli_error($link));
+                            $horarioE2 = mysqli_query($link, $horarioE1) or die('Consulta fallida $horarioE2: '.mysqli_error($link));
                             $horarioE3 = mysqli_fetch_assoc($horarioE2);
                             $horarioE4 = $horarioE3['Periodo'];
                             echo "<td>".$horarioE4."</td>";
@@ -149,7 +149,7 @@
                                 $auxSala = $seleccionSeccionRamoPDF3['Sala_3'];
                             }
                             $salaE1 = "SELECT * FROM `salas` WHERE `ID_sala` = ". $auxSala ;
-                            $salaE2 = mysqli_query($salaE1) or die('Consulta fallida $salaE2: '.mysqli_error($link));
+                            $salaE2 = mysqli_query($link, $salaE1) or die('Consulta fallida $salaE2: '.mysqli_error($link));
                             $salaE3 = mysqli_fetch_assoc($salaE2);
                             $salaE4 = $salaE3['Nombre_sala'];
                             $salaE5 = $salaE3['Edificio'];
@@ -187,6 +187,7 @@
             } else {
                 echo '</table>';
             }
+            mysqli_close($link);
         ?>
         <br>
         <div>

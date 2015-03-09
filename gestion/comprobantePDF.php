@@ -158,46 +158,47 @@
             $pdf->Cell(150,8, utf8_decode('Sección Nº ').$data[3][$i][$j],1,0,'C',true);
             $pdf->Ln(8);
             
-            $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: ' . mysql_error());
-            mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
+            $link = mysqli_connect('localhost', 'dbttii', 'dbttii', "ttii");
+            if (mysqli_connect_errno()) echo "Falla al conectar con MySQL: " . mysqli_connect_error();
             
             $horario01 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = ".$data[4][$i][$j][0];
-            $horario02 = mysql_query($horario01) or die('Consulta fallida: '.mysql_error());
-            $horario03 = mysql_fetch_assoc($horario02);
+            $horario02 = mysqli_query($link, $horario01) or die('Consulta fallida $horario02: '.mysqli_error($link));
+            $horario03 = mysqli_fetch_assoc($horario02);
             $horario04 = $horario03['Periodo'];
 
             $horario11 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = ".$data[4][$i][$j][1];
-            $horario12 = mysql_query($horario11) or die('Consulta fallida: '.mysql_error());
-            $horario13 = mysql_fetch_assoc($horario12);
+            $horario12 = mysqli_query($link, $horario11) or die('Consulta fallida $horario12: '.mysqli_error($link));
+            $horario13 = mysqli_fetch_assoc($horario12);
             $horario14 = $horario13['Periodo'];
 
             $horario21 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = ".$data[4][$i][$j][2];
-            $horario22 = mysql_query($horario21) or die('Consulta fallida: '.mysql_error());
-            $horario23 = mysql_fetch_assoc($horario22);
+            $horario22 = mysqli_query($link, $horario21) or die('Consulta fallida $horario22: '.mysqli_error($link));
+            $horario23 = mysqli_fetch_assoc($horario22);
             $horario24 = $horario23['Periodo'];
             
             $sala01 = "SELECT * FROM `salas` WHERE `ID_sala`= ".$data[7][$i][$j][0];
-            $sala02 = mysql_query($sala01) or die('Consulta fallida: '.mysql_error());
-            $sala03 = mysql_fetch_assoc($sala02);
+            $sala02 = mysqli_query($link, $sala01) or die('Consulta fallida $sala02: '.mysqli_error($link));
+            $sala03 = mysqli_fetch_assoc($sala02);
             $sala041 = $sala03['Nombre_sala'];
             $sala042 = $sala03['Edificio'];
             
             $sala11 = "SELECT * FROM `salas` WHERE `ID_sala`= ".$data[7][$i][$j][1];
-            $sala12 = mysql_query($sala11) or die('Consulta fallida: '.mysql_error());
-            $sala13 = mysql_fetch_assoc($sala12);
+            $sala12 = mysqli_query($link, $sala11) or die('Consulta fallida $sala12: '.mysqli_error($link));
+            $sala13 = mysqli_fetch_assoc($sala12);
             $sala141 = $sala13['Nombre_sala'];
             $sala142 = $sala13['Edificio'];
             
             if($data[7][$i][$j][2] != 0){
                 $sala21 = "SELECT * FROM `salas` WHERE `ID_sala`= ".$data[7][$i][$j][2];
-                $sala22 = mysql_query($sala21) or die('Consulta fallida: '.mysql_error());
-                $sala23 = mysql_fetch_assoc($sala22);
+                $sala22 = mysqli_query($link, $sala21) or die('Consulta fallida $sala22: '.mysqli_error($link));
+                $sala23 = mysqli_fetch_assoc($sala22);
                 $sala241 = $sala23['Nombre_sala'];
                 $sala242 = $sala23['Edificio'];
             } else {
                 $sala242 = "Sin Periodo";
                 $sala241 = "";
             }
+            mysqli_close($link);
             
             $pdf->SetX(30);
             $pdf->Cell(25,5, utf8_decode('Horario 1'),1,0,'L',true);
