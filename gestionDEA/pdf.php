@@ -29,12 +29,8 @@
                 var y = document.getElementById(link);
                 var base = y.href.indexOf("estado");
                 var esta = link.length;
-                console.log(base);
-                console.log(esta);
                 var todo = base + esta;
-                console.log(todo);
                 var cambioURL = y.href.substring(0,todo);
-                console.log(cambioURL);
                 cambioURL = cambioURL + x.value;
                 y.href = cambioURL;
             } 
