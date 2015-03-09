@@ -4,5 +4,4 @@ TO DO
 - validar profesores
 
 DOING
-- al cancelar un PDF, liberar las salas (update)
-- validar con rollback las transacciones para casos de error. Se valido para INSERT y UPDATE, no para SELECT
+- validar con rollback las transacciones para casos de error. (Se valido para INSERT y UPDATE, no para SELECT)
