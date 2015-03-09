@@ -66,6 +66,8 @@
 			stm_aix("p5i1","p1i1",[0,"Programac&iacute;on Docente Inicial","","",-1,-1,0,"pdi.php"]);
 			stm_aix("p5i2","p0i0",[]);
 			stm_aix("p5i3","p1i1",[0,"Programac&iacute;on Docente Final","","",-1,-1,0,"pdf.php"]);
+            stm_aix("p5i4","p0i0",[]);
+			stm_aix("p5i5","p1i1",[0,"Configuraci&oacute;n","","",-1,-1,0,"config.php"]);
 			stm_ep();
 
 

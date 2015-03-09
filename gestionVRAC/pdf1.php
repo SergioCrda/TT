@@ -59,7 +59,7 @@
             $departamento4 = $departamento3['Nombre_depto'];
 
             echo "<div><dd>";
-            echo "<strong>Estimado Decano:</strong></br></br>";
+            echo "<strong>Estimado Vicerrector:</strong></br></br>";
             if($reversar === false) {
                 echo "Se ha cambiado de estado la <strong>Programaci&oacute;n Docente Final</strong> N&deg;".$idpdf;
                 echo " para la carrera de <strong>".$carrera4."</strong>";
@@ -133,7 +133,7 @@
                 mysqli_rollback($link);
 
                 //mensaje al usuario
-                echo "Ha ocurrido un error al cambiar de estado, favor intente nuevamente. Si el error persiste contacte al administrador de Base de Datos<br>";
+                echo "Ha ocurrido un error al cambiar de estado, favor intente nuevamente. Si el error persiste, contacte al administrador de Base de Datos<br>";
             }
 
             echo "</dd></div><br/>";

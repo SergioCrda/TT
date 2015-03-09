@@ -111,7 +111,7 @@
                 mysqli_rollback($link);
 
                 //mensaje al usuario
-                echo "Ha ocurrido un error al cambiar de estado, favor intente nuevamente. Si el error persiste contacte al administrador de Base de Datos<br>";
+                echo "Ha ocurrido un error al cambiar de estado, favor intente nuevamente. Si el error persiste, contacte al administrador de Base de Datos<br>";
             }
 
             echo "</dd></div><br/>";
