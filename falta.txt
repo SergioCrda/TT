@@ -5,5 +5,4 @@ TO DO
 
 DOING
 - al cancelar un PDF, liberar las salas (update)
-- imprimir excel para DEA ()
 - validar con rollback las transacciones para casos de error. 

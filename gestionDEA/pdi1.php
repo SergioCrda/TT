@@ -17,19 +17,19 @@
             $estadoCambiar = $_GET['estado'];
             $idpdi = $_GET['id_pdi'];
 
-            $link = mysql_connect('localhost', 'dbttii', 'dbttii') or die('No se pudo conectar: '.mysql_error());
-            mysql_select_db('ttii') or die('No se pudo seleccionar la base de datos');
+            $link = mysqli_connect('localhost', 'dbttii', 'dbttii', "ttii");
+            if (mysqli_connect_errno()) echo "Falla al conectar con MySQL: " . mysqli_connect_error();
 
             //comienzo de transaccion
             $start1 = "START TRANSACTION;";
-            $start2 = mysql_query($start1) or die('Consulta fallida $start2: '.mysql_error());
+            $start2 = mysqli_query($start1) or die('Consulta fallida $start2: '.mysqli_error($link));
 
             $actualizarPDI1 = "UPDATE `PDI` SET `Estado_PDI`=".$estadoCambiar." WHERE `ID_PDI`=".$idpdi;
-            $actualizarPDI2 = mysql_query($actualizarPDI1) or die('Consulta fallida: ' . mysql_error());
+            $actualizarPDI2 = mysqli_query($actualizarPDI1) or die('Consulta fallida $actualizarPDI2: ' . mysqli_error($link));
 
             $seleccionPDI1 = "SELECT * FROM `PDI` WHERE `ID_PDI` = ".$idpdi;
-            $seleccionPDI2 = mysql_query($seleccionPDI1) or die('Consulta fallida: '.mysql_error());
-            $seleccionPDI3 = mysql_fetch_assoc($seleccionPDI2);
+            $seleccionPDI2 = mysqli_query($seleccionPDI1) or die('Consulta fallida $seleccionPDI2: '.mysqli_error($link));
+            $seleccionPDI3 = mysqli_fetch_assoc($seleccionPDI2);
 
             $ID_PDI = $seleccionPDI3['ID_PDI'];
             $estado = $seleccionPDI3['Estado_PDI'];
@@ -40,19 +40,19 @@
 
             $carreras_ID_carrera = $seleccionPDI3['carreras_ID_carrera'];
             $carrera1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = " . $carreras_ID_carrera;
-            $carrera2 = mysql_query($carrera1) or die('Consulta fallida: '.mysql_error());
-            $carrera3 = mysql_fetch_assoc($carrera2);
+            $carrera2 = mysqli_query($carrera1) or die('Consulta fallida $carrera2: '.mysqli_error($link));
+            $carrera3 = mysqli_fetch_assoc($carrera2);
             $carrera4 = $carrera3['Nombre_carrera'];
 
             $departamentos_ID_depto = $seleccionPDI3['departamentos_ID_depto'];
             $departamento1 = "SELECT `Nombre_depto` FROM `departamentos` WHERE `ID_depto` = " . $departamentos_ID_depto;
-            $departamento2 = mysql_query($departamento1) or die('Consulta fallida: '.mysql_error());
-            $departamento3 = mysql_fetch_assoc($departamento2);
+            $departamento2 = mysqli_query($departamento1) or die('Consulta fallida $departamento2: '.mysqli_error($link));
+            $departamento3 = mysqli_fetch_assoc($departamento2);
             $departamento4 = $departamento3['Nombre_depto'];
 
             //confirmar guardado
             $commit1 = "COMMIT;";
-            $commit2 = mysql_query($commit1) or die('Consulta fallida $commit2: '.mysql_error());
+            $commit2 = mysqli_query($commit1) or die('Consulta fallida $commit2: '.mysqli_error($link));
         ?>
         
          <div>
@@ -68,12 +68,13 @@
 					</tr>
 					<?php
                         $seleccionRamoPDI1 = "SELECT * FROM `ramos_PDI` WHERE `PDI_id_PDI` = ".$idpdi;
-                        $seleccionRamoPDI2 = mysql_query($seleccionRamoPDI1) or die('Consulta fallida: '.mysql_error());
+                        $seleccionRamoPDI2 = mysqli_query($seleccionRamoPDI1) or die('Consulta fallida $seleccionRamoPDI2: '.mysqli_error($link));
+
                         $cuenta1=0;
-                        while($seleccionRamoPDI3 = mysql_fetch_assoc($seleccionRamoPDI2)){
+                        while($seleccionRamoPDI3 = mysqli_fetch_assoc($seleccionRamoPDI2)){
                             $codramo1 = "SELECT * FROM `ramos` WHERE `ID_ramo` = " . $seleccionRamoPDI3['ID_ramo'];
-                            $codramo2 = mysql_query($codramo1) or die('Consulta fallida: '.mysql_error());
-                            $codramo3 = mysql_fetch_assoc($codramo2);
+                            $codramo2 = mysqli_query($codramo1) or die('Consulta fallida $codramo2: '.mysqli_error($link));
+                            $codramo3 = mysqli_fetch_assoc($codramo2);
                             $codramo = $codramo3['Codigo_ramo'];
                             $nomramo = $codramo3['Nombre_ramo'];
                             $canramo = $seleccionRamoPDI3['Cantidad_secciones'];
