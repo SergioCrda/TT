@@ -29,6 +29,12 @@
             $actualizarPDF2 = mysqli_query($link, $actualizarPDF1) or die('Consulta fallida $actualizarPDF2: ' . mysqli_error($link));
             if($actualizarPDF2 === FALSE) $reversar = true;
 
+            if($estadoCambiar == "16" || $estadoCambiar == "17"){
+                $eliminarSalas1 = "UPDATE `asignacion_salas` SET `ID_PDF_asignacion` = NULL, `ID_ramos_asignacion` = NULL, `ID_seccion_asignacion` = NULL WHERE `ID_PDF_asignacion` = ".$idpdf;
+                $eliminarSalas2 = mysqli_query($link, $eliminarSalas1) or die('Consulta fallida $eliminarSalas2: ' . mysqli_error($link));
+                if($eliminarSalas2 === FALSE) $reversar = true;
+            }
+
             $seleccionPDF1 = "SELECT * FROM `PDF` WHERE `ID_PDF` = " . $idpdf;
             $seleccionPDF2 = mysqli_query($link, $seleccionPDF1) or die('Consulta fallida $seleccionPDF2: '.mysqli_error($link));
             $seleccionPDF3 = mysqli_fetch_assoc($seleccionPDF2);
