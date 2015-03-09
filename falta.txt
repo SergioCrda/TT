@@ -5,4 +5,3 @@ TO DO
 
 DOING
 - validar con rollback las transacciones para casos de error. (Se valido para INSERT y UPDATE, no para SELECT)
-- botón borrar para nuevo semestre (borrar secciones PDF y PDI, ramos PDF y PDI, PDF y PDI y updaate la asignación de tablas en todas a NULL)
