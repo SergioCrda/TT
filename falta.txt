@@ -6,3 +6,19 @@ TO DO
 DOING
 - al cancelar un PDF, liberar las salas (update)
 - validar con rollback las transacciones para casos de error. 
+    -gestion:
+        pdf2.php
+        pdi3.php
+        
+    -gestionDEA
+        pdf1.php
+        pdi1.php
+        
+    -gestionDecanato
+        pdf1.php
+        pdi1.php
+        
+    -gestionVRAC
+        pdf1.php
+        pdi1.php
+        
