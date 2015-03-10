@@ -168,8 +168,8 @@
                         echo '<tr class="centro">';
                         echo '<td onClick=mostrar("detalle'.$cuenta.'")>'.$PDI3['ID_PDI'].' [<a href="#" class="no_linea">ver detalle</a>]</td>';
                         echo '<td>'.$PDI3['Fecha_PDI'].'</td>';
-                        echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                         echo '<td>'.$depto3['Nombre_depto'].'</td>';
+                        echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                         echo '<td>'.$estado03['Nombre'].'</td>';
                         if($PDI3['PDI_cancelado']!=null) {
                             echo '<td>'.$PDI3['PDI_cancelado'].'</td>';

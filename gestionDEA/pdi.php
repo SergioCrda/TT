@@ -57,22 +57,22 @@
                 if($cuenta == 1){
                     echo '<table align="center" width="90%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdiTabla"><tr class="titulo_fila"><td>Folio</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado Actual</td><td>Estado</td><td>Cambiar Estado</td></tr>';
                 }
-                $carrera1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = ".$fila['carreras_ID_carrera'] ;
-                $carrera2 = mysqli_connect($carrera1) or die('Consulta fallida $carrera2: ' . mysqli_error($link));
+                $carrera1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = ".$fila['carreras_ID_carrera'];
+                $carrera2 = mysqli_query($link, $carrera1) or die('Consulta fallida $carrera2: ' . mysqli_error($link));
                 $carrera3 = mysqli_fetch_assoc($carrera2);
 
-                $depto1 = "SELECT `Nombre_depto` FROM `departamentos` WHERE `ID_depto` = ".$fila['departamentos_ID_depto'] ;
-                $depto2 = mysqli_connect($depto1) or die('Consulta fallida $depto2: '.mysqli_error($link));
+                $depto1 = "SELECT `Nombre_depto` FROM `departamentos` WHERE `ID_depto` = ".$fila['departamentos_ID_depto'];
+                $depto2 = mysqli_query($link, $depto1) or die('Consulta fallida $depto2: '.mysqli_error($link));
                 $depto3 = mysqli_fetch_assoc($depto2);
 
                 echo '<tr class="centro">';
                 echo '<td onClick=mostrar("detalle'.$cuenta.'")>'.$fila['ID_PDI'].' [<a href="#" class="no_linea">ver detalle</a>]</td>';
                 echo '<td>'.$fila['Fecha_PDI'].'</td>';
-                echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 echo '<td>'.$depto3['Nombre_depto'].'</td>';
+                echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 
                 $estado01 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$fila['Estado_PDI'];
-                $estado02 = mysqli_connect($estado01) or die('Consulta fallida $estado02: '.mysqli_error($link));
+                $estado02 = mysqli_query($link, $estado01) or die('Consulta fallida $estado02: '.mysqli_error($link));
                 $estado03 = mysqli_fetch_assoc($estado02);
                 $estado04 = $estado03['Nombre'];
                 
@@ -93,7 +93,7 @@
                 echo '</tr>';
                 
                 $seleccionRamoPDI1 = "SELECT * FROM `ramos_PDI` WHERE `PDI_id_PDI` = ".$fila['ID_PDI'];
-                $seleccionRamoPDI2 = mysqli_connect($seleccionRamoPDI1) or die('Consulta fallida $seleccionRamoPDI2: '.mysqli_error($link));
+                $seleccionRamoPDI2 = mysqli_query($link, $seleccionRamoPDI1) or die('Consulta fallida $seleccionRamoPDI2: '.mysqli_error($link));
                 
                 echo '<tr id="detalle'.$cuenta.'" style="display: none"><th colspan="7">';
                 $cuenta1 = 0;
@@ -105,7 +105,7 @@
                     echo "<td width='80px'>" .$cuenta1. "</td>";
                     
                     $codramo1 = "SELECT * FROM `ramos` WHERE `ID_ramo` = " . $seleccionRamoPDI3['ID_ramo'];
-                    $codramo2 = mysqli_connect($codramo1) or die('Consulta fallida $codramo2: '.mysqli_error($link));
+                    $codramo2 = mysqli_query($link, $codramo1) or die('Consulta fallida $codramo2: '.mysqli_error($link));
                     $codramo3 = mysqli_fetch_assoc($codramo2);
 
                     $codramo = $codramo3['Codigo_ramo'];
@@ -120,7 +120,7 @@
                     echo "<th colspan='4'>";
                     $ramoPDI  = $seleccionRamoPDI3['ID_ramos_PDI'];
                     $seleccionSeccionRamoPDI1 = "SELECT * FROM `seccion_ramo_PDI` WHERE `Ramos_PDI_id_Ramos_PDI`= " . $ramoPDI;
-                    $seleccionSeccionRamoPDI2 = mysqli_connect($seleccionSeccionRamoPDI1) or die('Consulta fallida $seleccionSeccionRamoPDI2: '.mysqli_error($link));
+                    $seleccionSeccionRamoPDI2 = mysqli_query($link, $seleccionSeccionRamoPDI1) or die('Consulta fallida $seleccionSeccionRamoPDI2: '.mysqli_error($link));
 
                     $cuenta2 = 1;
                     while($seleccionSeccionRamoPDI3 = mysqli_fetch_assoc($seleccionSeccionRamoPDI2)){
@@ -132,17 +132,17 @@
                             ;
                         echo "<td width='110px'>" .$cuenta2. "</td>";
                         $horario11 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = " . $seleccionSeccionRamoPDI3['Horario_1'];
-                        $horario12 = mysqli_connect($horario11) or die('Consulta fallida $horario12: '.mysqli_error($link));
+                        $horario12 = mysqli_query($link, $horario11) or die('Consulta fallida $horario12: '.mysqli_error($link));
                         $horario13 = mysqli_fetch_assoc($horario12);
                         $horario14 = $horario13['Periodo'];
 
                         $horario21 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = " . $seleccionSeccionRamoPDI3['Horario_2'];
-                        $horario22 = mysqli_connect($horario21) or die('Consulta fallida $horario22: '.mysqli_error($link));
+                        $horario22 = mysqli_query($link, $horario21) or die('Consulta fallida $horario22: '.mysqli_error($link));
                         $horario23 = mysqli_fetch_assoc($horario22);
                         $horario24 = $horario23['Periodo'];
 
                         $horario31 = "SELECT `Periodo` FROM `periodos` WHERE `ID_periodo` = " . $seleccionSeccionRamoPDI3['Horario_3'];
-                        $horario32 = mysqli_connect($horario31) or die('Consulta fallida $horario32: '.mysqli_error($link));
+                        $horario32 = mysqli_query($link, $horario31) or die('Consulta fallida $horario32: '.mysqli_error($link));
                         $horario33 = mysqli_fetch_assoc($horario32);
                         $horario34 = $horario33['Periodo'];
 

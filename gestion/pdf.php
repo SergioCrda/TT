@@ -83,8 +83,8 @@
                 echo '<tr class="centro">';
                 echo '<td>'.$PDI3['ID_PDI'].'</td>';
                 echo '<td>'.$PDI3['Fecha_PDI'].'</td>';
-                echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 echo '<td>'.$depto3['Nombre_depto'].'</td>';
+                echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 echo '<td>'.$estado03['Nombre'].'</td>';
                 if(mysqli_num_rows($PDFCerrado2) > 0) {
                     echo '<td><center><a href="pdf1.php?id_pdi='.$PDI3['ID_PDI'].'&pdf_old='.$ultimoPDF.'">Modificar PDF Anterior (PDF N&deg;'.$ultimoPDF.')</a></center></td>';

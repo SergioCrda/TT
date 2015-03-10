@@ -68,8 +68,8 @@
                 echo '<tr class="centro">';
                 echo '<td onClick=mostrar("detalle'.$cuenta.'")>'.$fila['ID_PDI'].' [<a href="#" class="no_linea">ver detalle</a>]</td>';
                 echo '<td>'.$fila['Fecha_PDI'].'</td>';
-                echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 echo '<td>'.$depto3['Nombre_depto'].'</td>';
+                echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 echo '<td>';
                 echo "<select id='id_estado".$cuenta."' name='estado".$cuenta."' onChange=changeText('id_estado".$cuenta."','estado".$cuenta."');validarSelect('id_estado".$cuenta."','estado".$cuenta."')>";
                 echo "<option value='0'>Seleccione el Estado</option>";

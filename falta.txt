@@ -2,6 +2,4 @@ TO DO
 - ID_profesor debe ir rut o id de profesor segun la tabla y relacionarlos
 - ID_escuela debe ir id de escuela segùn el profesor y relacionarlos
 - validar profesores
-
-DOING
 - validar con rollback las transacciones para casos de error. (Se valido para INSERT y UPDATE, no para SELECT)
