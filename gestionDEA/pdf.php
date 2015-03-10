@@ -66,8 +66,8 @@
                 echo '<tr class="centro">';
                 echo '<td onClick=mostrar("detalle'.$cuenta.'")>'.$fila['ID_PDF'].' [<a href="#" class="no_linea">ver detalle</a>]</td>';
                 echo '<td>'.$fila['Fecha_PDF'].'</td>';
-                echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 echo '<td>'.$depto3['Nombre_depto'].'</td>';
+                echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 
                 $estado01 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$fila['Estado_PDF'];
                 $estado02 = mysqli_query($link, $estado01) or die('Consulta fallida $estado02: '.mysqli_error($link));
