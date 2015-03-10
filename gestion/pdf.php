@@ -56,7 +56,7 @@
             while($PDI3 = mysqli_fetch_assoc($PDI2)){
                 $cuenta++;
                 if($cuenta == 1){
-                    echo '<table align="center" width="80%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdiTabla"><tr class="titulo_fila"><td>Folio PDI</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado</td><td>Solicitar <br>Programaci&oacute;n Docente Final</td></tr>';
+                    echo '<table align="center" width="80%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdiTabla"><tr class="titulo_fila"><td>Folio PDI</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado PDI</td><td>Estado PDF</td><td>Solicitar <br>Programaci&oacute;n Docente Final</td></tr>';
                 }
 
                 $carrera1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = ".$PDI3['carreras_ID_carrera'] ;
@@ -73,12 +73,27 @@
                 
                 $PDFCerrado1 = "SELECT * FROM `PDF` WHERE `ID_PDI` = '".$PDI3['ID_PDI']."' AND `Estado_PDF` = 12";
                 $PDFCerrado2 = mysqli_query($link, $PDFCerrado1) or die('Consulta fallida $PDFCerrado2: '.mysqli_error($link));
+                
+                $PDFEstado1 = "SELECT * FROM `PDF` WHERE `ID_PDI` = '".$PDI3['ID_PDI']."'";
+                $PDFEstado2 = mysqli_query($link, $PDFEstado1) or die('Consulta fallida $PDFEstado2: '.mysqli_error($link));
 
                 if(mysqli_num_rows($PDFCerrado2) > 0) {
                     while($PDFCerrado3 = mysqli_fetch_assoc($PDFCerrado2)) {
                         $ultimoPDF = $PDFCerrado3['ID_PDF'];
                     }
                 }
+                
+                if(mysqli_num_rows($PDFEstado2) > 0) {
+                    while($PDFEstado3 = mysqli_fetch_assoc($PDFEstado2)) {
+                        $estadoPDF = $PDFEstado3['Estado_PDF'];
+                    }
+                }
+                
+                $estadoPDF1 = "SELECT `Nombre` FROM `estados_pdi_pdf` WHERE `ID_estado` = ".$estadoPDF;
+                $estadoPDF2 = mysqli_query($link, $estadoPDF1) or die('Consulta fallida $estadoPDF2: '.mysqli_error($link));
+                $estadoPDF3 = mysqli_fetch_assoc($estadoPDF2);
+                
+                
 
                 echo '<tr class="centro">';
                 echo '<td>'.$PDI3['ID_PDI'].'</td>';
@@ -86,6 +101,7 @@
                 echo '<td>'.$depto3['Nombre_depto'].'</td>';
                 echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 echo '<td>'.$estado03['Nombre'].'</td>';
+                echo '<td>'.$estadoPDF3['Nombre'].'</td>';
                 if(mysqli_num_rows($PDFCerrado2) > 0) {
                     echo '<td><center><a href="pdf1.php?id_pdi='.$PDI3['ID_PDI'].'&pdf_old='.$ultimoPDF.'">Modificar PDF Anterior (PDF N&deg;'.$ultimoPDF.')</a></center></td>';
                 } else {
@@ -100,6 +116,7 @@
 </div>';
             } else {
                 echo '</table>';
+                echo "<br><center>Si PDF est&aacute; en estado <strong>Cerrado</strong>, puede volver a realizar un nuevo PDF, br></center>";
             }
         ?>
 		<br>
