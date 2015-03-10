@@ -3,3 +3,6 @@ TO DO
 - ID_escuela debe ir id de escuela segùn el profesor y relacionarlos
 - validar profesores
 - validar con rollback las transacciones para casos de error. (Se valido para INSERT y UPDATE, no para SELECT)
+
+DOING
+-Pruebas

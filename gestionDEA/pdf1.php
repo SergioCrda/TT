@@ -123,7 +123,7 @@
                 echo "Recuerda:</br></br>";
                 echo "- Si la Programaci&oacute;n Docente Final fue aceptada est&aacute; pendiente por revisar en la DEA.</br>";
                 echo "- Si la Programaci&oacute;n Docente Final fue rechazada, no contin&uacute;a el flujo.</br>";
-                echo "- Si deseas descargar un comprobante has clic";
+                echo "- Si deseas descargar un comprobante has clic ";
                 echo "<a href='comprobantePDF.php?depa=".$departamento4."&carre=".$carrera4."&numPDF=".$idpdf."&data=".$data."&estado=".$estadoCambiar."' target='_blank'>aqu&iacute;.</a></br></br>";
 
                 //confirmar guardado
