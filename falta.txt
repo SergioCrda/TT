@@ -5,4 +5,5 @@ TO DO
 - validar con rollback las transacciones para casos de error. (Se valido para INSERT y UPDATE, no para SELECT)
 
 DOING
+-validacion no ocupar misma sala en mismo periodo en PDF
 -Pruebas

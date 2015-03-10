@@ -56,7 +56,7 @@
             while($PDI3 = mysqli_fetch_assoc($PDI2)){
                 $cuenta++;
                 if($cuenta == 1){
-                    echo '<table align="center" width="75%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdiTabla"><tr class="titulo_fila"><td>Folio PDI</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado</td><td>Solicitar <br>Programaci&oacute;n Docente Final</td></tr>';
+                    echo '<table align="center" width="80%" border="1" cellpadding="3" cellspacing="0" class="pequena" id="pdiTabla"><tr class="titulo_fila"><td>Folio PDI</td><td>Fecha</td><td>Departamento</td><td>Carrera</td><td>Estado</td><td>Solicitar <br>Programaci&oacute;n Docente Final</td></tr>';
                 }
 
                 $carrera1 = "SELECT `Nombre_carrera` FROM `carreras` WHERE `ID_carrera` = ".$PDI3['carreras_ID_carrera'] ;
@@ -82,7 +82,7 @@
 
                 echo '<tr class="centro">';
                 echo '<td>'.$PDI3['ID_PDI'].'</td>';
-                echo '<td>'.$PDI3['Fecha_PDI'].'</td>';
+                echo '<td width="125px">'.$PDI3['Fecha_PDI'].'</td>';
                 echo '<td>'.$depto3['Nombre_depto'].'</td>';
                 echo '<td>'.$carrera3['Nombre_carrera'].'</td>';
                 echo '<td>'.$estado03['Nombre'].'</td>';
@@ -134,8 +134,8 @@
                         echo '<tr class="centro">';
                         echo '<td onClick=mostrar("detalle'.$cuenta0.'")>'.$PDF23['ID_PDF'].' [<a href="#" class="no_linea">ver detalle</a>]</td>';
                         echo '<td>'.$PDF23['Fecha_PDF'].'</td>';
-                        echo '<td>'.$carrera23['Nombre_carrera'].'</td>';
                         echo '<td>'.$depto23['Nombre_depto'].'</td>';
+                        echo '<td>'.$carrera23['Nombre_carrera'].'</td>';
                         echo '<td>'.$estado13['Nombre'].'</td>';
                         echo '<td>'.$PDF23['ID_PDI'].'</td>';
                         echo '</tr>';

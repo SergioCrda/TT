@@ -99,7 +99,7 @@
                 echo "</table>";
                 echo "</br></br>";
                 echo "Recuerda:</br></br>";
-                echo "- Si la Programaci&oacute;n Docente Inicial fue aceptada, puede comenzar el flujo de Programación Docente Final.</br>";
+                echo "- Si la Programaci&oacute;n Docente Inicial fue aceptada, puede comenzar el flujo de Programaci&oacute;n Docente Final.</br>";
                 echo "- Si la Programaci&oacute;n Docente Inicial fue rechazada, no contin&uacute;a el flujo.</br>";
                 echo "- Si deseas descargar un comprobante has clic ";
                 echo "<a href='comprobantePDI.php?depa=".$departamento4."&carre=".$carrera4."&numPDI=".$idpdi."&data=".$data."&estado=".$estadoCambiar."' target='_blank'>aqu&iacute;.</a></br></br>";
